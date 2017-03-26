@@ -76,12 +76,12 @@
 ;; sets american english as defult 
 (setq ispell-dictionary "american")
 
-;; let us cycle american english (best written english) and norwegian
+;; let us cycle american english (best written english) and norwegian 
 ;; TODO: get the spelling checks to be updated when changing language (and not just the new words)
 (defun change-dictionary ()
   (interactive)
   (ispell-change-dictionary (if (string-equal ispell-current-dictionary "american")
-				"Norse"
+				"norsk"
 			        "american")))
 
 ;; use flyspell popup to autocomplete words (overwrites standard way)
@@ -177,6 +177,10 @@
   '(add-to-list 'ac-modes 'org-mode))
 
 
+;; Let us have autocomplete for emojis in markdown-mode
+;; TODO: get this to work. See if it maybe work better with company mode
+;;(add-hook 'markdown-mode-hook 'ac-emoji-setup)
+
 
 ;; Common Lisp
 ;; Sets the inferior lisp program
@@ -185,7 +189,7 @@
 
 
 
-;;stuff autogenereatwd
+;;stuff auto-generated
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
