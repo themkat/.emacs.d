@@ -19,6 +19,7 @@
 		   flyspell-popup
                    geiser
 		   leuven-theme
+		   magit
 		   markdown-mode
 		   nyan-mode
 		   org
@@ -117,6 +118,9 @@
 	    TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
 
 
+;; Magit (git for emacs!!! :D )
+(global-set-key (kbd "C-x g") 'magit-status)
+
 
 ;; autocomplete mode
 ;; TODO: try company mode and check if its better
@@ -197,7 +201,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
