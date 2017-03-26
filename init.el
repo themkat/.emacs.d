@@ -16,6 +16,7 @@
 		   auctex
 		   emojify
 		   exwm
+		   flyspell-popup
                    geiser
 		   leuven-theme
 		   markdown-mode
@@ -23,7 +24,8 @@
 		   org
                    paredit           
                    pretty-lambdada
-		   slime))
+		   slime
+		   try))
   (unless (package-installed-p package)
     (package-install package)))
 
@@ -52,45 +54,14 @@
 (setq inhibit-splash-screen t)
 
 
-;; Org mode
-(setq org-startup-with-inline-images t
-      org-todo-keyword-faces '(("DONE" . "GREEN")))
-
-
 ;; Nyan cat (animated nyan cat instead of marker position in percentage)
 (setq nyan-animate-nyancat t
       nyan-wavy-trail t)
 (nyan-mode)
 
 
-;; emoji mode :)
+;; emoji mode :)  
 (add-hook 'after-init-hook #'global-emojify-mode)
-
-
-;; Latex
-;; Preview of LaTeX formulae, tables, tikz drawings etc. 
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-;;(set-default 'preview-scale-function 1.2)
-
-;; Sets the zoom level of latex fragments
-(defun update-org-latex-fragments ()  
-  (with-current-buffer (current-buffer)
-    (when (derived-mode-p 'LaTeX-mode 'TeX-mode 'latex-mode 'tex-mode)
-      (set-default 'preview-scale-function text-scale-mode-amount)
-      (preview-buffer))))
-(add-hook 'text-scale-mode-hook 'update-org-latex-fragments)
-
-;; make C-. the button for preview in latex mode
-(eval-after-load 'latex
-  '(define-key LaTeX-mode-map (kbd "C-.") 'preview-buffer))
-
-;; let us use minted with the preview (minted fragments is not previewed :( )
-(eval-after-load "tex" 
-  '(setcdr (assoc "LaTeX" TeX-command-list)
-          '("%`%l%(mode) -shell-escape%' %t"
-          TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
-
 
 
 ;; FlySpell (spell checking)
@@ -110,15 +81,47 @@
 (defun change-dictionary ()
   (interactive)
   (ispell-change-dictionary (if (string-equal ispell-current-dictionary "american")
-				"norsk"
+				"Norse"
 			        "american")))
+
+;; use flyspell popup to autocomplete words (overwrites standard way)
+(eval-after-load "flyspell"
+  '(define-key flyspell-mode-map (kbd "C-,") #'flyspell-popup-correct))
+
+;; makes my latex hotkey work. (I only use C-, for correcting anyway)
+(eval-after-load "flyspell"
+  '(define-key flyspell-mode-map (kbd "C-.") nil))
+
+
+;; Latex 
+;; Preview of LaTeX formulae, tables, tikz drawings etc. 
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+
+;; Sets the zoom level of latex fragments
+(defun update-org-latex-fragments ()  
+  (with-current-buffer (current-buffer)
+    (when (derived-mode-p 'LaTeX-mode 'TeX-mode 'latex-mode 'tex-mode)
+      (set-default 'preview-scale-function text-scale-mode-amount)
+      (preview-buffer))))
+(add-hook 'text-scale-mode-hook 'update-org-latex-fragments)
+
+;; make C-. the button for preview in latex mode
+(eval-after-load 'latex
+  '(define-key LaTeX-mode-map (kbd "C-.") 'preview-buffer))
+
+;; let us use minted with the preview (minted fragments is not previewed :( )
+(eval-after-load "tex" 
+  '(setcdr (assoc "LaTeX" TeX-command-list)
+          '("%`%l%(mode) -shell-escape%' %t"
+	    TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
 
 
 
 ;; autocomplete mode
 ;; TODO: try company mode and check if its better
 (require 'auto-complete-config)
-
+(ac-flyspell-workaround) ;; flyspell works terrible with autocomplete, this compensates it
 
 ;; Scheme specifics and autocomplete mode
 (setq geiser-active-implementations '(racket))
@@ -163,10 +166,16 @@
 (setq jedi:complete-on-dot t)
 
 
+
+;; Org mode
+(setq org-startup-with-inline-images t
+      org-todo-keyword-faces '(("DONE" . "GREEN")))
+
 ;; autocomplete in org-mode
 (add-hook 'org-mode-hook 'ac-emoji-setup)
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'org-mode))
+
 
 
 ;; Common Lisp
