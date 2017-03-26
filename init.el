@@ -36,8 +36,8 @@
 
 ;; make copy and paste use the same clipboard as emacs.
 ;; great for exwm
-(setq x-select-enable-primary t)
-(setq x-select-enable-clipboard t)
+(setq x-select-enable-primary t
+      x-select-enable-clipboard t)
 
 
 ;; Enable show-paren-mode (to visualize paranthesis) and make it possible to delete things we have marked
@@ -53,13 +53,13 @@
 
 
 ;; Org mode
-(setq org-startup-with-inline-images t)
-(setq org-todo-keyword-faces '(("DONE" . "GREEN")))
+(setq org-startup-with-inline-images t
+      org-todo-keyword-faces '(("DONE" . "GREEN")))
 
 
 ;; Nyan cat (animated nyan cat instead of marker position in percentage)
-(setq nyan-animate-nyancat t)
-(setq nyan-wavy-trail t)
+(setq nyan-animate-nyancat t
+      nyan-wavy-trail t)
 (nyan-mode)
 
 
@@ -93,11 +93,36 @@
 
 
 
+;; FlySpell (spell checking)
+(dolist (flyspellmodes '(text-mode-hook
+			 org-mode-hook
+			 latex-mode-hook))
+  (add-hook flyspellmodes 'turn-on-flyspell))
+
+;; comments and strings in code
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+;; sets american english as defult 
+(setq ispell-dictionary "american")
+
+;; let us cycle american english (best written english) and norwegian
+;; TODO: get the spelling checks to be updated when changing language (and not just the new words)
+(defun change-dictionary ()
+  (interactive)
+  (ispell-change-dictionary (if (string-equal ispell-current-dictionary "american")
+				"norsk"
+			        "american")))
+
+
+
+;; autocomplete mode
+;; TODO: try company mode and check if its better
+(require 'auto-complete-config)
+
+
 ;; Scheme specifics and autocomplete mode
 (setq geiser-active-implementations '(racket))
 
-;; autocomplete
-(require 'auto-complete-config)
 (require 'ac-geiser)
 (ac-config-default)
 
