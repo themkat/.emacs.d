@@ -34,6 +34,14 @@
 ;; exwm (comment out this line if the computer isnt using exwm)
 (load-file "~/.emacs.d/exwm.el")
 
+
+;; disable the C-z sleep/suspend key
+;; rarely use emacs in terminal mode anymore and that is the only place it can be useful
+;; see http://stackoverflow.com/questions/28202546/hitting-ctrl-z-in-emacs-freezes-everything
+;;  for a way to have both if I ever want that again.
+(global-unset-key (kbd "C-z"))
+
+
 ;; shows battery status (useful when using EXWM)
 (display-battery-mode 1)
 
