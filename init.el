@@ -79,6 +79,34 @@
 (global-set-key (kbd "M-s-n") 'mc/insert-numbers)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 
+;; regex date pattern (norwegian)
+;; useful for stuff below (and a small project I'm working on)
+(define-key minibuffer-local-map (kbd "M-s-d") "[0-9]\\\{2\\\}\\\/[0-9]\\\{2\\\}\\\/[0-9]\\\{4\\\}")
+
+;; go through all marked text and reorder the dates to yyyy-mm-dd
+;; no error checking, so I use it only with multiple cursors. lazy..
+;; it could probably be done better
+(defun reorder-dates-helper ()
+  (let* ((marked-text (buffer-substring (mark) (point)))
+	 (day (substring marked-text 0 2))
+	 (month (substring marked-text 3 5))
+	 (year (substring marked-text 6 10)))
+    (delete-region (mark) (point))
+    (insert (concat year "-" month "-" day))))
+
+;; hates this way with loops, but it seems to be the only iteration method that
+;; works for mc/cycle-forward
+(defun reorder-dates ()
+  (interactive)
+  (let ((count (mc/num-cursors)))
+    (while (> count 0)
+      (reorder-dates-helper)
+      (mc/cycle-forward)
+      (setq count (- count 1)))
+    (multiple-cursors-mode 0)
+    (deactivate-mark)))
+
+
 
 ;; emoji mode :)  
 (add-hook 'after-init-hook #'global-emojify-mode)
