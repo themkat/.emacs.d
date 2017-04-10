@@ -94,7 +94,7 @@
     (delete-region (mark) (point))
     (insert (concat year "-" month "-" day))))
 
-;; hates this way with loops, but it seems to be the only iteration method that
+;; ugly af, but it seems to be the only iteration method that
 ;; works for mc/cycle-forward
 (defun reorder-dates ()
   (interactive)
