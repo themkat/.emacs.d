@@ -14,6 +14,7 @@
 		   ac-emoji
                    auto-complete
 		   auctex
+		   cider
 		   emojify
 		   exwm
 		   flyspell-popup
@@ -21,6 +22,7 @@
 		   leuven-theme
 		   magit
 		   markdown-mode
+		   multiple-cursors
 		   nyan-mode
 		   org
                    paredit           
@@ -50,6 +52,9 @@
 (setq x-select-enable-primary t
       x-select-enable-clipboard t)
 
+;; sets monday to be the first day of the week in calendar
+(setq calendar-week-start-day 1)
+
 
 ;; Enable show-paren-mode (to visualize paranthesis) and make it possible to delete things we have marked
 (show-paren-mode 1)
@@ -67,6 +72,12 @@
 (setq nyan-animate-nyancat t
       nyan-wavy-trail t)
 (nyan-mode)
+
+
+;; multiple cursors
+(global-set-key (kbd "M-s-e") 'mc/edit-lines)
+(global-set-key (kbd "M-s-n") 'mc/insert-numbers)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
 
 
 ;; emoji mode :)  
@@ -209,7 +220,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
