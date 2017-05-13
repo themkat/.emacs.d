@@ -19,18 +19,40 @@
 		   exwm
 		   flyspell-popup
                    geiser
+		   helm
+		   helm-projectile
 		   leuven-theme
 		   magit
 		   markdown-mode
 		   multiple-cursors
 		   nyan-mode
 		   org
-                   paredit           
+                   paredit
+		   projectile
                    pretty-lambdada
 		   slime
 		   try))
   (unless (package-installed-p package)
     (package-install package)))
+
+
+;; helm specifics (may have to be moved)
+;; TODO: check if this interferes with the exwm ido stuff
+(require 'helm)
+(require 'helm-config)
+(require 'projectile)
+(helm-mode 1)
+(projectile-global-mode 1)
+(helm-projectile-on)
+(helm-adaptive-mode 1)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+
+(setq helm-M-x-fuzzy-match t
+      projectile-completion-system 'helm)
+
+;; use y or n instead of yes or no
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 
 ;; exwm (comment out this line if the computer isnt using exwm)
@@ -69,9 +91,10 @@
 
 
 ;; Nyan cat (animated nyan cat instead of marker position in percentage)
-(setq nyan-animate-nyancat t
-      nyan-wavy-trail t)
-(nyan-mode)
+;; (setq nyan-animate-nyancat t
+;;       nyan-wavy-trail t)
+;; (nyan-mode)
+;; got tired of Nyan cat :/ 
 
 
 ;; multiple cursors
@@ -248,7 +271,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
