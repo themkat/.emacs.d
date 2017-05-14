@@ -18,6 +18,7 @@
 		   emojify
 		   exwm
 		   flyspell-popup
+		   focus
                    geiser
 		   helm
 		   helm-projectile
@@ -47,12 +48,24 @@
 (helm-adaptive-mode 1)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
-
+(global-set-key (kbd "C-x b") 'helm-mini) ;; get helms awesome buffer list instead of the standard stuff
 (setq helm-M-x-fuzzy-match t
-      projectile-completion-system 'helm)
+      projectile-completion-system 'helm
+      helm-split-window-in-side-p t)
+;; hide uninteresting buffers
+(add-to-list 'helm-boring-buffer-regexp-list (rx "*magit-"))
+(add-to-list 'helm-boring-buffer-regexp-list (rx "*helm"))
 
 ;; use y or n instead of yes or no
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+
+;; kill all those horrible old buffers from magit, helm etc.
+;; they really clutter up the buffer list, which is tiresome. especially when using exwm.
+;;(require 'midnight)
+;;(setq midnight-period 3600)
+;; TODO: fix this so C-x <arrowkey> is usable again
+
 
 
 ;; exwm (comment out this line if the computer isnt using exwm)
@@ -269,9 +282,18 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#000000" "#8b0000" "#00ff00" "#ffa500" "#7b68ee" "#dc8cc3" "#93e0e3" "#dcdccc"])
+ '(custom-safe-themes
+   (quote
+    ("0b6cb9b19138f9a859ad1b7f753958d8a36a464c6d10550119b2838cedf92171" "38e64ea9b3a5e512ae9547063ee491c20bd717fe59d9c12219a0b1050b439cdd" "807a7f4c2d0d331fc1798e6d38b890ce3582096b8d622ba3b491b2aa4345e962" "43c1a8090ed19ab3c0b1490ce412f78f157d69a29828aa977dae941b994b4147" default)))
+ '(fci-rule-color "#383838")
+ '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
