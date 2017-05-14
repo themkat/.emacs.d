@@ -213,7 +213,7 @@
 
 ;; add line numbers to programming modes
 (add-hook 'prog-mode-hook 'linum-mode)
-(setq linum-format "%d  ")
+(setq linum-format "%4d  ")
 ;;(set-face-attribute 'linum nil :height 200)
 ;; TODO: find a way of making the scaling work ok
 
