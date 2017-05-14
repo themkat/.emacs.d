@@ -211,6 +211,12 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 
+;; add line numbers to programming modes
+(add-hook 'prog-mode-hook 'linum-mode)
+(setq linum-format "%d  ")
+;;(set-face-attribute 'linum nil :height 200)
+;; TODO: find a way of making the scaling work ok
+
 ;; autocomplete mode
 ;; TODO: try company mode and check if its better
 (require 'auto-complete-config)
@@ -268,6 +274,14 @@
 (add-hook 'org-mode-hook 'ac-emoji-setup)
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'org-mode))
+
+;; make org mode easier to read with indentation
+(add-hook 'org-mode-hook 'org-indent-mode)
+
+;; add olivetti to org-mode for better writing
+(add-hook 'org-mode-hook 'olivetti-mode)
+;;(olivetti-set-width 800)
+;; TODO: find a good width for olivetti
 
 
 ;; Let us have autocomplete for emojis in markdown-mode
