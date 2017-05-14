@@ -21,16 +21,19 @@
 		   focus
                    geiser
 		   helm
+		   helm-google
 		   helm-projectile
 		   leuven-theme
 		   magit
 		   markdown-mode
 		   multiple-cursors
 		   nyan-mode
+		   olivetti
 		   org
                    paredit
 		   projectile
                    pretty-lambdada
+		   rainbow-mode
 		   slime
 		   try))
   (unless (package-installed-p package)
@@ -59,6 +62,9 @@
 ;; use y or n instead of yes or no
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+
+;; add rainbow colors to all colors (hexadecimal codes, red/blue/green, html-codes etc.)
+(add-hook 'prog-mode-hook 'rainbow-mode)
 
 ;; kill all those horrible old buffers from magit, helm etc.
 ;; they really clutter up the buffer list, which is tiresome. especially when using exwm.
@@ -293,7 +299,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
