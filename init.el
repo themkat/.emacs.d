@@ -53,7 +53,7 @@
       projectile-completion-system 'helm
       helm-split-window-in-side-p t)
 ;; hide uninteresting buffers
-(add-to-list 'helm-boring-buffer-regexp-list (rx "*magit-"))
+(add-to-list 'helm-boring-buffer-regexp-list (rx "*magit"))
 (add-to-list 'helm-boring-buffer-regexp-list (rx "*helm"))
 
 ;; use y or n instead of yes or no
