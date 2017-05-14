@@ -30,6 +30,7 @@
 		   nyan-mode
 		   olivetti
 		   org
+		   org-bullets
                    paredit
 		   projectile
                    pretty-lambdada
@@ -279,6 +280,12 @@
 ;; make org mode easier to read with indentation
 (add-hook 'org-mode-hook 'org-indent-mode)
 
+;; add bullets to prettify the org mode stars
+;; TODO: experiment with possible bullets to use
+;;       set org-bullets-bullet-list to a list of strings with bullets ordered by "depth"
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
 ;; add olivetti to org-mode for better writing
 (add-hook 'org-mode-hook 'olivetti-mode)
 ;;(olivetti-set-width 800)
@@ -314,7 +321,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
