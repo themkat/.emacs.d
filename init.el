@@ -268,7 +268,8 @@
 
 ;; Org mode
 (setq org-startup-with-inline-images t
-      org-todo-keyword-faces '(("DONE" . "GREEN")))
+      org-todo-keyword-faces '(("DONE" . "GREEN"))
+      org-hide-emphasis-markers t)
 
 ;; autocomplete in org-mode
 (add-hook 'org-mode-hook 'ac-emoji-setup)
