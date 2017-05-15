@@ -15,6 +15,7 @@
                    auto-complete
 		   auctex
 		   cider
+		   dashboard
 		   emojify
 		   exwm
 		   flyspell-popup
@@ -32,6 +33,7 @@
 		   org
 		   org-bullets
                    paredit
+		   page-break-lines
 		   projectile
                    pretty-lambdada
 		   rainbow-mode
@@ -66,6 +68,19 @@
 
 ;; add rainbow colors to all colors (hexadecimal codes, red/blue/green, html-codes etc.)
 (add-hook 'prog-mode-hook 'rainbow-mode)
+
+
+;; setup a custom fancy startup screen
+(require 'dashboard)
+(dashboard-setup-startup-hook)
+
+(setq dashboard-banner-logo-title "Welcome! Make some kewl stuff today!"
+      dashboard-startup-banner 'logo
+      dashboard-items '((projects . 5)
+			(recents . 5)))
+
+;; TODO: look into maybe adding some EXWM specific widgets or other widgets to dashboard 
+
 
 ;; kill all those horrible old buffers from magit, helm etc.
 ;; they really clutter up the buffer list, which is tiresome. especially when using exwm.
@@ -107,7 +122,7 @@
 (load-theme 'leuven t)
 
 ;; Removes the splash screen
-(setq inhibit-splash-screen t)
+;(setq inhibit-splash-screen t)
 
 
 ;; Nyan cat (animated nyan cat instead of marker position in percentage)
