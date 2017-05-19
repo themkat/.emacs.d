@@ -20,6 +20,7 @@
 		   exwm
 		   focus
                    geiser
+		   grandshell-theme
 		   helm
 		   helm-flyspell
 		   helm-google
@@ -82,11 +83,18 @@
 ;; TODO: look into maybe adding some EXWM specific widgets or other widgets to dashboard 
 
 
-;; kill all those horrible old buffers from magit, helm etc.
-;; they really clutter up the buffer list, which is tiresome. especially when using exwm.
-;;(require 'midnight)
-;;(setq midnight-period 3600)
-;; TODO: fix this so C-x <arrowkey> is usable again
+
+;; simple theme switcher form the best org mode (and light) theme (leuven)
+;;  to the best dark theme (grandshell)
+(let ((theme-cycle '#1=(leuven grandshell . #1#)))
+  (defun next-theme ()
+    (interactive)
+    (disable-theme (car theme-cycle))
+    (setq theme-cycle (cdr theme-cycle))
+    (load-theme (car theme-cycle) t)
+    (exwm-systemtray--refresh))) ;; for refreshing the system tray in exwm.
+;; TODO: find a way of checking if exwm is used and test that in next-theme. now I have to comment out the
+;;         last line on machines which are not using exwm
 
 
 
