@@ -18,10 +18,10 @@
 		   dashboard
 		   emojify
 		   exwm
-		   flyspell-popup
 		   focus
                    geiser
 		   helm
+		   helm-flyspell
 		   helm-google
 		   helm-projectile
 		   leuven-theme
@@ -190,9 +190,9 @@
 				"norsk"
 			        "american")))
 
-;; use flyspell popup to autocomplete words (overwrites standard way)
+;; use helm-flyspell to correct words
 (eval-after-load "flyspell"
-  '(define-key flyspell-mode-map (kbd "C-,") #'flyspell-popup-correct))
+  '(define-key flyspell-mode-map (kbd "C-,") #'helm-flyspell-correct))
 
 ;; makes my latex hotkey work. (I only use C-, for correcting anyway)
 (eval-after-load "flyspell"
