@@ -39,7 +39,8 @@
                    pretty-lambdada
 		   rainbow-mode
 		   slime
-		   try))
+		   try
+		   undo-tree))
   (unless (package-installed-p package)
     (package-install package)))
 
@@ -75,6 +76,7 @@
 (require 'dashboard)
 (dashboard-setup-startup-hook)
 
+;; TODO: add org-agenda when you start to use it more
 (setq dashboard-banner-logo-title "Welcome! Make some kewl stuff today!"
       dashboard-startup-banner 'logo
       dashboard-items '((projects . 5)
@@ -83,10 +85,10 @@
 ;; TODO: look into maybe adding some EXWM specific widgets or other widgets to dashboard 
 
 
-
 ;; simple theme switcher form the best org mode (and light) theme (leuven)
 ;;  to the best dark theme (grandshell)
-(let ((theme-cycle '#1=(leuven grandshell . #1#)))
+(require 'cl) ;; for lexical-let
+(lexical-let ((theme-cycle '#1=(leuven grandshell . #1#)))
   (defun next-theme ()
     (interactive)
     (disable-theme (car theme-cycle))
@@ -96,6 +98,8 @@
 ;; TODO: find a way of checking if exwm is used and test that in next-theme. now I have to comment out the
 ;;         last line on machines which are not using exwm
 
+;; use undo tree for better undo/redo operations
+(global-undo-tree-mode)
 
 
 ;; exwm (comment out this line if the computer isnt using exwm)
@@ -344,7 +348,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
