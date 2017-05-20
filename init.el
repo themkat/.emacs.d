@@ -27,6 +27,7 @@
 		   helm-google
 		   helm-projectile
 		   helm-swoop
+		   hlinum
 		   leuven-theme
 		   magit
 		   markdown-mode
@@ -87,7 +88,6 @@
       dashboard-startup-banner 'logo
       dashboard-items '((projects . 5)
 			(recents . 5)))
-
 ;; TODO: look into maybe adding some EXWM specific widgets or other widgets to dashboard 
 
 
@@ -105,6 +105,7 @@
 ;;         last line on machines which are not using exwm
 
 ;; use undo tree for better undo/redo operations
+;; TODO: get it to work better with linum mode if you encounter problems
 (global-undo-tree-mode)
 
 
@@ -252,6 +253,11 @@
 (setq linum-format "%4d ")
 ;;(set-face-attribute 'linum nil :height 200)
 ;; TODO: find a way of making the scaling work ok
+
+;; highlight current line-number
+(require 'hlinum)
+(hlinum-activate)
+
 
 ;; autocomplete mode
 ;; TODO: try company mode and check if its better
