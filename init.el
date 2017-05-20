@@ -20,6 +20,7 @@
 		   exwm
 		   focus
                    geiser
+		   git-gutter-fringe
 		   grandshell-theme
 		   helm
 		   helm-flyspell
@@ -243,10 +244,12 @@
 ;; Magit (git for emacs!!! :D )
 (global-set-key (kbd "C-x g") 'magit-status)
 
+;; git gutter fringe for showing changes in files
+(global-git-gutter-mode 1)
 
 ;; add line numbers to programming modes
 (add-hook 'prog-mode-hook 'linum-mode)
-(setq linum-format "%4d  ")
+(setq linum-format "%4d ")
 ;;(set-face-attribute 'linum nil :height 200)
 ;; TODO: find a way of making the scaling work ok
 
