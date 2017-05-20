@@ -25,6 +25,7 @@
 		   helm-flyspell
 		   helm-google
 		   helm-projectile
+		   helm-swoop
 		   leuven-theme
 		   magit
 		   markdown-mode
@@ -63,6 +64,10 @@
 ;; hide uninteresting buffers
 (add-to-list 'helm-boring-buffer-regexp-list (rx "*magit"))
 (add-to-list 'helm-boring-buffer-regexp-list (rx "*helm"))
+
+;; helm-swoop for better searching
+(require 'helm-swoop)
+(setq helm-swoop-speed-or-color t)
 
 ;; use y or n instead of yes or no
 (defalias 'yes-or-no-p 'y-or-n-p)
