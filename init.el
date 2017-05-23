@@ -43,7 +43,8 @@
 		   rainbow-mode
 		   slime
 		   try
-		   undo-tree))
+		   undo-tree
+		   web-mode))
   (unless (package-installed-p package)
     (package-install package)))
 
@@ -246,7 +247,10 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 
 ;; git gutter fringe for showing changes in files
+(require 'git-gutter-fringe)
 (global-git-gutter-mode 1)
+(setq-default left-fringe-width 20)
+;; TODO: try to fix the shit look of leuven-theme + git-gutter-fringe
 
 ;; add line numbers to programming modes
 (add-hook 'prog-mode-hook 'linum-mode)
@@ -345,6 +349,14 @@
 
 
 
+;; web mode for necessary file formats
+;; (may need to be extended when I try to use more)
+;; Adds correct syntax highlighting to "mixed files" (javascript in a html document for instance)
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+
+
 ;;stuff auto-generated
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -362,7 +374,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -6,3 +6,8 @@ emojis/*
 elpa/*
 /ac-comphist.dat
 .python-environments/*
+/.mc-lists.el
+/helm-adaptive-history
+/projectile-bookmarks.eld
+/recentf
+/url/cookies
