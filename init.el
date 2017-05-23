@@ -367,6 +367,11 @@
 				   (eldoc-mode 1)
 				   (tide-hl-identifier-mode 1)))
 
+;; add typescripts tslint to flycheck-mode
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-typescript-tslint-setup))
+
+;; TODO: get project files with angular to be checked correctly
 
 
 ;;stuff auto-generated
@@ -386,7 +391,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
