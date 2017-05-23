@@ -252,6 +252,10 @@
 (setq-default left-fringe-width 20)
 ;; TODO: try to fix the shit look of leuven-theme + git-gutter-fringe
 
+;; update git-gutter-fringe icons when something gets updated in magit (staging, pushing etc.)
+(add-hook 'magit-post-refresh-hook #'git-gutter:update-all-windows)
+
+
 ;; add line numbers to programming modes
 (add-hook 'prog-mode-hook 'linum-mode)
 (setq linum-format "%4d ")
