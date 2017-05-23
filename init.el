@@ -24,6 +24,7 @@
 		   git-gutter-fringe
 		   grandshell-theme
 		   helm
+		   helm-flycheck
 		   helm-flyspell
 		   helm-google
 		   helm-projectile
