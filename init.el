@@ -18,6 +18,7 @@
 		   dashboard
 		   emojify
 		   exwm
+		   flycheck
 		   focus
                    geiser
 		   git-gutter-fringe
@@ -219,6 +220,16 @@
   '(define-key flyspell-mode-map (kbd "C-.") nil))
 
 
+;; FlyCheck (syntax checking)
+(require 'flycheck)
+(setq flycheck-indication-mode nil)
+(setq flycheck-highlighting-mode 'lines)
+
+;; I get bugs with flycheck globally (in elisp probably because I'm lazy with eval-after-load-stuff). Use it in selected modes instead
+(add-hook 'python-mode-hook 'flycheck-mode)
+
+
+
 ;; Latex 
 ;; Preview of LaTeX formulae, tables, tikz drawings etc. 
 (setq TeX-auto-save t)
@@ -361,7 +372,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
