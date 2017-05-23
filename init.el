@@ -2,6 +2,8 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives
+	     '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(add-to-list 'package-archives
 	     '("org" . "http://orgmode.org/elpa/") t)  ;; for newest version of org mode
 (package-initialize)
 
@@ -10,9 +12,7 @@
                                 "/archives/MELPA/")))
   (package-refresh-contents))
 
-(dolist (package '(ac-geiser
-		   ac-emoji
-                   auto-complete
+(dolist (package '(company
 		   auctex
 		   cider
 		   dashboard
@@ -267,32 +267,29 @@
 (hlinum-activate)
 
 
-;; autocomplete mode
-;; TODO: try company mode and check if its better
-(require 'auto-complete-config)
-(ac-flyspell-workaround) ;; flyspell works terrible with autocomplete, this compensates it
+;; company mode for auto-completion
+;; Decided to replace auto-complete based upon better support and (much) faster completion with company)
+;; Also less configs needing to be done :D
+(add-hook 'after-init-hook 'global-company-mode)
+
 
 ;; Scheme specifics and autocomplete mode
 (setq geiser-active-implementations '(racket))
 
-(require 'ac-geiser)
-(ac-config-default)
 
-;; ac-geiser recommended setup.
-(add-hook 'geiser-mode-hook 'ac-geiser-setup)
-(add-hook 'geiser-repl-mode-hook 'ac-geiser-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'geiser-repl-mode))
+;; Common Lisp
+;; Sets the inferior lisp program
+;; TODO: do other things that might be useful. (ac-slime etc.)
+(setq inferior-lisp-program "/usr/bin/sbcl")
 
 ;; pretty-lambdada setup.
 (add-to-list 'pretty-lambda-auto-modes 'geiser-repl-mode)
 (pretty-lambda-for-modes)
 
 ;; Loop the pretty-lambda-auto-modes list.
-(dolist (mode pretty-lambda-auto-modes)
+(dolist (mode (cons 'clojure-mode pretty-lambda-auto-modes))
   ;; add paredit-mode to all mode-hooks
   (add-hook (intern (concat (symbol-name mode) "-hook")) 'paredit-mode))
-
 
 ;; making paredit work with delete-selection-mode
 ;; found on the excellent place called what the emacs d.
@@ -315,16 +312,10 @@
 (setq jedi:complete-on-dot t)
 
 
-
 ;; Org mode
 (setq org-startup-with-inline-images t
       org-todo-keyword-faces '(("DONE" . "GREEN"))
       org-hide-emphasis-markers t)
-
-;; autocomplete in org-mode
-(add-hook 'org-mode-hook 'ac-emoji-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'org-mode))
 
 ;; make org mode easier to read with indentation
 (add-hook 'org-mode-hook 'org-indent-mode)
@@ -341,23 +332,15 @@
 ;; TODO: find a good width for olivetti
 
 
-;; Let us have autocomplete for emojis in markdown-mode
-;; TODO: get this to work. See if it maybe work better with company mode
-;;(add-hook 'markdown-mode-hook 'ac-emoji-setup)
-
-
-;; Common Lisp
-;; Sets the inferior lisp program
-;; TODO: do other things that might be useful. (ac-slime etc.)
-(setq inferior-lisp-program "/usr/bin/sbcl")
-
-
-
 ;; web mode for necessary file formats
 ;; (may need to be extended when I try to use more)
 ;; Adds correct syntax highlighting to "mixed files" (javascript in a html document for instance)
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+
+;; typescript
+;; TODO
 
 
 
@@ -378,7 +361,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
