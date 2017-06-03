@@ -13,6 +13,7 @@
   (package-refresh-contents))
 
 (dolist (package '(company
+		   all-the-icons
 		   auctex
 		   cider
 		   dashboard
@@ -35,6 +36,7 @@
 		   markdown-mode
 		   multiple-cursors
 		   ng2-mode
+		   neotree
 		   nyan-mode
 		   olivetti
 		   org
@@ -135,6 +137,12 @@
 
 ;; sets monday to be the first day of the week in calendar
 (setq calendar-week-start-day 1)
+
+
+;; neotree. maybe it will be good for projects in the future. idk. it looks kewl
+(require 'all-the-icons)
+(setq neo-theme 'icons)
+
 
 
 ;; Enable show-paren-mode (to visualize paranthesis) and make it possible to delete things we have marked
@@ -359,7 +367,6 @@
 
 ;; use standard settings from tide (typescript interactive development environment) github page
 ;; TODO: experiment with the settings
-(add-hook 'before-save-hook 'tide-format-before-save)
 (add-hook 'typescript-mode-hook '(lambda ()
 				   (tide-setup)
 				   (flycheck-mode 1)
