@@ -139,6 +139,11 @@
 (setq calendar-week-start-day 1)
 
 
+;; save emacs backups in a different directory
+;; (some build-systems build automatically all files with a prefix, and .#something.someending breakes that)
+(setq backup-directory-alist '(("." . "~/.emacsbackups")))
+
+
 ;; neotree. maybe it will be good for projects in the future. idk. it looks kewl
 (require 'all-the-icons)
 (setq neo-theme 'icons)
