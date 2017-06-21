@@ -294,6 +294,11 @@
 ;; Also less configs needing to be done :D
 (add-hook 'after-init-hook 'global-company-mode)
 
+;; set the completion to begin at once
+(setq company-idle-delay 0
+      company-echo-delay 0
+      company-minimum-prefix-length 2)
+
 
 ;; Scheme specifics and autocomplete mode
 (setq geiser-active-implementations '(racket))
