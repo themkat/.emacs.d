@@ -34,7 +34,7 @@
 (exwm-config-ido)
 
 ;; Set the initial number of workspaces.
-(setq exwm-workspace-number 4)
+(setq exwm-workspace-number 2)
 
 ;; All buffers created in EXWM mode are named "*EXWM*". You may want to change
 ;; it in `exwm-update-class-hook' and `exwm-update-title-hook', which are run
@@ -69,7 +69,7 @@
 ;; + Bind a key to switch workspace interactively
 (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch)
 ;; + Bind "s-0" to "s-9" to switch to the corresponding workspace.
-(dotimes (i 10)
+(dotimes (i 4)
   (exwm-input-set-key (kbd (format "s-%d" i))
                       `(lambda ()
                          (interactive)
@@ -123,9 +123,18 @@
 (exwm-systemtray-enable)
 
 
+;; turn on multimonitor support
+(require 'exwm-randr)
+(setq exwm-randr-workspace-output-plist '(1 "DP-1-1"))
+(add-hook 'exwm-randr-screen-change-hook
+	  (lambda ()
+	    (start-process-shell-command
+	     "xrandr" nil "xrandr --output DP-1-1 --right-of eDP-1-1 --auto")))
+(exwm-randr-enable)
+
+
 ;; Do not forget to enable EXWM. It will start by itself when things are ready.
 (exwm-enable)
-
 
 
 ;; Shortcut for starting Skype. To be able to use M-x skype is an almost surreal experience :P 
