@@ -126,6 +126,8 @@
 ;;  for a way to have both if I ever want that again.
 (global-unset-key (kbd "C-z"))
 
+;; disable the C-x C-b key, because I use helm instead
+(global-unset-key (kbd "C-x C-b"))
 
 ;; shows battery status (useful when using EXWM)
 (display-battery-mode 1)
