@@ -17,6 +17,7 @@
 		   auctex
 		   cider
 		   dashboard
+		   elm-mode
 		   emojify
 		   exwm
 		   flycheck
@@ -393,6 +394,11 @@
 ;; TODO: get project files with angular to be checked correctly
 
 
+;; elm
+(add-to-list 'company-backends 'company-elm)
+(setq elm-format-on-save t)
+
+
 ;;stuff auto-generated
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -410,7 +416,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (elm-mode tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
