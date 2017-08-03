@@ -395,7 +395,8 @@
 
 
 ;; elm
-(add-to-list 'company-backends 'company-elm)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-elm))
 (setq elm-format-on-save t)
 
 
