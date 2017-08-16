@@ -12,10 +12,11 @@
                                 "/archives/MELPA/")))
   (package-refresh-contents))
 
-(dolist (package '(company
-		   all-the-icons
+(dolist (package '(all-the-icons
 		   auctex
 		   cider
+		   company
+		   company-emacs-eclim
 		   dashboard
 		   eclim
 		   elm-mode
@@ -349,9 +350,25 @@
 
 
 ;; Java (may need to be branched out to own file eventually)
+;; (untested)
 (require 'eclim)
 (setq eclimd-autostart t)
 (add-hook 'java-mode-hook '(lambda () (eclim-mode t)))
+
+;; setting directories (may have to be tweaked on other machines)
+(custom-set-variables
+ '(eclim-eclipse-dirs '("~/eclipse"))
+ '(eclim-executable "~/eclipse/eclim")) 
+
+;; displaying error messages in the minibuffer
+(setq help-at-pt-display-when-idle t)
+(setq help-at-pt-timer-delay 0.1)
+(help-at-pt-set-timer)
+
+;; autocomplete with company
+;; will it intellisense? DaH mu'tlheghvam vIqelnIS
+(require 'company-emacs-eclim)
+(company-emacs-eclim-setup)
 
 
 ;; Org mode
@@ -424,7 +441,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (eclim elm-mode tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (company-emacs-eclim eclim elm-mode tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
