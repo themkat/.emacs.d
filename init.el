@@ -17,6 +17,7 @@
 		   auctex
 		   cider
 		   dashboard
+		   eclim
 		   elm-mode
 		   emojify
 		   exwm
@@ -150,8 +151,8 @@
 ;; neotree. maybe it will be good for projects in the future. idk. it looks kewl
 (require 'all-the-icons)
 (setq neo-theme 'icons)
-
-
+(setq neo-smart-open t)
+(global-set-key [f8] 'neotree-toggle)
 
 ;; Enable show-paren-mode (to visualize paranthesis) and make it possible to delete things we have marked
 (show-paren-mode 1)
@@ -347,6 +348,12 @@
 (setq jedi:complete-on-dot t)
 
 
+;; Java (may need to be branched out to own file eventually)
+(require 'eclim)
+(setq eclimd-autostart t)
+(add-hook 'java-mode-hook '(lambda () (eclim-mode t)))
+
+
 ;; Org mode
 (setq org-startup-with-inline-images t
       org-todo-keyword-faces '(("DONE" . "GREEN"))
@@ -417,7 +424,7 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (elm-mode tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (eclim elm-mode tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
