@@ -307,8 +307,11 @@
 ;; set the completion to begin at once
 (setq company-idle-delay 0
       company-echo-delay 0
-      company-minimum-prefix-length 2)
+      company-minimum-prefix-length 1)
 
+;; trigger company to see a list of choices even when nothing is typed. maybe it quit because we clicked something. or maybe we dont know what to type yet :P
+;; CTRL-ENTER. Because C-RET does not work. 
+(global-set-key [(control return)] 'company-complete)
 
 ;; Scheme specifics and autocomplete mode
 (setq geiser-active-implementations '(racket))
@@ -362,7 +365,7 @@
 
 ;; displaying error messages in the minibuffer
 (setq help-at-pt-display-when-idle t)
-(setq help-at-pt-timer-delay 0.1)
+(setq help-at-pt-timer-delay 0.1) ;; should this be smaller? will probably lead to small delays..
 (help-at-pt-set-timer)
 
 ;; autocomplete with company
@@ -370,6 +373,12 @@
 (require 'company-emacs-eclim)
 (company-emacs-eclim-setup)
 
+
+;; useful java/eclim hotkeys
+(add-hook 'java-mode-hook '(lambda ()
+			     ;; open the selection of possible classes to import on ALT-ENTER. One of the few good things from bigger IDEs
+;; this could also be a good fullscreen hotkey maybe?
+			     (define-key java-mode-map (kbd "M-RET") #'eclim-java-import-organize)))
 
 ;; Org mode
 (setq org-startup-with-inline-images t
