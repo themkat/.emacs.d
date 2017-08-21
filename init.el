@@ -15,6 +15,7 @@
 (dolist (package '(all-the-icons
 		   auctex
 		   cider
+		   column-enforce-mode
 		   company
 		   company-emacs-eclim
 		   dashboard
@@ -474,4 +475,4 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (java-snippets js2-mode company-emacs-eclim eclim elm-mode tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (column-enforce-mode java-snippets js2-mode company-emacs-eclim eclim elm-mode tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
