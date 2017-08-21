@@ -34,6 +34,7 @@
 		   helm-projectile
 		   helm-swoop
 		   hlinum
+		   java-snippets
 		   js2-mode
 		   leuven-theme
 		   magit
@@ -54,6 +55,7 @@
 		   tide
 		   try
 		   undo-tree
+		   yasnippet
 		   web-mode))
   (unless (package-installed-p package)
     (package-install package)))
@@ -372,6 +374,11 @@
 (require 'company-emacs-eclim)
 (company-emacs-eclim-setup)
 
+;; setup yasnippet for java
+;; TODO: maybe remove the first function earlier and use yasnippet for more modes
+;;       seems good. still in the testing phase
+(yas-reload-all)
+(add-hook 'java-mode-hook #'yas-minor-mode)
 
 ;; useful java/eclim hotkeys
 (add-hook 'java-mode-hook '(lambda ()
@@ -412,9 +419,7 @@
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 (setq js2-include-node-externs t)
 
-;; setup company mode for javascript.
-;; (company mode is as of 20.08.17 not working good with ac-js2)
-;; TODO. why isn't ac-js2 or something actually working? 
+;; TODO: find a way of getting javascript completion with node_modules folder
 
 
 ;; typescript
@@ -469,4 +474,4 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (js2-mode company-emacs-eclim eclim elm-mode tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (java-snippets js2-mode company-emacs-eclim eclim elm-mode tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
