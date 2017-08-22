@@ -254,6 +254,9 @@
 (add-hook 'python-mode-hook 'flycheck-mode)
 
 
+;; set default coding of buffers
+(setq default-buffer-file-coding-system 'utf-8-unix)
+
 
 ;; Latex 
 ;; Preview of LaTeX formulae, tables, tikz drawings etc. 
