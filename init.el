@@ -360,23 +360,26 @@
 
 
 ;; Java (may need to be branched out to own file eventually)
-;; (untested)
 (require 'eclim)
 (setq eclimd-autostart t)
 (add-hook 'java-mode-hook '(lambda () (eclim-mode t)))
 
 ;; setting directories (may have to be tweaked on other machines)
-
+;; was moved when emacs was running. custom-set-methods seems to be moved around depending on emacs' mood :P 
 
 ;; displaying error messages in the minibuffer
 (setq help-at-pt-display-when-idle t)
-(setq help-at-pt-timer-delay 0.1) ;; should this be smaller? will probably lead to small delays..
+(setq help-at-pt-timer-delay 0.5) ;; should this be smaller? will probably lead to small delays..
 (help-at-pt-set-timer)
 
 ;; autocomplete with company
 ;; will it intellisense? DaH mu'tlheghvam vIqelnIS
 (require 'company-emacs-eclim)
 (company-emacs-eclim-setup)
+(add-hook 'java-mode-hook '(lambda ()
+			     (setq-local company-idle-delay 0.5)
+			     (setq-local company-echo-delay 0.5)
+			     (setq-local company-minimum-prefix-length 3)))
 
 ;; setup yasnippet for java
 ;; TODO: maybe remove the first function earlier and use yasnippet for more modes
@@ -389,6 +392,40 @@
 			     ;; open the selection of possible classes to import on ALT-ENTER. One of the few good things from bigger IDEs
 ;; this could also be a good fullscreen hotkey maybe?
 			     (define-key java-mode-map (kbd "M-RET") #'eclim-java-import-organize)))
+
+
+;; helper method for getting
+;; limit: doesn't yet support spaces between method name and paranthesis
+(defun get-java-methods (str)
+  (save-match-data
+    (let ((pos 0)
+	  (classes '()))
+      (while (string-match "public void \\\w+(" str pos)
+	(push (replace-regexp-in-string "(" "" (replace-regexp-in-string "public void " ""  (match-string 0 str))) classes)
+	(setq pos (match-end 0)))
+      classes)))
+
+
+;; runs a single junit test if method is selected, or runs all junit tests in class if no method is selected.
+;; should be run with a junit test. or else stuff will fail. 
+;; doesn't seem to be a function for selecting the closest class in eclim, so helm is the second best way.
+;;
+;; limit: doesn't work with function names that have underscores
+(defun junit-run-test ()
+  (interactive)
+  (let* ((curr-class (eclim-package-and-class))
+	 (class-methods (get-java-methods (buffer-string)))
+	 (candidates (list "All in class" class-methods))
+	 (action ))
+    (helm :sources '((name . "Methods in class")
+		     (candidates . candidates)
+		     (action . (lambda (c)
+				 (if (string-equal c "All in class")
+				     (eclim-maven-run (concat "-Dtest=" curr-class " test"))
+				   (eclim-maven-run (concat "-Dtest=" curr-class "#" c " test"))))))
+	  :buffer "*helm junit test selection*")))
+
+
 
 ;; Org mode
 (setq org-startup-with-inline-images t
