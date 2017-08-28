@@ -395,14 +395,20 @@
 
 
 ;; helper method for getting
-;; limit: doesn't yet support spaces between method name and paranthesis
+;; also looks a bit ugly because of the newline stuff.
+;; TODO: find a symbol for newline... (\n doesn't work)
+;; limit: doesn't yet support method names with underscores or other special characters
 (defun get-java-methods (str)
   (save-match-data
     (let ((pos 0)
 	  (classes '()))
-      (while (string-match "public void \\\w+(" str pos)
-	(push (replace-regexp-in-string "(" "" (replace-regexp-in-string "public void " ""  (match-string 0 str))) classes)
-	(setq pos (match-end 0)))
+      (while (string-match "@Test
+[[:space:]]*public void \\\w+" str pos)
+	(let ((matched-str (replace-regexp-in-string "@Test
+[[:space:]]*public void " ""  (match-string 0 str))))
+	  (set-text-properties 0 (length matched-str) nil matched-str)
+	  (push matched-str  classes)
+	  (setq pos (match-end 0))))
       classes)))
 
 
@@ -415,8 +421,7 @@
   (interactive)
   (let* ((curr-class (eclim-package-and-class))
 	 (class-methods (get-java-methods (buffer-string)))
-	 (candidates (list "All in class" class-methods))
-	 (action ))
+	 (candidates (cons "All in class" class-methods)))
     (helm :sources '((name . "Methods in class")
 		     (candidates . candidates)
 		     (action . (lambda (c)
