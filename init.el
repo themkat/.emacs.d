@@ -364,6 +364,12 @@
 (setq eclimd-autostart t)
 (add-hook 'java-mode-hook '(lambda () (eclim-mode t)))
 
+;; according to sources, this fixes the problem with eclim crashing emacs
+;; only have this problem on Windows.
+;; will probably also fix the error in ionic (typescript) where the temp files ruin the building
+;; untested on windows
+(setq auto-save-default nil)
+
 ;; setting directories (may have to be tweaked on other machines)
 ;; was moved when emacs was running. custom-set-methods seems to be moved around depending on emacs' mood :P 
 
