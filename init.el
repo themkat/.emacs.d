@@ -361,7 +361,7 @@
 
 ;; Java (may need to be branched out to own file eventually)
 (require 'eclim)
-(setq eclimd-autostart t)
+;;(setq eclimd-autostart t)
 (add-hook 'java-mode-hook '(lambda () (eclim-mode t)))
 
 ;; according to sources, this fixes the problem with eclim crashing emacs
@@ -463,7 +463,7 @@
 ;; Adds correct syntax highlighting to "mixed files" (javascript in a html document for instance)
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-
+(setq web-mode-enable-current-element-highlight t)
 
 ;; javascript
 ;; js2 mode with improved syntax highlighting and flyckecking
