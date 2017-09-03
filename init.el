@@ -2,9 +2,9 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives
-	     '("melpa-stable" . "https://stable.melpa.org/packages/"))
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (add-to-list 'package-archives
-	     '("org" . "http://orgmode.org/elpa/") t)  ;; for newest version of org mode
+             '("org" . "http://orgmode.org/elpa/") t)  ;; for newest version of org mode
 (package-initialize)
 
 (unless (file-exists-p (expand-file-name
@@ -13,53 +13,65 @@
   (package-refresh-contents))
 
 (dolist (package '(all-the-icons
-		   auctex
-		   cider
-		   column-enforce-mode
-		   company
-		   company-emacs-eclim
-		   dashboard
-		   eclim
-		   elm-mode
-		   emojify
-		   exwm
-		   flycheck
-		   focus
+                   auctex
+                   cider
+                   column-enforce-mode
+                   company
+                   company-emacs-eclim
+                   dashboard
+                   eclim
+                   elm-mode
+                   emojify
+                   exwm
+                   flycheck
+                   focus
                    geiser
-		   git-gutter-fringe
-		   grandshell-theme
-		   helm
-		   helm-flycheck
-		   helm-flyspell
-		   helm-google
-		   helm-projectile
-		   helm-swoop
-		   hlinum
-		   java-snippets
-		   js2-mode
-		   leuven-theme
-		   magit
-		   markdown-mode
-		   multiple-cursors
-		   ng2-mode
-		   neotree
-		   nyan-mode
-		   olivetti
-		   org
-		   org-bullets
+                   git-gutter-fringe
+                   grandshell-theme
+                   helm
+                   helm-flycheck
+                   helm-flyspell
+                   helm-google
+                   helm-projectile
+                   helm-swoop
+                   hlinum
+                   java-snippets
+                   js2-mode
+                   leuven-theme
+                   magit
+                   markdown-mode
+                   multiple-cursors
+                   ng2-mode
+                   neotree
+                   nyan-mode
+                   olivetti
+                   org
+                   org-bullets
                    paredit
-		   page-break-lines
-		   projectile
+                   page-break-lines
+                   projectile
                    pretty-lambdada
-		   rainbow-mode
-		   slime
-		   tide
-		   try
-		   undo-tree
-		   yasnippet
-		   web-mode))
+                   rainbow-mode
+                   slime
+                   tide
+                   try
+                   undo-tree
+                   yaml-mode
+                   yasnippet
+                   web-mode))
   (unless (package-installed-p package)
     (package-install package)))
+
+
+;; switched from tabs to spaces for indentation
+;; also set the indentation level to 4.
+;; TODO: test if this should be local instead
+(setq indent-tabs-mode nil)
+(setq-default tab-width 4)
+
+;; xml mode
+(setq nxml-child-indent 4)
+(setq nxml-attribute-indent 4)
 
 
 ;; helm specifics (may have to be moved)
@@ -101,7 +113,7 @@
 (setq dashboard-banner-logo-title "Welcome! Make some kewl stuff today!"
       dashboard-startup-banner 'logo
       dashboard-items '((projects . 5)
-			(recents . 5)))
+                        (recents . 5)))
 ;; TODO: look into maybe adding some EXWM specific widgets or other widgets to dashboard 
 
 
@@ -168,7 +180,7 @@
 (load-theme 'leuven t)
 
 ;; Removes the splash screen
-;(setq inhibit-splash-screen t)
+                                        ;(setq inhibit-splash-screen t)
 
 
 ;; Nyan cat (animated nyan cat instead of marker position in percentage)
@@ -192,9 +204,9 @@
 ;; it could probably be done better
 (defun reorder-dates-helper ()
   (let* ((marked-text (buffer-substring (mark) (point)))
-	 (day (substring marked-text 0 2))
-	 (month (substring marked-text 3 5))
-	 (year (substring marked-text 6 10)))
+         (day (substring marked-text 0 2))
+         (month (substring marked-text 3 5))
+         (year (substring marked-text 6 10)))
     (delete-region (mark) (point))
     (insert (concat year "-" month "-" day))))
 
@@ -218,8 +230,8 @@
 
 ;; FlySpell (spell checking)
 (dolist (flyspellmodes '(text-mode-hook
-			 org-mode-hook
-			 latex-mode-hook))
+                         org-mode-hook
+                         latex-mode-hook))
   (add-hook flyspellmodes 'turn-on-flyspell))
 
 ;; comments and strings in code
@@ -233,8 +245,8 @@
 (defun change-dictionary ()
   (interactive)
   (ispell-change-dictionary (if (string-equal ispell-current-dictionary "american")
-				"norsk"
-			        "american")))
+                                "norsk"
+                              "american")))
 
 ;; use helm-flyspell to correct words
 (eval-after-load "flyspell"
@@ -278,8 +290,8 @@
 ;; let us use minted with the preview (minted fragments is not previewed :( )
 (eval-after-load "tex" 
   '(setcdr (assoc "LaTeX" TeX-command-list)
-          '("%`%l%(mode) -shell-escape%' %t"
-	    TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
+           '("%`%l%(mode) -shell-escape%' %t"
+             TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
 
 
 ;; Magit (git for emacs!!! :D )
@@ -383,9 +395,12 @@
 (require 'company-emacs-eclim)
 (company-emacs-eclim-setup)
 (add-hook 'java-mode-hook '(lambda ()
-			     (setq-local company-idle-delay 0.5)
-			     (setq-local company-echo-delay 0.5)
-			     (setq-local company-minimum-prefix-length 3)))
+                             (highlight-lines-matching-regexp "// TODO")
+                             
+                             (setq-local company-idle-delay 0.5)
+                             (setq-local company-echo-delay 0.5)
+                             (setq-local company-minimum-prefix-length 3)))
+
 
 ;; setup yasnippet for java
 ;; TODO: maybe remove the first function earlier and use yasnippet for more modes
@@ -395,9 +410,31 @@
 
 ;; useful java/eclim hotkeys
 (add-hook 'java-mode-hook '(lambda ()
-			     ;; open the selection of possible classes to import on ALT-ENTER. One of the few good things from bigger IDEs
-;; this could also be a good fullscreen hotkey maybe?
-			     (define-key java-mode-map (kbd "M-RET") #'eclim-java-import-organize)))
+                             ;; open the selection of possible classes to import on ALT-ENTER. One of the few good things from bigger IDEs
+                             ;; this could also be a good fullscreen hotkey maybe?
+                             (define-key java-mode-map (kbd "M-RET") #'eclim-java-import-organize)))
+
+
+;; add the jdibug files if folder exists
+;; will need to download and run 'make build' for the necessary files to be generated
+;;
+;; will running a debugger and connecting with
+;; mvn exec:exec -Dexec.executable=java "-Dexec.args=-classpath %classpath -agentlib:jdwp=transport=dt_socket,server=n,address=127.0.0.1:5005,suspend=y -Dgreeting=\"Hello\" appwithpackagename"
+;; work?
+;; mvnDebug exec:exec -Dexec.executable=java "-Dexec.args=-classpath %classpath -agentlib:jdwp=transport=dt_socket,server=n,address=127.0.0.1:5005,suspend=y appwithpackagename"
+;; able to connect, but nothing running.
+;; mvnDebug spring-boot:run -Dexec.executable=java "-Dexec.args=-classpath %classpath -agentlib:jdwp=transport=dt_socket,server=n,address=127.0.0.1:5005,suspend=n appwithpackagename"
+;; all threads get suspended, and breakpoints do nothing. port details does nothing.
+;; TODO: test on a non-spring application and see if its spring that complicates things.  atleast it runs now :D
+;; TODO: see if
+;;       https://stackoverflow.com/questions/24113939/how-to-debug-spring-boot-application-with-eclipse
+;;       will work. 
+;; (if (file-directory-p "site-lisp/jdibug-0.7")
+;;     (progn (add-to-list 'load-path "site-lisp/jdibug-0.7")
+;; 	   (setq jdibug-use-jdee-source-paths nil
+;; 		 jdibug-connect-hosts '("localhost:8000"))
+;; 	   (require 'jdibug)
+;; 	   (require 'jdibug-ui)))
 
 
 ;; helper method for getting
@@ -407,7 +444,7 @@
 (defun get-java-methods (str)
   (save-match-data
     (let ((pos 0)
-	  (classes '()))
+          (classes '()))
       (while (string-match "@Test
 [[:space:]]*public void \\\w+" str pos)
 	(let ((matched-str (replace-regexp-in-string "@Test
@@ -426,15 +463,15 @@
 (defun junit-run-test ()
   (interactive)
   (let* ((curr-class (eclim-package-and-class))
-	 (class-methods (get-java-methods (buffer-string)))
-	 (candidates (cons "All in class" class-methods)))
+         (class-methods (get-java-methods (buffer-string)))
+         (candidates (cons "All in class" class-methods)))
     (helm :sources '((name . "Methods in class")
-		     (candidates . candidates)
-		     (action . (lambda (c)
-				 (if (string-equal c "All in class")
-				     (eclim-maven-run (concat "-Dtest=" curr-class " test"))
-				   (eclim-maven-run (concat "-Dtest=" curr-class "#" c " test"))))))
-	  :buffer "*helm junit test selection*")))
+                     (candidates . candidates)
+                     (action . (lambda (c)
+                                 (if (string-equal c "All in class")
+                                     (eclim-maven-run (concat "-Dtest=" curr-class " test"))
+                                   (eclim-maven-run (concat "-Dtest=" curr-class "#" c " test"))))))
+          :buffer "*helm junit test selection*")))
 
 
 
@@ -481,11 +518,11 @@
 ;; use standard settings from tide (typescript interactive development environment) github page
 ;; TODO: experiment with the settings
 (add-hook 'typescript-mode-hook '(lambda ()
-				   (tide-setup)
-				   (flycheck-mode 1)
-				   (setq flycheck-check-syntax-automatically '(save mode-enabled))
-				   (eldoc-mode 1)
-				   (tide-hl-identifier-mode 1)))
+                                   (tide-setup)
+                                   (flycheck-mode 1)
+                                   (setq flycheck-check-syntax-automatically '(save mode-enabled))
+                                   (eldoc-mode 1)
+                                   (tide-hl-identifier-mode 1)))
 
 ;; add typescripts tslint to flycheck-mode
 (eval-after-load 'flycheck
@@ -526,4 +563,4 @@
  '(hl-sexp-background-color "#efebe9")
  '(package-selected-packages
    (quote
-    (column-enforce-mode java-snippets js2-mode company-emacs-eclim eclim elm-mode tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
+    (yaml-mode column-enforce-mode java-snippets js2-mode company-emacs-eclim eclim elm-mode tide ng2-mode helm-flycheck flycheck company-emoji company-mode web-mode undo-tree org-bullets rainbow-mode focus helm-projectile projectile helm cider magit try slime pdf-tools ac-emoji markdown-mode org nyan-mode auctex emojify leuven-theme jedi pretty-lambdada paredit exwm ac-geiser))))
