@@ -23,6 +23,7 @@
                    elm-mode
                    emojify
                    exwm
+				   feature-mode
                    flycheck
                    focus
                    geiser
