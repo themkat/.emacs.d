@@ -25,6 +25,7 @@
                    exwm
 				   feature-mode
                    flycheck
+				   flycheck-kotlin
                    focus
                    geiser
                    git-gutter-fringe
@@ -38,6 +39,7 @@
                    hlinum
                    java-snippets
                    js2-mode
+				   kotlin-mode
                    leuven-theme
                    magit
                    markdown-mode
@@ -537,6 +539,16 @@
   '(add-to-list 'company-backends 'company-elm))
 (setq elm-format-on-save t)
 
+
+;; Kotlin
+;; TODO: Sort the different programming languages somehow. Parhaps a seperate file for some of the language settings?
+(eval-after-load 'flycheck
+  (progn (require 'flycheck-kotlin)
+		 (flycheck-kotlin-setup)))
+
+(require 'kotlin-mode)
+(add-hook 'kotlin-mode-hook '(lambda ()
+							   (flycheck-mode)))
 
 ;;stuff auto-generated
 
