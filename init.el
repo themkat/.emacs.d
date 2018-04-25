@@ -520,18 +520,14 @@
 
 ;; use standard settings from tide (typescript interactive development environment) github page
 ;; TODO: experiment with the settings
+;; seems like typescript linter is not part of flycheck. The old lines is no longer necessary. Update
+;; probably happened because I installed newer flycheck packages (kotlin)
 (add-hook 'typescript-mode-hook '(lambda ()
                                    (tide-setup)
                                    (flycheck-mode 1)
                                    (setq flycheck-check-syntax-automatically '(save mode-enabled))
                                    (eldoc-mode 1)
                                    (tide-hl-identifier-mode 1)))
-
-;; add typescripts tslint to flycheck-mode
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-typescript-tslint-setup))
-
-;; TODO: get project files with angular to be checked correctly
 
 
 ;; elm
@@ -542,13 +538,13 @@
 
 ;; Kotlin
 ;; TODO: Sort the different programming languages somehow. Parhaps a seperate file for some of the language settings?
-(eval-after-load 'flycheck
-  (progn (require 'flycheck-kotlin)
-		 (flycheck-kotlin-setup)))
-
 (require 'kotlin-mode)
-(add-hook 'kotlin-mode-hook '(lambda ()
-							   (flycheck-mode)))
+(add-hook 'kotlin-mode-hook 'flycheck-mode)
+
+(eval-after-load 'flycheck
+  '(progn (require #'flycheck-kotlin)
+		  (flycheck-kotlin-setup)))
+
 
 ;;stuff auto-generated
 
