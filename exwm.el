@@ -1,5 +1,9 @@
 ;; Basically just standard EXWM setup with modifications.
 
+;; let you control standard os keys in exwm using desktop-environment package
+(require 'desktop-environment)
+(desktop-environment-mode)
+
 ;; Disable menu-bar, tool-bar and scroll-bar to increase the usable space
 (menu-bar-mode -1)
 (tool-bar-mode -1)

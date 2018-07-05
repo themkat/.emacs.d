@@ -19,6 +19,7 @@
                    company
                    company-emacs-eclim
                    dashboard
+				   desktop-environment
                    eclim
                    elm-mode
                    emojify
