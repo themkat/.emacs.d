@@ -89,6 +89,10 @@
 (exwm-input-set-key (kbd "s-<f2>")
                     (lambda () (interactive) (start-process "" nil "slock")))
 
+;; quickly switch between line and char modes
+(exwm-input-set-key (kbd "s-o") #'exwm-input-toggle-keyboard)
+
+
 ;; The following example demonstrates how to set a key binding only available
 ;; in line mode. It's simply done by first push the prefix key to
 ;; `exwm-input-prefix-keys' and then add the key sequence to `exwm-mode-map'.
