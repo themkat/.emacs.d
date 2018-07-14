@@ -77,7 +77,10 @@
   (exwm-input-set-key (kbd (format "s-%d" i))
                       `(lambda ()
                          (interactive)
-                         (exwm-workspace-switch-create ,i))))
+                         (exwm-workspace-switch-create ,i)
+						 (message (concat "Switched to workspace: "
+										  (number-to-string ,i))))))
+
 ;; + Application launcher ('M-&' also works if the output buffer does not
 ;;   bother you). Note that there is no need for processes to be created by
 ;;   Emacs.
