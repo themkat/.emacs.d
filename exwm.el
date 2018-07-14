@@ -92,6 +92,15 @@
 ;; quickly switch between line and char modes
 (exwm-input-set-key (kbd "s-o") #'exwm-input-toggle-keyboard)
 
+(lexical-let ((currLayout "no"))
+  (exwm-input-set-key (kbd "s-k")
+					  (lambda ()
+						(interactive)
+						(setq currLayout (if (string-equal currLayout "no") "us" "no"))
+						(start-process-shell-command ""
+													 nil
+													 (concat "setxkbmap -layout " currLayout))
+						(message (concat "Changed keyboard layout to: " currLayout)))))
 
 ;; The following example demonstrates how to set a key binding only available
 ;; in line mode. It's simply done by first push the prefix key to
