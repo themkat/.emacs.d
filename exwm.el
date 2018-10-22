@@ -12,7 +12,7 @@
 ;; Shrink fringes to 1 pixel
 (fringe-mode 1)
 
-;; You may want Emacs to show you the time
+;; Display the time in the modeline
 (setq display-time-default-load-average nil)
 (setq display-time-day-and-date t display-time-24hr-format t)
 (display-time-mode t)
@@ -28,7 +28,6 @@
 ;; (see next section)
 (server-start)
 
-;;;; Below are configurations for EXWM
 
 ;; Load EXWM
 (require 'exwm)
@@ -70,8 +69,10 @@
 ;; any case). Following are a few examples.
 ;; + We always need a way to go back to line-mode from char-mode
 (exwm-input-set-key (kbd "s-r") #'exwm-reset)
+
 ;; + Bind a key to switch workspace interactively
 (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch)
+
 ;; + Bind "s-0" to "s-9" to switch to the corresponding workspace.
 (dotimes (i 4)
   (exwm-input-set-key (kbd (format "s-%d" i))
@@ -88,6 +89,7 @@
                     (lambda (command)
                       (interactive (list (read-shell-command "$ ")))
                       (start-process-shell-command command nil command)))
+
 ;; + 'slock' is a simple X display locker provided by suckless tools.
 (exwm-input-set-key (kbd "s-<f2>")
                     (lambda () (interactive) (start-process "" nil "slock")))
@@ -105,12 +107,6 @@
 													 (concat "setxkbmap -layout " currLayout))
 						(message (concat "Changed keyboard layout to: " currLayout)))))
 
-;; The following example demonstrates how to set a key binding only available
-;; in line mode. It's simply done by first push the prefix key to
-;; `exwm-input-prefix-keys' and then add the key sequence to `exwm-mode-map'.
-;; The example shorten 'C-c q' to 'C-q'.
-(push ?\C-q exwm-input-prefix-keys)
-(define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
 
 ;; The following example demonstrates how to use simulation keys to mimic the
 ;; behavior of Emacs. The argument to `exwm-input-set-simulation-keys' is a
@@ -129,15 +125,6 @@
    ([?\C-d] . delete)
    ([?\C-k] . (S-end delete))))
 
-;; You can hide the mode-line of floating X windows by uncommenting the
-;; following lines
-;(add-hook 'exwm-floating-setup-hook #'exwm-layout-hide-mode-line)
-;(add-hook 'exwm-floating-exit-hook #'exwm-layout-show-mode-line)
-
-;; You can hide the minibuffer and echo area when they're not used, by
-;; uncommenting the following line
-;;(setq exwm-workspace-minibuffer-position 'bottom)
-
 ;; system tray for Dropbox, Skype volume control, wireless manager etc.
 (require 'exwm-systemtray)
 (exwm-systemtray-enable)
@@ -155,19 +142,3 @@
 
 ;; Do not forget to enable EXWM. It will start by itself when things are ready.
 (exwm-enable)
-
-
-;; Shortcut for starting Skype. To be able to use M-x skype is an almost surreal experience :P 
-(defun skype ()
-  (interactive)
-  (start-process-shell-command "LD_PRELOAD=/usr/lib/i386-linux-gnu/mesa/libGL.so.1 skype" nil "LD_PRELOAD=/usr/lib/i386-linux-gnu/mesa/libGL.so.1 skype"))
-
-
-;; Initial buffer on my EXWM setup: open a todo list
-;; TODO: get this to work. now it makes system tray icons take up 20 times more space...
-;; (setq initial-buffer-choice "~/TODO.org")
-;;
-;; Alternative solution that produces the same result (and also zooms the text to a comfortable level)
-;; (let ((buf (find-file "~/TODO.org")))
-;;   (with-current-buffer "TODO.org"
-;;     (text-scale-set 5)))

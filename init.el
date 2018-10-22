@@ -69,7 +69,6 @@
 
 ;; switched from tabs to spaces for indentation
 ;; also set the indentation level to 4.
-;; TODO: test if this should be local instead
 (setq indent-tabs-mode nil)
 (setq-default tab-width 4)
 
@@ -79,7 +78,6 @@
 
 
 ;; helm specifics (may have to be moved)
-;; TODO: check if this interferes with the exwm ido stuff
 (require 'helm)
 (require 'helm-config)
 (require 'projectile)
@@ -135,7 +133,6 @@
 ;;         last line on machines which are not using exwm
 
 ;; use undo tree for better undo/redo operations
-;; TODO: get it to work better with linum mode if you encounter problems
 (global-undo-tree-mode)
 
 
