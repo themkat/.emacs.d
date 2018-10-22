@@ -419,28 +419,6 @@
                              (define-key java-mode-map (kbd "M-RET") #'eclim-java-import-organize)))
 
 
-;; add the jdibug files if folder exists
-;; will need to download and run 'make build' for the necessary files to be generated
-;;
-;; will running a debugger and connecting with
-;; mvn exec:exec -Dexec.executable=java "-Dexec.args=-classpath %classpath -agentlib:jdwp=transport=dt_socket,server=n,address=127.0.0.1:5005,suspend=y -Dgreeting=\"Hello\" appwithpackagename"
-;; work?
-;; mvnDebug exec:exec -Dexec.executable=java "-Dexec.args=-classpath %classpath -agentlib:jdwp=transport=dt_socket,server=n,address=127.0.0.1:5005,suspend=y appwithpackagename"
-;; able to connect, but nothing running.
-;; mvnDebug spring-boot:run -Dexec.executable=java "-Dexec.args=-classpath %classpath -agentlib:jdwp=transport=dt_socket,server=n,address=127.0.0.1:5005,suspend=n appwithpackagename"
-;; all threads get suspended, and breakpoints do nothing. port details does nothing.
-;; TODO: test on a non-spring application and see if its spring that complicates things.  atleast it runs now :D
-;; TODO: see if
-;;       https://stackoverflow.com/questions/24113939/how-to-debug-spring-boot-application-with-eclipse
-;;       will work. 
-;; (if (file-directory-p "site-lisp/jdibug-0.7")
-;;     (progn (add-to-list 'load-path "site-lisp/jdibug-0.7")
-;; 	   (setq jdibug-use-jdee-source-paths nil
-;; 		 jdibug-connect-hosts '("localhost:8000"))
-;; 	   (require 'jdibug)
-;; 	   (require 'jdibug-ui)))
-
-
 ;; helper method for getting
 ;; also looks a bit ugly because of the newline stuff.
 ;; TODO: find a symbol for newline... (\n doesn't work)
@@ -505,6 +483,8 @@
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (setq web-mode-enable-current-element-highlight t)
+
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 
 ;; javascript
 ;; js2 mode with improved syntax highlighting and flyckecking
