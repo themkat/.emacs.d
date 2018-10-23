@@ -20,6 +20,7 @@
                    company-emacs-eclim
                    dashboard
 				   desktop-environment
+				   doom-themes
                    eclim
                    elm-mode
                    emojify
@@ -30,7 +31,6 @@
                    focus
                    geiser
                    git-gutter-fringe
-                   grandshell-theme
                    helm
                    helm-flycheck
                    helm-flyspell
@@ -121,8 +121,9 @@
 
 ;; simple theme switcher form the best org mode (and light) theme (leuven)
 ;;  to the best dark theme (grandshell)
+;; With possibilities of adding new themes in the future
 (require 'cl) ;; for lexical-let
-(lexical-let ((theme-cycle '#1=(leuven grandshell . #1#)))
+(lexical-let ((theme-cycle '#1=(leuven doom-molokai doom-opera-light . #1#)))
   (defun next-theme ()
     (interactive)
     (disable-theme (car theme-cycle))
