@@ -20,6 +20,7 @@
                    company-emacs-eclim
                    dashboard
 				   desktop-environment
+				   dockerfile-mode
 				   doom-themes
                    eclim
                    elm-mode
@@ -524,6 +525,11 @@
   '(progn (require #'flycheck-kotlin)
 		  (flycheck-kotlin-setup)))
 
+
+
+;; Dockerfile mode
+(require 'dockerfile-mode)
+(add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode))
 
 ;;stuff auto-generated
 
