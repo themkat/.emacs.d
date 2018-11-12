@@ -15,6 +15,7 @@
 (dolist (package '(all-the-icons
                    auctex
                    cider
+				   cobol-mode
                    column-enforce-mode
                    company
                    company-emacs-eclim
@@ -525,6 +526,10 @@
   '(progn (require #'flycheck-kotlin)
 		  (flycheck-kotlin-setup)))
 
+
+;; COBOL
+(require 'cobol-mode)
+(add-to-list 'auto-mode-alist '("\\.cbl" . cobol-mode))
 
 
 ;; Dockerfile mode
