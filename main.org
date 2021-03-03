@@ -1,0 +1,121 @@
+* .emacs configuration
+If you  are reading this, I finally got around to writing my .emacs config using Org mode. Why? Because it makes is easy to document the whys of my config. I also think it will make it fun to re-read my comments and text after some time :P
+
+** TODOs before merging to master (to remind myself)
+*** TODO UPGRADE EMACS ON THE COMPUTERS YOU WILL USE THIS ON!! Preferably 27.1 
+*** TODO Get all my old config that is worth keeping into this doc
+*** TODO Fix the shitty line numbers I have kept for far too long (display-line-numbers-mode?)
+*** TODO See if there is any bloat in EXWM config and if it can be minified
+*** TODO EXWM - Look into ways of making programs less troublesome to use with their own hotkeys. Is there a whitelist/blacklist or something? 
+*** use-package
+**** TODO Try use-package and see if you like it better
+**** TODO Transition the existing package config worth keeping over to use-package
+*** TODO Transition from Eclim to Lsp alternative
+Eclim has worked great, but it is a bit clunky.. And sadly do not work great with newer Java versions. Also try the Kotlin language server again. Seems like the genius of a maintainer has solved it!
+
+Seems like lsp-java even has static imports... :O Really cool!
+*** Some sort of automation pipeline? :P For fun :P Testing that it is buildable? To avoid stuff in master that does not build? Maybe some sort of tagging to make it easier to know which commit has the last successful code run? (have a simple versioning scheme like year.x? 2021.1, 2021.2 etc.?)
+*** Packages that I should add that I've tried (using try) for way too long
+**** restclient
+*** Packages to test out
+**** TODO dap-mode for debugging. Try to see if you can learn it, and if it can be useful in the future
+**** TODO treemacs
+**** TODO which-key
+**** Is there a key promoter like thing? One of the few things in IntelliJ I think is really cool :P
+**** editorconfig
+
+** Setup of core components
+TODO: maybe just quick package setup and installation of use-package (then use-package will do the rest)
+
+#+BEGIN_SRC emacs-lisp
+  (require 'package) 
+  (add-to-list 'package-archives
+               '("melpa" . "https://melpa.org/packages/"))
+  (add-to-list 'package-archives
+               '("melpa-stable" . "https://stable.melpa.org/packages/"))
+  (add-to-list 'package-archives
+               '("org" . "http://orgmode.org/elpa/") t)  ;; for newest version of org mode
+  (package-initialize)
+
+  ;; TODO: should I keep my old refresh code? or just do it by need?
+
+  (unless (package-installed-p 'use-package)
+	(package-install 'use-package))
+#+END_SRC
+
+** EXWM - Emacs Window manager
+keep the "useful for exwm" in this category as well. if not I would probably not use it... 
+TODO: maybe just a quick intro and a load statement? no need to clutter the main config file with that.
+
+** Behaviorial settings
+general settings that works in all modes
+*** dashboard
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+	:ensure t
+	:requires dashboard-hackernews
+	:config
+	(dashboard-setup-startup-hook)
+	(setq dashboard-banner-logo-title "Welcome my queen! Make some kewl stuff today!"
+		  dashboard-startup-banner 'logo
+		  dashboard-set-heading-icons t
+		  dashboard-set-file-icons t
+		  dashboard-items '((projects . 5)
+							(recents . 5)
+							(hackernews . 5))))
+#+END_SRC
+*** themes
+*** diminish mode (to get rid of boring stuff in mode-line)
+company-mode, unto-tree Helm etc.? more? 
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish
+	:ensure t
+	;; TODO: should we have requires or something for the modes we diminish?
+	:config
+	(diminish 'company-mode)
+	(diminish 'helm-mode)
+	(diminish 'git-gutter-mode)
+	(diminish 'undo-tree-mode))
+#+END_SRC
+
+** Editing  settings
+some intro?
+
+TODO: just have settings for each programming language? or programming in general (so web development could be one category?)
+
+*** General editing
+TODO: should company related settings be here? Or in their own heading (Completion?)?
+
+
+Line numbers?
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'prog-mode-hook 'display-line-numbers-mode)
+
+  ;; TODO: settings to mark the current line
+  (custom-set-faces
+   '(line-number-current-line ((t (:inherit line-number :background "white" :foreground "color-16")))))
+#+END_SRC
+
+*** IDE functionality
+describe lsp-mode and maybe dap-mode. maybe also treemacs if I decide to use that instead of neotree? 
+
+flycheck? or could that be its own thing?   
+
+*** Completion (or should this be general editing?)
+company time! just a use-package with company-mode for the most basic settings. 
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
+
+*** git
+This is almost a reason to use Emacs by itself! Magit is the best way to experience git in my view. Simple and quick to use, together with its connection with git-gutter-fringe makes it super awesome!
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+	:bind
+	(kbd "C-x g") 'magit-status
+	:hook
+	;; TODO: inner use-package declaration for git-gutter-fringe? 
+	'(magit-post-refresh-hook #'git-gutter:update-all-windows)
+#+END_SRC
+*** Programming language config
