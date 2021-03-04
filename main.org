@@ -16,11 +16,12 @@ Eclim has worked great, but it is a bit clunky.. And sadly do not work great wit
 Seems like lsp-java even has static imports... :O Really cool!
 *** Some sort of automation pipeline? :P For fun :P Testing that it is buildable? To avoid stuff in master that does not build? Maybe some sort of tagging to make it easier to know which commit has the last successful code run? (have a simple versioning scheme like year.x? 2021.1, 2021.2 etc.?)
 *** Packages that I should add that I've tried (using try) for way too long
-**** restclient
+**** TODO restclient
 *** Packages to test out
 **** TODO dap-mode for debugging. Try to see if you can learn it, and if it can be useful in the future
 **** TODO treemacs
 **** TODO which-key
+**** TODO define-word
 **** Is there a key promoter like thing? One of the few things in IntelliJ I think is really cool :P
 **** editorconfig
 
@@ -46,6 +47,13 @@ TODO: maybe just quick package setup and installation of use-package (then use-p
 ** EXWM - Emacs Window manager
 keep the "useful for exwm" in this category as well. if not I would probably not use it... 
 TODO: maybe just a quick intro and a load statement? no need to clutter the main config file with that.
+
+#+BEGIN_SRC emacs-lisp
+  (if (getenv "USE_EXWM")
+	  (use-package exwm
+				   ;; TODO: rest of the settings. 
+				   ))
+#+END_SRC
 
 ** Behaviorial settings
 general settings that works in all modes
