@@ -51,12 +51,38 @@ TODO: maybe just a quick intro and a load statement? no need to clutter the main
 #+BEGIN_SRC emacs-lisp
   (if (getenv "USE_EXWM")
 	  (use-package exwm
-				   ;; TODO: rest of the settings. 
+				   ;; TODO: rest of the settings. SHould i inline everything?
 				   ))
 #+END_SRC
 
 ** Behaviorial settings
 general settings that works in all modes
+*** general
+I use some general settings to make Emacs feel better. These are not necessarily connected to any modes.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Removed annoying UI elements
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+
+
+  ;; TODO: could we use use-package for this somehow?
+  (setq display-time-default-load-average nil)
+  (setq display-time-day-and-date t display-time-24hr-format t)
+  (display-time-mode t)
+#+END_SRC
+
+*** helm
+intro on helm? 
+I use helm because i prefer it to ido or alternatives. It is simple to use, has a great UI, and to me it makes Emacs even more powerful as both a text editor and window manager (to switch windows). 
+
+TODO: will ensure also make sure requires are installed?
+
+#+BEGIN_SRC emacs-lisp
+;; TODO: use-package with helm and main settings. 
+#+END_SRC
+
 *** dashboard
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
@@ -126,4 +152,12 @@ This is almost a reason to use Emacs by itself! Magit is the best way to experie
 	;; TODO: inner use-package declaration for git-gutter-fringe? 
 	'(magit-post-refresh-hook #'git-gutter:update-all-windows)
 #+END_SRC
+
+*** Writing (books/org-mode etc.)
+Emacs can also be a great editor for editing books, note sand other things. Some people might miss formatting like headers while editing, but that is what org mode is for :) Blogging with org mode is also a fantastic experience!
+
+TODO: org mode settings
+
+TODO: olivetti to improve readability
+
 *** Programming language config
