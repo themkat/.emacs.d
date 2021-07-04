@@ -1,6 +1,9 @@
 * .emacs configuration
 If you  are reading this, I finally got around to writing my .emacs config using Org mode. Why? Because it makes is easy to document the whys of my config. I also think it will make it fun to re-read my comments and text after some time :P
 
+The configuration will change with time, based upon programming languages used and so on. Some languages I just se try (see below) for, because I use them so rarely :P 
+
+
 ** TODOs before merging to master (to remind myself)
 *** DONE UPGRADE EMACS ON THE COMPUTERS YOU WILL USE THIS ON!! Preferably 27.1 
 *** TODO Get all my old config that is worth keeping into this doc
@@ -47,10 +50,11 @@ TODO: include always ensure for use-package?
 
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
-#+END_SRC
 
-# TODO: what more should end upp here?
-# - setting the always ensure to make use-package download if it needs a package.
+  ;; always download packages when we don't have them locally
+  (require 'use-package)
+  (setq use-package-always-ensure 't)
+#+END_SRC
 
 
 
@@ -64,6 +68,9 @@ TODO: maybe just a quick intro and a load statement? no need to clutter the main
 				   ;; TODO: rest of the settings. SHould i inline everything?
 				   ))
 #+END_SRC
+
+TODO: should we have desktop-environment here as well? Maybe that should require exwm. That way it is never loaded if we don't use exwm on that machine. 
+
 
 ** Behaviorial settings
 general settings that works in all modes
@@ -124,9 +131,28 @@ TODO: will ensure also make sure requires are installed?
                             (hackernews . 5))))
   (use-package dashboard-hackernews)
 #+END_SRC
-*** themes
+*** themes and ui
+TODO: include the doom-themes? or should I just keep the leuven theme for now?
+TODO: powerine? to modernize the look a bit? maybe try it and see if you like it?
+
+#+BEGIN_SRC emacs-lisp
+  (use-package leuven-theme
+    :init
+    (load-theme 'leuven t))
+
+
+  ;; TODO: have this in its own section?
+  (use-package telephone-line
+    :init
+    (telephone-line-mode 1))
+#+END_SRC
+
+
 *** diminish mode (to get rid of boring stuff in mode-line)
-company-mode, unto-tree Helm etc.? more? 
+company-mode, unto-tree Helm etc.? more?
+
+TODO: is this needed after I add telephone line? It actually looks quite good "out of the box". 
+
 #+BEGIN_SRC emacs-lisp
   (use-package diminish
 	;; TODO: should we have requires or something for the modes we diminish?
@@ -138,6 +164,11 @@ company-mode, unto-tree Helm etc.? more?
 #+END_SRC
 *** Other
 describing try and the other similar ones? 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package try)
+#+END_SRC
+
 
 ** Editing  settings
 some intro?
@@ -165,52 +196,237 @@ Rainbow mode
 
 
 focus mode!!! 
+TODO: little bit about what it does? screenshot?
+#+BEGIN_SRC emacs-lisp
+  (use-package focus)
+#+END_SRC
+
+
+  yasnippet?
+
+
+Multiple cursors.
+#+BEGIN_SRC emacs-lisp
+  (use-package multiple-cursors)
+#+END_SRC
+
+
+  paredit? or should it be at a more central place?
+  #+BEGIN_SRC emacs-lisp
+    (use-package paredit
+      :init 
+      ;; making paredit work with delete-selection-mode
+      ;; found on the excellent place called what the emacs d.
+      (put 'paredit-forward-delete 'delete-selection 'supersede)
+      (put 'paredit-backward-delete 'delete-selection 'supersede)
+      (put 'paredit-open-round 'delete-selection t)
+      (put 'paredit-open-square 'delete-selection t)
+      (put 'paredit-doublequote 'delete-selection t)
+      (put 'paredit-newline 'delete-selection t))
+#+END_SRC
+
+
+pretty symbols? seems like i just have to set an alist with unicode codes for the characters I want (and the string to do it for)
+(could probably be buffer local as well. Saving a few I really miss here :smile: )
+#+BEGIN_SRC emacs-lisp
+  ;; should I defaults? or maybe one for c-like languages, one for lisp etc.?
+  (setq-default prettify-symbols-alist '(("lambda" . 955)
+                                         ("->" . 8594)
+                                         ("!=" . 8800)))
+  (global-prettify-symbols-mode)
+#+END_SRC
+
+
+emojis? :P or is that better someplace else?
+#+BEGIN_SRC emacs-lisp
+  (use-package emojify
+    :init
+    (add-hook 'after-init-hook #'global-emojify-mode))
+#+END_SRC
 
 
 *** IDE functionality - general
-describe lsp-mode and maybe dap-mode. maybe also treemacs if I decide to use that instead of neotree? 
+describe lsp-mode and maybe dap-mode. lsp-ui as well probably. Because I think it can be great in languages like Java
 
-flycheck? or could that be its own thing?   
-
-*** Completion (or should this be general editing?) - general
-company time! just a use-package with company-mode for the most basic settings. 
 #+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode)
 
+  ;; helper boxes and other nice functionality (like javadoc for java)
+  (use-package lsp-ui)
+
+
+  ;; debugger component (for the few times I need it)
+  (use-package dap-mode
+    :after lsp-mode
+    :init
+    (dap-auto-configure-mode))
 #+END_SRC
 
-*** Programming and scripting languages (+web)
+
+flycheck? or could that be its own thing?   
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck)
+#+END_SRC
+
+
+*** Completion general? (or should this be general editing?) - general -- TODO: move to before IDE functionality? 
+company time! just a use-package with company-mode for the most basic settings. 
+#+BEGIN_SRC emacs-lisp
+  (use-package company-mode
+    :init
+    (global-company-mode)
+
+    ;; set the completion to begin at once
+    (setq company-idle-delay 0
+          company-echo-delay 0
+          company-minimum-prefix-length 1)
+
+    :bind
+    ;; trigger company to see a list of choices even when nothing is typed. maybe it quit because we clicked something. or maybe we dont know what to type yet :P
+    ;; CTRL-ENTER. Because C-RET does not work. 
+    ([(control return)] . company-complete))
+#+END_SRC
+
+*** Programming-, scripting-, markup-languages and so on
 Some languages work great out of the box (mostly those with little tooling needed, like Assembly and C), some require a little tweaking. 
 
 **** Java
+lsp-java :drool:
+TODO: try it out a bit!! Maybe with a small spring boot app? :)
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-java
+    :init
+    (add-hook 'java-mode-hook 'lsp))
+
+
+  ;; Java snippets for yasnippet. Found them very useful so far
+  (use-package java-snippets)
+#+END_SRC
+
+
 **** Kotlin
 **** Web development
+lorem
+#+BEGIN_SRC emacs-lisp
+  (use-package web-mode
+    :init
+    (setq web-mode-enable-current-element-highlight t)
+
+    :mode
+    ;; TODO: should I rewrite to a single regex?
+    (("\\.html?$" . web-mode)
+     ("\\.jsx?$" . web-mode)))
+#+END_SRC
+
 **** TypeScript
-**** 
+
+#+BEGIN_SRC emacs-lisp
+  ;; TODO: can we use lambda in hooks? doesnt seem that way?
+  (use-package tide
+    :init
+    (add-hook 'typescript-mode-hook '(lambda ()
+                                       (tide-setup)
+                                       (flycheck-mode 1)
+                                       (setq flycheck-check-syntax-automatically '(save mode-enabled))
+                                       (eldoc-mode 1)
+                                       (tide-hl-identifier-mode 1))))  
+#+END_SRC
+
+**** Dockerfiles
+#+BEGIN_SRC emacs-lisp
+  (use-package dockerfile-mode
+    :init
+    (add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode)))
+#+END_SRC
+
+
+**** Gherkin-like feature files
+Used in Cucumber, Karate and more :) Useful to have for the situations where you edit a file like that.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package feature-mode)
+#+END_SRC
+
+**** Markdown
+
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode)
+#+END_SRC
+
+
+**** YAML
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode)
+#+END_SRC
+
 
 *** git
 This is almost a reason to use Emacs by itself! Magit is the best way to experience git in my view. Simple and quick to use, together with its connection with git-gutter-fringe makes it super awesome!
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-	:bind
-	(kbd "C-x g") 'magit-status
-	:hook
-	;; TODO: inner use-package declaration for git-gutter-fringe? 
-	'(magit-post-refresh-hook #'git-gutter:update-all-windows)
+    :bind
+    ("C-x g" . magit-status))
+
+  (use-package git-gutter-fringe
+    :after magit
+    :init
+    (global-git-gutter-mode 1)
+    (setq-default left-fringe-width 20)
+
+    :hook
+    (magit-post-refresh-hook . #'git-gutter:update-all-windows))
 #+END_SRC
 
 *** Other operations and tooling?
 A section like this to write about restclient and other similar topics? 
 
-I prefer Emacs as a REST client (also used it for other HTTP requests, e.g, SOAP), mostly because of the amazing restclient(-mode):
+Undo-tree. I LOOOOVE undo-tree <3 Instead of having a linear line of operations we can undo and redo, I have a tree I can navigate :D
 #+BEGIN_SRC emacs-lisp
-  (use-package restclient)
+  (use-package undo-tree
+    :init
+    (global-undo-tree-mode 1))
+#+END_SRC
+
+  TODO: should I have a screenshot of the tree
+  TODO: does this belong in a more central place? It is awesome package that helps me everyday...
+
+
+ Emacs works great as a REST client (also used it for other HTTP requests, e.g, SOAP), mostly because of the amazing restclient(-mode):
+ #+BEGIN_SRC emacs-lisp
+    (use-package restclient)
+#+END_SRC
+TODO: should this be another place? Or does it belong in the editor category? Own category? Tooling and other? 
+
+*** Writing (books/org-mode etc.)
+Emacs can also be a great editor for editing books, note sand other things. Some people might miss formatting like headers while editing, but that is what org mode is for :) Blogging with org mode is also a fantastic experience! (also, this configuration is written with org-mode!!!)
+
+org mode (maybe move the intro from above?)
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :init
+    (setq org-startup-with-inline-images t
+        org-todo-keyword-faces '(("DONE" . "GREEN"))
+        org-hide-emphasis-markers t)
+  
+    :hook
+    ;; make org mode easier to read with indentation
+    (org-mode . org-indent-mode))
+
+
+  ;; add bullets to prettify the org mode stars
+  (use-package org-bullets
+    :hook
+    (org-mode . org-bullets-mode))
 #+END_SRC
 
 
-*** Writing (books/org-mode etc.)
-Emacs can also be a great editor for editing books, note sand other things. Some people might miss formatting like headers while editing, but that is what org mode is for :) Blogging with org mode is also a fantastic experience!
-
-TODO: org mode settings
-
 TODO: olivetti to improve readability
+#+BEGIN_SRC emacs-lisp
+  (use-package olivetti
+    :init
+    (setq olivetti-minimum-body-width 100)
+    :hook org-mode)
+#+END_SRC
+
