@@ -88,6 +88,13 @@ I use some general settings to make Emacs feel better. These are not necessarily
   (display-time-mode t)
 #+END_SRC
 
+This one only applies to Mac, but makes my life easier. The different brackets became almost impossible to use without this :P Controlling which key is the actual meta key. 
+#+BEGIN_SRC emacs-lisp
+  (setq mac-command-modifier 'meta) 
+  (setq mac-option-modifier nil)
+#+END_SRC
+
+
 *** helm
 intro on helm? 
 I use helm because i prefer it to ido or alternatives. It is simple to use, has a great UI, and to me it makes Emacs even more powerful as both a text editor and window manager (to switch windows). 
@@ -131,6 +138,7 @@ TODO: will ensure also make sure requires are installed?
                             (hackernews . 5))))
   (use-package dashboard-hackernews)
 #+END_SRC
+
 *** themes and ui
 TODO: include the doom-themes? or should I just keep the leuven theme for now?
 TODO: powerine? to modernize the look a bit? maybe try it and see if you like it?
@@ -162,6 +170,7 @@ TODO: is this needed after I add telephone line? It actually looks quite good "o
 	(diminish 'git-gutter-mode)
 	(diminish 'undo-tree-mode))
 #+END_SRC
+
 *** Other
 describing try and the other similar ones? 
 
@@ -203,11 +212,16 @@ TODO: little bit about what it does? screenshot?
 
 
   yasnippet?
-
-
-Multiple cursors.
 #+BEGIN_SRC emacs-lisp
-  (use-package multiple-cursors)
+  (use-package yasnippet
+    :init
+    (yas-reload-all))
+#+END_SRC
+  
+
+  Multiple cursors.
+  #+BEGIN_SRC emacs-lisp
+    (use-package multiple-cursors)
 #+END_SRC
 
 
@@ -300,11 +314,24 @@ TODO: try it out a bit!! Maybe with a small spring boot app? :)
 
 
   ;; Java snippets for yasnippet. Found them very useful so far
-  (use-package java-snippets)
+  (use-package java-snippets
+    :after yasnippet
+    :init
+    (add-hook 'java-mode-hook #'yas-minor-mode))
 #+END_SRC
 
 
 **** Kotlin
+
+lsp-mode works out of the box with Kotlin mode as long as kotlin-language-server is in the path :) So I only install Kotlin-mode :)
+
+#+BEGIN_SRC emacs-lisp
+  (use-package kotlin-mode
+    :hook
+    (java-mode . lsp))
+#+END_SRC
+
+
 **** Web development
 lorem
 #+BEGIN_SRC emacs-lisp
