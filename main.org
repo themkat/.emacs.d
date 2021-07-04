@@ -302,7 +302,19 @@ company time! just a use-package with company-mode for the most basic settings.
 #+END_SRC
 
 *** Programming-, scripting-, markup-languages and so on
-Some languages work great out of the box (mostly those with little tooling needed, like Assembly and C), some require a little tweaking. 
+Some languages work great out of the box, some require a little tweaking. 
+
+
+**** C
+C does not really need much auto completion, but it can be great to have it for projects that use a lot of external libraries (like libogc for Nintendo GameCube development, where you have a SDK for the console).
+
+*Prerequisites:* clang installed, configured =company-c-headers-path-user= (for C header completion) and =company-clang-arguments= (for company-clang, which is built-into company-mode). Both can be set to the same list of include paths (with the clang one starting with "-I"). .dir-locals.el works fine for this purpose :) (standard paths are default for company-clang if you do not cross-compile or something similar).
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-c-headers)
+#+END_SRC
+
 
 **** Java
 lsp-java :drool:
