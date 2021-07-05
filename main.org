@@ -12,8 +12,8 @@ The configuration will change with time, based upon programming languages used a
 *** TODO EXWM - Look into ways of making programs less troublesome to use with their own hotkeys. Is there a whitelist/blacklist or something? 
 *** use-package
 **** DONE Try use-package and see if you like it better
-**** TODO Transition the existing package config worth keeping over to use-package
-*** TODO Transition from Eclim to Lsp alternative
+**** DONE Transition the existing package config worth keeping over to use-package
+*** DONE Transition from Eclim to Lsp alternative
 Eclim has worked great, but it is a bit clunky.. And sadly do not work great with newer Java versions. Also try the Kotlin language server again. Seems like the genius of a maintainer has solved it!
 
 Seems like lsp-java even has static imports... :O Really cool!
@@ -21,7 +21,7 @@ Seems like lsp-java even has static imports... :O Really cool!
 *** Packages that I should add that I've tried (using try) for way too long
 **** DONE restclient
 *** Packages to test out
-**** TODO dap-mode for debugging. Try to see if you can learn it, and if it can be useful in the future
+**** DONE dap-mode for debugging. Try to see if you can learn it, and if it can be useful in the future
 **** TODO treemacs
 **** TODO which-key
 **** TODO define-word
@@ -63,13 +63,110 @@ keep the "useful for exwm" in this category as well. if not I would probably not
 TODO: maybe just a quick intro and a load statement? no need to clutter the main config file with that.
 
 #+BEGIN_SRC emacs-lisp
+  ;; TODO: test!! Using a Mac at the moment. Test when I use EXWM on a machine again
   (if (getenv "USE_EXWM")
-	  (use-package exwm
-				   ;; TODO: rest of the settings. SHould i inline everything?
-				   ))
+      (use-package exwm
+        :init
+        ;; Standard setup with minor tweaks. Probably some things that can be removed.
+        ;; Shrink fringes to 1 pixel
+        (fringe-mode 1)
+
+        ;; Display the time in the modeline
+        (setq display-time-default-load-average nil)
+        (setq display-time-day-and-date t display-time-24hr-format t)
+        (display-time-mode t)
+
+        ;; TODO: do we need this? I use helm to switch buffers and stuff
+        (ido-mode 1)
+
+        ;; Emacs server is not required to run EXWM but it has some interesting uses
+        ;; (see next section)
+        (server-start)
+
+        ;; Probably not needed after use-package
+        ;; Load EXWM
+        ;;(require 'exwm)
+
+        ;; TODO: remove because of helm
+        ;; Fix problems with Ido
+        (require 'exwm-config)
+        (exwm-config-ido)
+
+        ;; Set the initial number of workspaces.
+        (setq exwm-workspace-number 2)
+
+        ;; Buffer names for EXWM
+        (add-hook 'exwm-update-class-hook
+                  (lambda ()
+                    (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                                (string= "gimp" exwm-instance-name))
+                      (exwm-workspace-rename-buffer exwm-class-name))))
+        (add-hook 'exwm-update-title-hook
+                  (lambda ()
+                    (when (or (not exwm-instance-name)
+                              (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                              (string= "gimp" exwm-instance-name))
+                      (exwm-workspace-rename-buffer exwm-title))))
+
+	  
+        ;; + Bind "s-0" to "s-3" to switch to the corresponding workspace.
+        (dotimes (i 4)
+          (exwm-input-set-key (kbd (format "s-%d" i))
+                              `(lambda ()
+                                 (interactive)
+                                 (exwm-workspace-switch-create ,i)
+                                 (message (concat "Switched to workspace: "
+                                                  (number-to-string ,i))))))
+	  
+        ;; + Application launcher ('M-&' also works if the output buffer does not
+        ;;   bother you). Note that there is no need for processes to be created by
+        ;;   Emacs.
+        (exwm-input-set-key (kbd "s-&")
+                            (lambda (command)
+                              (interactive (list (read-shell-command "$ ")))
+                              (start-process-shell-command command nil command)))
+
+
+        ;; quickly switch between line and char modes
+        (exwm-input-set-key (kbd "s-o") #'exwm-input-toggle-keyboard)
+
+        ;; quickly change keyboard layout
+        (lexical-let ((currLayout "no"))
+          (exwm-input-set-key (kbd "s-k")
+                              (lambda ()
+                                (interactive)
+                                (setq currLayout (if (string-equal currLayout "no") "us" "no"))
+                                (start-process-shell-command ""
+                                                             nil
+                                                             (concat "setxkbmap -layout " currLayout))
+                                (message (concat "Changed keyboard layout to: " currLayout)))))
+
+        ;; system tray for Dropbox, Skype volume control, wireless manager etc.
+        (require 'exwm-systemtray)
+        (exwm-systemtray-enable)
+
+
+        ;; turn on multimonitor support
+        (require 'exwm-randr)
+        (setq exwm-randr-workspace-output-plist '(1 "DP-1-1"))
+        (add-hook 'exwm-randr-screen-change-hook
+                  (lambda ()
+                    (start-process-shell-command
+                     "xrandr" nil "xrandr --output DP-1-1 --right-of eDP-1-1 --auto")))
+        (exwm-randr-enable)
+	  
+        (exwm-enable)))
 #+END_SRC
 
-TODO: should we have desktop-environment here as well? Maybe that should require exwm. That way it is never loaded if we don't use exwm on that machine. 
+TODO: should we have desktop-environment here as well? Maybe that should require exwm. That way it is never loaded if we don't use exwm on that machine.
+
+Desktop environment can also be very useful when Emacs blocks the function keys (volume etc.). I have this issue with EXWM, and desktop-environment fixes it.
+#+BEGIN_SRC emacs-lisp
+  (use-package desktop-environment
+    :requires exwm
+    :init
+    (desktop-environment-mode))
+#+END_SRC
 
 
 ** Behaviorial settings
@@ -78,15 +175,68 @@ general settings that works in all modes
 I use some general settings to make Emacs feel better. These are not necessarily connected to any modes.
 
 #+BEGIN_SRC emacs-lisp
+  ;; TODO: do these, the clipboard settings belong in editor settings instead?
+
+  ;; set default coding of buffers
+  (setq default-buffer-file-coding-system 'utf-8-unix)
+
+  ;; switched from tabs to spaces for indentation
+  ;; also set the indentation level to 4.
+  (setq indent-tabs-mode nil)
+  (setq-default tab-width 4)
+
+
+  ;; Don't autosave. 
+  (setq auto-save-default nil)
+
+
   ;; Removed annoying UI elements
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
 
+  ;; shows battery status (useful when using EXWM)
+  (display-battery-mode 1)
+
+
+  ;; disable the C-z sleep/suspend key
+  ;; rarely use emacs in terminal mode anymore and that is the only place it can be useful
+  ;; see http://stackoverflow.com/questions/28202546/hitting-ctrl-z-in-emacs-freezes-everything
+  ;;  for a way to have both if I ever want that again.
+  (global-unset-key (kbd "C-z"))
+
+  ;; disable the C-x C-b key, because I use helm (C-x b) instead
+  (global-unset-key (kbd "C-x C-b"))
+
+
   (setq display-time-default-load-average nil)
   (setq display-time-day-and-date t display-time-24hr-format t)
   (display-time-mode t)
+
+
+  ;; make copy and paste use the same clipboard as emacs.
+  (setq x-select-enable-primary t
+        x-select-enable-clipboard t)
+
+
+  ;; sets monday to be the first day of the week in calendar
+  (setq calendar-week-start-day 1)
+
+  ;; save emacs backups in a different directory
+  ;; (some build-systems build automatically all files with a prefix, and .#something.someending breakes that)
+  (setq backup-directory-alist '(("." . "~/.emacsbackups")))
+
+
+  ;; Enable show-paren-mode (to visualize paranthesis) and make it possible to delete things we have marked
+  (show-paren-mode 1)
+  (delete-selection-mode 1)
+
+
+  ;; use y or n instead of yes or no
+  (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
+
+
 
 This one only applies to Mac, but makes my life easier. The different brackets became almost impossible to use without this :P Controlling which key is the actual meta key. 
 #+BEGIN_SRC emacs-lisp
@@ -155,22 +305,6 @@ TODO: powerine? to modernize the look a bit? maybe try it and see if you like it
     (telephone-line-mode 1))
 #+END_SRC
 
-
-*** diminish mode (to get rid of boring stuff in mode-line)
-company-mode, unto-tree Helm etc.? more?
-
-TODO: is this needed after I add telephone line? It actually looks quite good "out of the box". 
-
-#+BEGIN_SRC emacs-lisp
-  (use-package diminish
-	;; TODO: should we have requires or something for the modes we diminish?
-	:config
-	(diminish 'company-mode)
-	(diminish 'helm-mode)
-	(diminish 'git-gutter-mode)
-	(diminish 'undo-tree-mode))
-#+END_SRC
-
 *** Other
 describing try and the other similar ones? 
 
@@ -221,7 +355,9 @@ TODO: little bit about what it does? screenshot?
 
   Multiple cursors.
   #+BEGIN_SRC emacs-lisp
-    (use-package multiple-cursors)
+    (use-package multiple-cursors
+      :bind
+      ("C->" . mc/mark-next-like-this))
 #+END_SRC
 
 
@@ -236,7 +372,11 @@ TODO: little bit about what it does? screenshot?
       (put 'paredit-open-round 'delete-selection t)
       (put 'paredit-open-square 'delete-selection t)
       (put 'paredit-doublequote 'delete-selection t)
-      (put 'paredit-newline 'delete-selection t))
+      (put 'paredit-newline 'delete-selection t)
+
+      :hook
+      ((emacs-lisp-mode . paredit-mode)
+       (scheme-mode . paredit-mode)))
 #+END_SRC
 
 
@@ -259,6 +399,37 @@ emojis? :P or is that better someplace else?
 #+END_SRC
 
 
+*** Spell checking
+
+#+BEGIN_SRC emacs-lisp
+  ;; FlySpell (spell checking)
+  (dolist (flyspellmodes '(text-mode-hook
+                           org-mode-hook
+                           latex-mode-hook))
+    (add-hook flyspellmodes 'turn-on-flyspell))
+
+  ;; comments and strings in code
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+  ;; sets american english as defult 
+  (setq ispell-dictionary "american")
+
+  ;; let us cycle american english (best written english) and norwegian 
+  (defun change-dictionary ()
+    (interactive)
+    (ispell-change-dictionary (if (string-equal ispell-current-dictionary "american")
+                                  "norsk"
+                                "american")))
+
+  ;; makes my latex hotkey work. (I only use C-, for correcting anyway)
+  (define-key flyspell-mode-map (kbd "C-.") nil)
+
+  ;; helm functionality for flyspell. To make it more user friendly
+  (use-package helm-flyspell
+    :init
+    (define-key flyspell-mode-map (kbd "C-,") #'helm-flyspell-correct))
+#+END_SRC
+
 *** IDE functionality - general
 describe lsp-mode and maybe dap-mode. lsp-ui as well probably. Because I think it can be great in languages like Java
 
@@ -277,9 +448,12 @@ describe lsp-mode and maybe dap-mode. lsp-ui as well probably. Because I think i
 #+END_SRC
 
 
-flycheck? or could that be its own thing?   
+flycheck? or could that be its own thing? Syntax checking. 
 #+BEGIN_SRC emacs-lisp
-  (use-package flycheck)
+  (use-package flycheck
+    :init
+    (setq flycheck-indication-mode nil)
+    (setq flycheck-highlighting-mode 'lines))
 #+END_SRC
 
 
@@ -318,11 +492,17 @@ C does not really need much auto completion, but it can be great to have it for 
 
 **** Java
 lsp-java :drool:
-TODO: try it out a bit!! Maybe with a small spring boot app? :)
+TODO: settings for the spring extension to the language server
+TODO: M-RET to organize imports? 
 #+BEGIN_SRC emacs-lisp
+  ;; TODO: test the extra map stuff!!
   (use-package lsp-java
     :init
-    (add-hook 'java-mode-hook 'lsp))
+    (add-hook 'java-mode-hook 'lsp)
+
+    :bind
+    (:map java-mode-map 
+          ("M-RET" . lsp-java-organize-imports)))
 
 
   ;; Java snippets for yasnippet. Found them very useful so far
@@ -345,6 +525,8 @@ lsp-mode works out of the box with Kotlin mode as long as kotlin-language-server
 
 
 **** Web development
+Good for mixed files (javascript + html in same document, jsx etc.). 
+
 lorem
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
@@ -369,6 +551,20 @@ lorem
                                        (setq flycheck-check-syntax-automatically '(save mode-enabled))
                                        (eldoc-mode 1)
                                        (tide-hl-identifier-mode 1))))  
+#+END_SRC
+
+**** Haskell?
+
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
+
+**** Scheme
+
+#+BEGIN_SRC emacs-lisp
+  (use-package geiser
+    :init
+    (setq geiser-active-implementations '(racket)))
 #+END_SRC
 
 **** Dockerfiles
@@ -399,8 +595,13 @@ Used in Cucumber, Karate and more :) Useful to have for the situations where you
   (use-package yaml-mode)
 #+END_SRC
 
+**** XML
+#+BEGIN_SRC emacs-lisp
+  (setq nxml-child-indent 4)
+  (setq nxml-attribute-indent 4)
+#+END_SRC
 
-*** git
+*** git and project handling
 This is almost a reason to use Emacs by itself! Magit is the best way to experience git in my view. Simple and quick to use, together with its connection with git-gutter-fringe makes it super awesome!
 
 #+BEGIN_SRC emacs-lisp
@@ -415,7 +616,12 @@ This is almost a reason to use Emacs by itself! Magit is the best way to experie
     (setq-default left-fringe-width 20)
 
     :hook
-    (magit-post-refresh-hook . #'git-gutter:update-all-windows))
+    (#'git-gutter:update-all-windows . magit-post-refresh))
+
+
+  ;; TODO: maybe move it? Now it is very far down from where it is originally referenced (in helm)
+  (use-package projectile)
+  (use-package helm-projectile)
 #+END_SRC
 
 *** Other operations and tooling?
@@ -425,7 +631,7 @@ Undo-tree. I LOOOOVE undo-tree <3 Instead of having a linear line of operations 
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :init
-    (global-undo-tree-mode 1))
+    (global-undo-tree-mode))
 #+END_SRC
 
   TODO: should I have a screenshot of the tree
@@ -448,7 +654,7 @@ org mode (maybe move the intro from above?)
     (setq org-startup-with-inline-images t
         org-todo-keyword-faces '(("DONE" . "GREEN"))
         org-hide-emphasis-markers t)
-  
+
     :hook
     ;; make org mode easier to read with indentation
     (org-mode . org-indent-mode))
@@ -458,6 +664,8 @@ org mode (maybe move the intro from above?)
   (use-package org-bullets
     :hook
     (org-mode . org-bullets-mode))
+
+
 #+END_SRC
 
 
@@ -469,3 +677,30 @@ TODO: olivetti to improve readability
     :hook org-mode)
 #+END_SRC
 
+
+
+I sometimes also use LaTeX (or export org to latex and take it from there). Then auctex is  useful.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Sets the zoom level of latex fragments (in Org Mode)
+  (defun update-org-latex-fragments ()  
+    (with-current-buffer (current-buffer)
+      (when (derived-mode-p 'LaTeX-mode 'TeX-mode 'latex-mode 'tex-mode)
+        (set-default 'preview-scale-function text-scale-mode-amount)
+        (preview-buffer))))
+  (add-hook 'text-scale-mode-hook 'update-org-latex-fragments)
+
+
+  (use-package auctex
+    :init
+    ;; Preview of LaTeX formulae, tables, tikz drawings etc. 
+    (setq TeX-auto-save t)
+    (setq TeX-parse-self t)
+  
+    ;; make C-. the button for preview in latex mode
+    (define-key LaTeX-mode-map (kbd "C-.") 'preview-buffer)
+    ;; let us use minted with the preview (minted fragments is not previewed :( )
+    (setcdr (assoc "LaTeX" TeX-command-list)
+            '("%`%l%(mode) -shell-escape%' %t"
+              TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
+#+END_SRC
