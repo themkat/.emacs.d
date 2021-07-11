@@ -3,10 +3,9 @@ If you  are reading this, I finally got around to writing my .emacs config using
 
 The configuration will change with time, based upon programming languages used and so on. Some languages I just se try (see below) for, because I use them so rarely :P 
 
-
 ** TODOs before merging to master (to remind myself)
 *** DONE UPGRADE EMACS ON THE COMPUTERS YOU WILL USE THIS ON!! Preferably 27.1 
-*** TODO Get all my old config that is worth keeping into this doc
+*** DONE Get all my old config that is worth keeping into this doc
 *** DONE Fix the shitty line numbers I have kept for far too long (display-line-numbers-mode?)
 *** TODO See if there is any bloat in EXWM config and if it can be minified
 *** TODO EXWM - Look into ways of making programs less troublesome to use with their own hotkeys. Is there a whitelist/blacklist or something? 
@@ -29,9 +28,8 @@ Seems like lsp-java even has static imports... :O Really cool!
 **** editorconfig
 
 ** Basic setup
-TODO: maybe just quick package setup and installation of use-package (then use-package will do the rest)
+Before we begin, we have to do some basic setup. For the rest of the config, I will use =use-package= to install packages. I want newer packages, and packages not available in the gnu repos, so adding MELPA and the org repo (to get newest org mode). Then we install =use-package= and set te always ensure variable to make sure it always tries to download the packages we want. 
 
-TODO: include always ensure for use-package?
 
 #+BEGIN_SRC emacs-lisp
   ;; TODO: do we need both melpa and melpa-stable. Isn't melpa enough? 
@@ -170,9 +168,11 @@ Desktop environment can also be very useful when Emacs blocks the function keys 
 
 
 ** Behaviorial settings
-general settings that works in all modes
+These settings control how Emacs behaves in general (i.e, for all modes); what UI elements to show, theming, what meta-key to use on Mac OS X, Helm to navigatge etc. :) 
+
+
 *** general
-I use some general settings to make Emacs feel better. These are not necessarily connected to any modes.
+I use some general settings to make Emacs feel better. 
 
 #+BEGIN_SRC emacs-lisp
   ;; TODO: do these, the clipboard settings belong in editor settings instead?
@@ -246,10 +246,7 @@ This one only applies to Mac, but makes my life easier. The different brackets b
 
 
 *** helm
-intro on helm? 
-I use helm because i prefer it to ido or alternatives. It is simple to use, has a great UI, and to me it makes Emacs even more powerful as both a text editor and window manager (to switch windows). 
-
-TODO: will ensure also make sure requires are installed?
+I use helm because i prefer it to ido or alternatives. It is simple to use, has a great UI, and to me it makes Emacs even more powerful as both a text editor and window manager (to switch windows). It will install after projectile (which makes project handling a breeze), which is found with the git and project handling setup [[*git and project handling]]. Here I simply activate it, make the search less rigid (not just beginning of strings, but anywhere in them), remove certain buffers from the buffer list and activate some key bindings globally to do various operations. 
 
 #+BEGIN_SRC emacs-lisp
   (use-package helm
@@ -275,8 +272,9 @@ TODO: will ensure also make sure requires are installed?
 #+END_SRC
 
 *** dashboard
-TODO: should all-the-icons be here? or should that be moved?
-    
+Emacs is always open at my machine, so I really enjoy a friendly startup screen :) dashboard provides what I want with projects (from projectiles list), recently edited files and latest news from Hackernews. To make the experience even better I also install all-the-icons to get pretty icons.
+*NOTE:* At first run, you should run =M-x all-the-icons-install-fonts= to get the fonts needed for the icons to show properly. 
+
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons)
 
@@ -295,23 +293,21 @@ TODO: should all-the-icons be here? or should that be moved?
 #+END_SRC
 
 *** themes and ui
-TODO: include the doom-themes? or should I just keep the leuven theme for now?
-TODO: powerine? to modernize the look a bit? maybe try it and see if you like it?
+To make Emacs better looking, I use the leuven-theme. This theme improves org-mode readability and makes Emacs blue and pretty in general :) I used to use doom-themes, moe-themes and so on with a simple theme switcher function, but I mostly just use leuven so I decided to remove them. The modeline is made prettier and slightly more modern(?) with telephone line to get a beautiful powerline :) 
+TODO: any screenshots? 
 
 #+BEGIN_SRC emacs-lisp
   (use-package leuven-theme
-    :init
-    (load-theme 'leuven t))
+	:init
+	(load-theme 'leuven t))
 
-
-  ;; TODO: have this in its own section?
   (use-package telephone-line
-    :init
-    (telephone-line-mode 1))
+	:init
+	(telephone-line-mode 1))
 #+END_SRC
 
-*** Other
-describing try and the other similar ones? 
+*** try
+Sometimes I like to try packages without having them as a permanent part of my Emacs setup. try does exactly that, where the packages are gone after Emacs is closed. 
 
 #+BEGIN_SRC emacs-lisp
   (use-package try)
@@ -385,8 +381,7 @@ TODO: little bit about what it does? screenshot?
 #+END_SRC
 
 
-pretty symbols? seems like i just have to set an alist with unicode codes for the characters I want (and the string to do it for)
-(could probably be buffer local as well. Saving a few I really miss here :smile: )
+Certain strings should in my view be translated to unicode symbols, and so far I just set some defaults for all modes.
 #+BEGIN_SRC emacs-lisp
   ;; should I defaults? or maybe one for c-like languages, one for lisp etc.?
   (setq-default prettify-symbols-alist '(("lambda" . 955)
@@ -396,7 +391,7 @@ pretty symbols? seems like i just have to set an alist with unicode codes for th
 #+END_SRC
 
 
-emojis? :P or is that better someplace else?
+Emojis in comments, org mode text and other places are really fun and makes the text feel more alive (instead of showing codes for emojis where applicable). (sometimes I turn it off because it ends up emojifying too much, but that is easy with =M-x emojify-mode=.
 #+BEGIN_SRC emacs-lisp
   (use-package emojify
     :init
@@ -405,7 +400,8 @@ emojis? :P or is that better someplace else?
 
 
 *** Spell checking
-
+Acivate spell checking for some relevant modes, set some preferred languages and makes the correction prettier with helm. 
+	
 #+BEGIN_SRC emacs-lisp
   ;; FlySpell (spell checking)
   (dolist (flyspellmodes '(text-mode-hook
@@ -435,8 +431,30 @@ emojis? :P or is that better someplace else?
 	(define-key flyspell-mode-map (kbd "C-,") #'helm-flyspell-correct))
 #+END_SRC
 
+*** Completion general
+company (COMPLete ANY) provides base functionality for completions (ui elements, searching for candidates etc). For many modes, company is sufficient, but for some languages it can be great to use with something like lsp-mode to provide more advanced completion (like for Java and Kotlin). 
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+	:init
+	(global-company-mode)
+
+	;; set the completion to begin at once
+	(setq company-idle-delay 0
+		  company-echo-delay 0
+		  company-minimum-prefix-length 1)
+
+	:bind
+	;; trigger company to see a list of choices even when nothing is typed. maybe it quit because we clicked something. or maybe we dont know what to type yet :P
+	;; CTRL-ENTER. Because C-RET does not work. 
+	([(control return)] . company-complete))
+#+END_SRC
+
+
 *** IDE functionality - general
-describe lsp-mode and maybe dap-mode. lsp-ui as well probably. Because I think it can be great in languages like Java
+*LSP = Language Server Protocol*
+lsp-mode uses LSP servers to provides IDE functionality like code completion (intellisense like using company-capf), navigation (jump to symbol), refactoring functionality and so on. lsp-ui is used to get prettier boxes and more info visible in an easy way (like javadoc). Currently dap-mode is added because I play a bit with it, and my first impressions are great so far (for the few times I use a debugger, I know I'm weird for not needing it much at all). 
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode)
@@ -453,39 +471,21 @@ describe lsp-mode and maybe dap-mode. lsp-ui as well probably. Because I think i
 #+END_SRC
 
 
-flycheck? or could that be its own thing? Syntax checking. 
+Some modes uses flycheck to provide syntax correctness checks (e.g, red lines below errors).
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
-    :init
+    :config
     (setq flycheck-indication-mode nil)
     (setq flycheck-highlighting-mode 'lines))
 #+END_SRC
 
-
-*** Completion general? (or should this be general editing?) - general -- TODO: move to before IDE functionality? 
-company time! just a use-package with company-mode for the most basic settings. 
-#+BEGIN_SRC emacs-lisp
-  (use-package company
-    :init
-    (global-company-mode)
-
-    ;; set the completion to begin at once
-    (setq company-idle-delay 0
-          company-echo-delay 0
-          company-minimum-prefix-length 1)
-
-    :bind
-    ;; trigger company to see a list of choices even when nothing is typed. maybe it quit because we clicked something. or maybe we dont know what to type yet :P
-    ;; CTRL-ENTER. Because C-RET does not work. 
-    ([(control return)] . company-complete))
-#+END_SRC
 
 *** Programming-, scripting-, markup-languages and so on
 Some languages work great out of the box, some require a little tweaking. 
 
 
 **** C
-C does not really need much auto completion, but it can be great to have it for projects that use a lot of external libraries (like libogc for Nintendo GameCube development, where you have a SDK for the console).
+C does not really need much auto completion, but it can be great to have it for projects that use some external libraries (like libogc for Nintendo GameCube development, where you have a SDK for the console).
 
 *Prerequisites:* clang installed, configured =company-c-headers-path-user= (for C header completion) and =company-clang-arguments= (for company-clang, which is built-into company-mode). Both can be set to the same list of include paths (with the clang one starting with "-I"). .dir-locals.el works fine for this purpose :) (standard paths are default for company-clang if you do not cross-compile or something similar).
 
@@ -614,17 +614,18 @@ This is almost a reason to use Emacs by itself! Magit is the best way to experie
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :bind
-    ("C-x g" . magit-status))
+	:bind
+	("C-x g" . magit-status))
 
+  (use-package git-gutter)
   (use-package git-gutter-fringe
-    :after magit
-    :init
-    (global-git-gutter-mode 1)
-    (setq-default left-fringe-width 20)
+	:after (magit git-gutter)
+	:init
+	(global-git-gutter-mode 1)
+	(setq-default left-fringe-width 20)
 
-    :hook
-    (magit-post-refresh . #'git-gutter:update-all-windows))
+	:hook
+	(magit-post-refresh . #'git-gutter:update-all-windows))
 
 
   ;; TODO: maybe move it? Now it is very far down from where it is originally referenced (in helm)
