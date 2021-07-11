@@ -275,17 +275,22 @@ TODO: will ensure also make sure requires are installed?
 #+END_SRC
 
 *** dashboard
+TODO: should all-the-icons be here? or should that be moved?
+    
 #+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons)
+
   (use-package dashboard
-    :init
-    (dashboard-setup-startup-hook)
-    (setq dashboard-banner-logo-title "Welcome my queen! Make some kewl stuff today!"
-          dashboard-startup-banner 'logo
-          dashboard-set-heading-icons t
-          dashboard-set-file-icons t
-          dashboard-items '((projects . 5)
-                            (recents . 5)
-                            (hackernews . 5))))
+	:after (all-the-icons dashboard-hackernews)
+	:init
+	(dashboard-setup-startup-hook)
+	(setq dashboard-banner-logo-title "Welcome my queen! Make some kewl stuff today!"
+		  dashboard-startup-banner 'logo
+		  dashboard-set-heading-icons t
+		  dashboard-set-file-icons t
+		  dashboard-items '((projects . 5)
+							(recents . 5)
+							(hackernews . 5))))
   (use-package dashboard-hackernews)
 #+END_SRC
 
@@ -348,7 +353,7 @@ TODO: little bit about what it does? screenshot?
   yasnippet?
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
-    :init
+    :config
     (yas-reload-all))
 #+END_SRC
   
@@ -364,7 +369,7 @@ TODO: little bit about what it does? screenshot?
   paredit? or should it be at a more central place?
   #+BEGIN_SRC emacs-lisp
     (use-package paredit
-      :init 
+      :config 
       ;; making paredit work with delete-selection-mode
       ;; found on the excellent place called what the emacs d.
       (put 'paredit-forward-delete 'delete-selection 'supersede)
@@ -404,9 +409,9 @@ emojis? :P or is that better someplace else?
 #+BEGIN_SRC emacs-lisp
   ;; FlySpell (spell checking)
   (dolist (flyspellmodes '(text-mode-hook
-                           org-mode-hook
-                           latex-mode-hook))
-    (add-hook flyspellmodes 'turn-on-flyspell))
+						   org-mode-hook
+						   latex-mode-hook))
+	(add-hook flyspellmodes 'turn-on-flyspell))
 
   ;; comments and strings in code
   (add-hook 'prog-mode-hook 'flyspell-prog-mode)
@@ -416,18 +421,18 @@ emojis? :P or is that better someplace else?
 
   ;; let us cycle american english (best written english) and norwegian 
   (defun change-dictionary ()
-    (interactive)
-    (ispell-change-dictionary (if (string-equal ispell-current-dictionary "american")
-                                  "norsk"
-                                "american")))
-
-  ;; makes my latex hotkey work. (I only use C-, for correcting anyway)
-  (define-key flyspell-mode-map (kbd "C-.") nil)
+	(interactive)
+	(ispell-change-dictionary (if (string-equal ispell-current-dictionary "american")
+								  "norsk"
+								"american")))
 
   ;; helm functionality for flyspell. To make it more user friendly
   (use-package helm-flyspell
-    :init
-    (define-key flyspell-mode-map (kbd "C-,") #'helm-flyspell-correct))
+	:after flyspell
+	:init
+	;; Disable standard keys for flyspell correct, and make my own for helm.
+	(define-key flyspell-mode-map (kbd "C-.") nil)
+	(define-key flyspell-mode-map (kbd "C-,") #'helm-flyspell-correct))
 #+END_SRC
 
 *** IDE functionality - general
@@ -687,23 +692,28 @@ I sometimes also use LaTeX (or export org to latex and take it from there). Then
 #+BEGIN_SRC emacs-lisp
   ;; Sets the zoom level of latex fragments (in Org Mode)
   (defun update-org-latex-fragments ()  
-    (with-current-buffer (current-buffer)
-      (when (derived-mode-p 'LaTeX-mode 'TeX-mode 'latex-mode 'tex-mode)
-        (set-default 'preview-scale-function text-scale-mode-amount)
-        (preview-buffer))))
+	(with-current-buffer (current-buffer)
+	  (when (derived-mode-p 'LaTeX-mode 'TeX-mode 'latex-mode 'tex-mode)
+		(set-default 'preview-scale-function text-scale-mode-amount)
+		(preview-buffer))))
   (add-hook 'text-scale-mode-hook 'update-org-latex-fragments)
 
 
-  (use-package auctex
-    :init
-    ;; Preview of LaTeX formulae, tables, tikz drawings etc. 
-    (setq TeX-auto-save t)
-    (setq TeX-parse-self t)
-  
-    ;; make C-. the button for preview in latex mode
-    (define-key LaTeX-mode-map (kbd "C-.") 'preview-buffer)
-    ;; let us use minted with the preview (minted fragments is not previewed :( )
-    (setcdr (assoc "LaTeX" TeX-command-list)
-            '("%`%l%(mode) -shell-escape%' %t"
-              TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
+  ;; Issue with package name and providing it.
+  ;; use-package auctex gives an error with "failed to provide feature auctex" because of older naming in files.
+  ;; https://emacs.stackexchange.com/questions/41321/when-to-specify-a-package-name-in-use-packages-ensure-tag/41324#41324
+  (use-package tex
+	:ensure auctex
+	:defer t
+	:config
+	;; Preview of LaTeX formulae, tables, tikz drawings etc. 
+	(setq TeX-auto-save t)
+	(setq TeX-parse-self t)
+
+	;; make C-. the button for preview in latex mode
+	(define-key LaTeX-mode-map (kbd "C-.") 'preview-buffer)
+	;; let us use minted with the preview (minted fragments is not previewed :( )
+	(setcdr (assoc "LaTeX" TeX-command-list)
+			'("%`%l%(mode) -shell-escape%' %t"
+			  TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
 #+END_SRC
