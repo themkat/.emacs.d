@@ -680,10 +680,11 @@ org mode (maybe move the intro from above?)
 
 TODO: olivetti to improve readability
 #+BEGIN_SRC emacs-lisp
-  (use-package olivetti
-    :init
-    (setq olivetti-minimum-body-width 100)
-    :hook org-mode)
+  (use-package olivetti-mode
+	:ensure olivetti 
+	:init
+	(setq olivetti-minimum-body-width 100)
+	:hook org-mode)
 #+END_SRC
 
 
