@@ -250,25 +250,25 @@ I use helm because i prefer it to ido or alternatives. It is simple to use, has 
 
 #+BEGIN_SRC emacs-lisp
   (use-package helm
-    :after projectile
-  
-    :init
-    (helm-mode 1)
-    (projectile-global-mode 1)
-    (helm-projectile-on)
-    (helm-adaptive-mode 1)
-    (setq helm-M-x-fuzzy-match t
-          projectile-completion-system 'helm
-          helm-split-window-in-side-p t)
-    ;; hide uninteresting buffers from buffer list
-    (add-to-list 'helm-boring-buffer-regexp-list (rx "*magit"))
-    (add-to-list 'helm-boring-buffer-regexp-list (rx "*helm"))
-  
-    :bind
-    (("M-x" . helm-M-x)
-     ("C-x C-f" . helm-find-files)
-     ;; get the awesome buffer list instead of the standard stuff
-     ("C-x b" . helm-mini)))
+	:after projectile
+
+	:init
+	(helm-mode 1)
+	(projectile-global-mode 1)
+	(helm-projectile-on)
+	(helm-adaptive-mode 1)
+	(setq helm-M-x-fuzzy-match t
+		  projectile-completion-system 'helm
+		  helm-split-window-in-side-p t)
+	;; hide uninteresting buffers from buffer list
+	(add-to-list 'helm-boring-buffer-regexp-list (rx "magit-"))
+	(add-to-list 'helm-boring-buffer-regexp-list (rx "*helm"))
+
+	:bind
+	(("M-x" . helm-M-x)
+	 ("C-x C-f" . helm-find-files)
+	 ;; get the awesome buffer list instead of the standard stuff
+	 ("C-x b" . helm-mini)))
 #+END_SRC
 
 *** dashboard
