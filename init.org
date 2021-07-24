@@ -276,19 +276,21 @@ Emacs is always open at my machine, so I really enjoy a friendly startup screen 
 *NOTE:* At first run, you should run =M-x all-the-icons-install-fonts= to get the fonts needed for the icons to show properly. 
 
 #+BEGIN_SRC emacs-lisp
+  ;; Getting pretty icons 
   (use-package all-the-icons)
 
   (use-package dashboard
-	:after (all-the-icons dashboard-hackernews)
-	:init
-	(dashboard-setup-startup-hook)
-	(setq dashboard-banner-logo-title "Welcome my queen! Make some kewl stuff today!"
-		  dashboard-startup-banner 'logo
-		  dashboard-set-heading-icons t
-		  dashboard-set-file-icons t
-		  dashboard-items '((projects . 5)
-							(recents . 5)
-							(hackernews . 5))))
+    :after (all-the-icons dashboard-hackernews page-break-lines)
+    :init
+    (dashboard-setup-startup-hook)
+    (setq dashboard-banner-logo-title "Welcome my queen! Make some kewl stuff today!"
+          dashboard-startup-banner 'logo
+          dashboard-center-content t
+          dashboard-set-heading-icons t
+          dashboard-set-file-icons t
+          dashboard-items '((projects . 5)
+                            (recents . 5)
+                            (hackernews . 5))))
   (use-package dashboard-hackernews)
 #+END_SRC
 
