@@ -4,21 +4,7 @@ If you  are reading this, I finally got around to writing my .emacs config using
 The configuration will change with time, based upon programming languages used and so on. Some languages I just se try (see below) for, because I use them so rarely :P 
 
 ** TODOs before merging to master (to remind myself)
-*** DONE UPGRADE EMACS ON THE COMPUTERS YOU WILL USE THIS ON!! Preferably 27.1 
-*** DONE Get all my old config that is worth keeping into this doc
-*** DONE Fix the shitty line numbers I have kept for far too long (display-line-numbers-mode?)
-*** TODO See if there is any bloat in EXWM config and if it can be minified
-*** TODO EXWM - Look into ways of making programs less troublesome to use with their own hotkeys. Is there a whitelist/blacklist or something? 
-*** use-package
-**** DONE Try use-package and see if you like it better
-**** DONE Transition the existing package config worth keeping over to use-package
-*** DONE Transition from Eclim to Lsp alternative
-Eclim has worked great, but it is a bit clunky.. And sadly do not work great with newer Java versions. Also try the Kotlin language server again. Seems like the genius of a maintainer has solved it!
-
-Seems like lsp-java even has static imports... :O Really cool!
 *** Some sort of automation pipeline? :P For fun :P Testing that it is buildable? To avoid stuff in master that does not build? Maybe some sort of tagging to make it easier to know which commit has the last successful code run? (have a simple versioning scheme like year.x? 2021.1, 2021.2 etc.?)
-*** Packages that I should add that I've tried (using try) for way too long
-**** DONE restclient
 *** Packages to test out
 **** DONE dap-mode for debugging. Try to see if you can learn it, and if it can be useful in the future
 **** TODO treemacs
@@ -348,15 +334,16 @@ TODO: little bit about what it does? screenshot?
 #+END_SRC
 
 
-  yasnippet?
+Yasnippet makes boiler plate and other code snippets much faster to write with snippets that activates with small keywords. Just type the keyword and TAB, and yasnippet will fill in the snippet :) (you may have to fill in some names like class name or parameter names after TAB off course...).
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
     :config
     (yas-reload-all))
 #+END_SRC
-  
 
-  Multiple cursors.
+
+
+Sometimes we want to edit multiple places in the file at the same time. Most of the time this is just adding the same characters multiple places in the file in places with the same pattern, other times it is inserting a sequence of numbers.
   #+BEGIN_SRC emacs-lisp
     (use-package multiple-cursors
       :bind
@@ -364,7 +351,7 @@ TODO: little bit about what it does? screenshot?
 #+END_SRC
 
 
-  paredit? or should it be at a more central place?
+Paredit makes paranthesis handling a breeze in Lisp-languages :) Only setting I really need is to make it possible to select something and delete the selection (including the paranthesis).
   #+BEGIN_SRC emacs-lisp
     (use-package paredit
       :config 
@@ -532,7 +519,7 @@ lsp-mode works out of the box with Kotlin mode as long as kotlin-language-server
 
 
 **** Web development
-Good for mixed files (javascript + html in same document, jsx etc.). 
+Makes it more comfortable to edit mixed files (javascript + html in same document, jsx etc.). 
 
 lorem
 #+BEGIN_SRC emacs-lisp
@@ -570,7 +557,7 @@ lorem
 #+END_SRC
 
 **** Scheme
-
+Use geiser to make Scheme great to work with. Not really used much anymore, but still fun to write some small procdures in Scheme once in a while :) 
 #+BEGIN_SRC emacs-lisp
   (use-package geiser
     :init
@@ -680,13 +667,13 @@ org mode (maybe move the intro from above?)
 #+END_SRC
 
 
-TODO: olivetti to improve readability
+Olivetti to improve readability. Olivetti centers the entire buffer like a sheet of paper and truncates the content. This helps my eyes when writing things that are more natural flowing text (articles, books, other org mode stuff). 
 #+BEGIN_SRC emacs-lisp
   (use-package olivetti-mode
-	:ensure olivetti 
-	:init
-	(setq olivetti-minimum-body-width 100)
-	:hook org-mode)
+    :ensure olivetti 
+    :init
+    (setq olivetti-minimum-body-width 100)
+    :hook org-mode)
 #+END_SRC
 
 
