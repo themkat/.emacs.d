@@ -266,7 +266,7 @@ Emacs is always open at my machine, so I really enjoy a friendly startup screen 
   (use-package all-the-icons)
 
   (use-package dashboard
-    :after (all-the-icons dashboard-hackernews page-break-lines)
+    :after (all-the-icons dashboard-hackernews)
     :init
     (dashboard-setup-startup-hook)
     (setq dashboard-banner-logo-title "Welcome my queen! Make some kewl stuff today!"
