@@ -163,6 +163,13 @@ I use some general settings to make Emacs feel better.
 #+BEGIN_SRC emacs-lisp
   ;; TODO: do these, the clipboard settings belong in editor settings instead?
 
+  ;; Get PATH from session instead of whatever idiotic things are done before
+  (use-package exec-path-from-shell
+    :init
+    (when (memq window-system '(mac ns x))
+      (exec-path-from-shell-initialize)))
+
+
   ;; set default coding of buffers
   (setq default-buffer-file-coding-system 'utf-8-unix)
 
