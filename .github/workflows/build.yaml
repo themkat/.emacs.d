@@ -16,7 +16,7 @@ jobs:
           version: 27.2
       - name: Tangle and byte-compile (replaces old init.el)
         run: |
-          HOME=$GITHUB_WORKSPACE emacs --no-window-system --script init.el
+          HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --script init.el
       - name: Run the new setup once and see if it has errors 
         run: |
-          HOME=$GITHUB_WORKSPACE emacs --no-window-system --script init.el
+          HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --script init.el
