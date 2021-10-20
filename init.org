@@ -183,14 +183,16 @@ I use some general settings to make Emacs feel better.
   (setq auto-save-default nil)
 
 
-  ;; Removed annoying UI elements
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-
-  ;; shows battery status (useful when using EXWM)
-  (display-battery-mode 1)
-
+  ;; GUI related settings
+  (if (display-graphic-p)
+      (progn
+        ;; Removed annoying UI elements
+        (menu-bar-mode -1)
+        (tool-bar-mode -1)
+        (scroll-bar-mode -1)
+	  
+        ;; shows battery status (useful when using EXWM)
+        (display-battery-mode 1)))
 
   ;; disable the C-z sleep/suspend key
   ;; rarely use emacs in terminal mode anymore and that is the only place it can be useful
