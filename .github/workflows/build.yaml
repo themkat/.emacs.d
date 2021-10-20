@@ -14,9 +14,6 @@ jobs:
       - uses: purcell/setup-emacs@v3.0
         with:
           version: 27.2
-      - name: Tangle and byte-compile (replaces old init.el)
-        run: |
-          HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --script init.el
-      - name: Run the new setup once and see if it has errors 
+      - name: Tangle, byte-compile (replaces old init.el) and run new setup
         run: |
           HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --script init.el
