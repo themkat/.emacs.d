@@ -16,7 +16,7 @@ jobs:
           version: 27.2
       - name: Tangle and byte-compile (replaces old init.el)
         run: |
-          emacs -Q --script init.el
+          emacs -Q --no-init-file --script init.el
       - name: Run the new setup once and see if it has errors 
         run: |
-          emacs -Q --script init.el
+          emacs -Q --no-init-file --script init.el
