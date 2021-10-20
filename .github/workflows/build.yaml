@@ -1,0 +1,22 @@
+name: Run setup through Emacs and see if it gives errors
+
+on: [push, pull_request]
+
+# Why have a pipeline?
+# - To see that quick pushes don't break anything
+# - (Older) packages might be deleted from Melpa (happened with Pretty-Lambdada), and then I can fix it before experiencing it on a new machine (which might happen much later when I'm too dependent on that package)
+# - See that the changes will work on any machine and don't depend on local circumstances
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: purcell/setup-emacs@v3.0
+        with:
+          version: 27.2
+      - name: Tangle and byte-compile (replaces old init.el)
+        run: |
+          emacs -Q --script init.el
+      - name: Run the new setup once and see if it has errors 
+        run: |
+          emacs -Q --script init.el
