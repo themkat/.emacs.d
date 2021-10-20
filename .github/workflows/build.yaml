@@ -14,9 +14,12 @@ jobs:
       - uses: purcell/setup-emacs@v3.0
         with:
           version: 27.2
+      - name: Fix home directory for .emacs.d to work
+        run: |
+          echo "HOME=$GITHUB_WORKSPACE >> $GITHUB_ENV"
       - name: Tangle and byte-compile (replaces old init.el)
         run: |
-          emacs -Q --no-init-file --script init.el
+          emacs -Q --script init.el
       - name: Run the new setup once and see if it has errors 
         run: |
-          emacs -Q --no-init-file --script init.el
+          emacs -Q --script init.el
