@@ -3,15 +3,8 @@ If you  are reading this, I finally got around to writing my .emacs config using
 
 The configuration will change with time, based upon programming languages used and so on. Some languages I just se try (see below) for, because I use them so rarely :P 
 
-** TODOs before merging to master (to remind myself)
-*** Some sort of automation pipeline? :P For fun :P Testing that it is buildable? To avoid stuff in master that does not build? Maybe some sort of tagging to make it easier to know which commit has the last successful code run? (have a simple versioning scheme like year.x? 2021.1, 2021.2 etc.?)
-*** Packages to test out
-**** DONE dap-mode for debugging. Try to see if you can learn it, and if it can be useful in the future
-**** TODO treemacs
-**** TODO which-key
-**** TODO define-word
-**** Is there a key promoter like thing? One of the few things in IntelliJ I think is really cool :P
-**** editorconfig
+
+*TODO:* consider adding some screenshots and similar for documentation.
 
 ** Basic setup
 Before we begin, we have to do some basic setup. For the rest of the config, I will use =use-package= to install packages. I want newer packages, and packages not available in the gnu repos, so adding MELPA and the org repo (to get newest org mode). Then we install =use-package= and set te always ensure variable to make sure it always tries to download the packages we want. 
@@ -19,7 +12,7 @@ Before we begin, we have to do some basic setup. For the rest of the config, I w
 
 #+BEGIN_SRC emacs-lisp
   ;; TODO: do we need both melpa and melpa-stable. Isn't melpa enough? 
-  (require 'package) 
+  (require 'package)
   (add-to-list 'package-archives
                '("melpa" . "https://melpa.org/packages/"))
   (add-to-list 'package-archives
@@ -43,8 +36,10 @@ Before we begin, we have to do some basic setup. For the rest of the config, I w
 
 
 ** EXWM - Emacs Window manager
-keep the "useful for exwm" in this category as well. if not I would probably not use it... 
-TODO: maybe just a quick intro and a load statement? no need to clutter the main config file with that.
+TODO: do this need to be moved to after the environment variable config? Using mostly OS X these days, so  should test next time I use this setup on a loonix box.
+
+
+On my GNU/Linux machines I have used EXWM as a window manager for quite a while. It makes navigating windows easier, and makes it possible to do everything in Emacs.
 
 #+BEGIN_SRC emacs-lisp
   ;; TODO: test!! Using a Mac at the moment. Test when I use EXWM on a machine again
@@ -141,8 +136,6 @@ TODO: maybe just a quick intro and a load statement? no need to clutter the main
 	  
         (exwm-enable)))
 #+END_SRC
-
-TODO: should we have desktop-environment here as well? Maybe that should require exwm. That way it is never loaded if we don't use exwm on that machine.
 
 Desktop environment can also be very useful when Emacs blocks the function keys (volume etc.). I have this issue with EXWM, and desktop-environment fixes it.
 #+BEGIN_SRC emacs-lisp
@@ -312,15 +305,12 @@ Sometimes I like to try packages without having them as a permanent part of my E
 
 
 ** Editing  settings
-some intro?
-
-TODO: just have settings for each programming language? or programming in general (so web development could be one category?)
 
 *** General editing
 TODO: should company related settings be here? Or in their own heading (Completion?)?
 
 
-Line numbers? (or should this be in a programming category?
+Line numbers
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'prog-mode-hook 'display-line-numbers-mode)
 
@@ -336,8 +326,7 @@ Rainbow mode
 #+END_SRC
 
 
-focus mode!!! 
-TODO: little bit about what it does? screenshot?
+focus mode!!! Grays out the rest of the buffer, and only highlights the given function we are in. 
 #+BEGIN_SRC emacs-lisp
   (use-package focus)
 #+END_SRC
@@ -389,7 +378,7 @@ Certain strings should in my view be translated to unicode symbols, and so far I
 #+END_SRC
 
 
-Emojis in comments, org mode text and other places are really fun and makes the text feel more alive (instead of showing codes for emojis where applicable). (sometimes I turn it off because it ends up emojifying too much, but that is easy with =M-x emojify-mode=.
+Emojis in comments, org mode text and other places are really fun and makes the text feel more alive (instead of showing codes for emojis where applicable). (sometimes I turn it off because it ends up emojifying too much, but that is easy with =M-x emojify-mode=).
 #+BEGIN_SRC emacs-lisp
   (use-package emojify
     :init
@@ -494,11 +483,12 @@ C does not really need much auto completion, but it can be great to have it for 
 
 
 **** Java
-lsp-java :drool:
+lsp-java :drool: 
 TODO: settings for the spring extension to the language server
-TODO: M-RET to organize imports? 
+
+Java IDE-like functionality in Emacs. When we run this mode for the first time, the lsp server will be downloaded automatically. Works like a charm!
+
 #+BEGIN_SRC emacs-lisp
-  ;; TODO: test the extra map stuff!!
   (use-package lsp-java
     :init
     (add-hook 'java-mode-hook 'lsp)
@@ -517,27 +507,24 @@ TODO: M-RET to organize imports?
 
 
 **** Kotlin
-
-lsp-mode works out of the box with Kotlin mode as long as kotlin-language-server is in the path :) So I only install Kotlin-mode :)
+lsp-mode works out of the box with Kotlin mode as long as [[https://github.com/fwcd/kotlin-language-server][kotlin-language-server]] is in the path :) So I only install Kotlin-mode :)
 
 #+BEGIN_SRC emacs-lisp
   (use-package kotlin-mode
     :hook
-    (java-mode . lsp))
+    (kotlin-mode . lsp))
 #+END_SRC
 
 
 **** Web development
 Makes it more comfortable to edit mixed files (javascript + html in same document, jsx etc.). 
 
-lorem
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
     :init
     (setq web-mode-enable-current-element-highlight t)
 
     :mode
-    ;; TODO: should I rewrite to a single regex?
     (("\\.html?$" . web-mode)
      ("\\.jsx?$" . web-mode)))
 #+END_SRC
@@ -556,14 +543,6 @@ lorem
                                        (tide-hl-identifier-mode 1))))  
 #+END_SRC
 
-**** Haskell?
-
-#+BEGIN_SRC emacs-lisp
-  (use-package lsp-haskell
-    :init
-    (add-hook 'haskell-mode-hook #'lsp)
-    (add-hook 'haskell-literate-mode-hook #'lsp))
-#+END_SRC
 
 **** Scheme
 Use geiser to make Scheme great to work with. Not really used much anymore, but still fun to write some small procdures in Scheme once in a while :) 
@@ -589,14 +568,12 @@ Used in Cucumber, Karate and more :) Useful to have for the situations where you
 #+END_SRC
 
 **** Markdown
-
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode)
 #+END_SRC
 
 
 **** YAML
-
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode)
 #+END_SRC
@@ -609,21 +586,24 @@ Used in Cucumber, Karate and more :) Useful to have for the situations where you
 
 *** git and project handling
 This is almost a reason to use Emacs by itself! Magit is the best way to experience git in my view. Simple and quick to use, together with its connection with git-gutter-fringe makes it super awesome!
+TODO: screenshots?
+
+TODO: git gutter not showing up before making changes... I need to save before it shows... sometimes never...
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-	:bind
-	("C-x g" . magit-status))
+    :bind
+    ("C-x g" . magit-status))
 
-  (use-package git-gutter)
-  (use-package git-gutter-fringe
-	:after (magit git-gutter)
-	:init
-	(global-git-gutter-mode 1)
-	(setq-default left-fringe-width 20)
+  (use-package git-gutter
+    :ensure git-gutter-fringe
+    :after (magit)
+    :init
+    (global-git-gutter-mode 1)
+    (setq-default left-fringe-width 20)
 
-	:hook
-	(magit-post-refresh . #'git-gutter:update-all-windows))
+    :hook
+    (magit-post-refresh . #'git-gutter:update-all-windows))
 
 
   ;; TODO: maybe move it? Now it is very far down from where it is originally referenced (in helm)
@@ -642,7 +622,6 @@ Undo-tree. I LOOOOVE undo-tree <3 Instead of having a linear line of operations 
 #+END_SRC
 
   TODO: should I have a screenshot of the tree
-  TODO: does this belong in a more central place? It is awesome package that helps me everyday...
 
 
  Emacs works great as a REST client (also used it for other HTTP requests, e.g, SOAP), mostly because of the amazing restclient(-mode):
@@ -692,28 +671,28 @@ I sometimes also use LaTeX (or export org to latex and take it from there). Then
 #+BEGIN_SRC emacs-lisp
   ;; Sets the zoom level of latex fragments (in Org Mode)
   (defun update-org-latex-fragments ()  
-	(with-current-buffer (current-buffer)
-	  (when (derived-mode-p 'LaTeX-mode 'TeX-mode 'latex-mode 'tex-mode)
-		(set-default 'preview-scale-function text-scale-mode-amount)
-		(preview-buffer))))
+    (with-current-buffer (current-buffer)
+      (when (derived-mode-p 'LaTeX-mode 'TeX-mode 'latex-mode 'tex-mode)
+        (set-default 'preview-scale-function text-scale-mode-amount)
+        (preview-buffer))))
   (add-hook 'text-scale-mode-hook 'update-org-latex-fragments)
 
 
   ;; Issue with package name and providing it.
   ;; use-package auctex gives an error with "failed to provide feature auctex" because of older naming in files.
   ;; https://emacs.stackexchange.com/questions/41321/when-to-specify-a-package-name-in-use-packages-ensure-tag/41324#41324
-  (use-package tex
-	:ensure auctex
-	:defer t
-	:config
-	;; Preview of LaTeX formulae, tables, tikz drawings etc. 
-	(setq TeX-auto-save t)
-	(setq TeX-parse-self t)
+  ;; (use-package tex
+  ;;   :ensure auctex
+  ;;   :defer t
+  ;;   :config
+  ;;   ;; Preview of LaTeX formulae, tables, tikz drawings etc. 
+  ;;   (setq TeX-auto-save t)
+  ;;   (setq TeX-parse-self t)
 
-	;; make C-. the button for preview in latex mode
-	(define-key LaTeX-mode-map (kbd "C-.") 'preview-buffer)
-	;; let us use minted with the preview (minted fragments is not previewed :( )
-	(setcdr (assoc "LaTeX" TeX-command-list)
-			'("%`%l%(mode) -shell-escape%' %t"
-			  TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
+  ;;   ;; make C-. the button for preview in latex mode
+  ;;   (define-key LaTeX-mode-map (kbd "C-.") 'preview-buffer)
+  ;;   ;; let us use minted with the preview (minted fragments is not previewed :( )
+  ;;   (setcdr (assoc "LaTeX" TeX-command-list)
+  ;; 		  '("%`%l%(mode) -shell-escape%' %t"
+  ;; 			TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
 #+END_SRC
