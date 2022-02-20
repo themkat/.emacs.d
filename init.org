@@ -1,0 +1,697 @@
+* .emacs configuration
+If you  are reading this, I finally got around to writing my .emacs config using Org mode. Why? Because it makes is easy to document the whys of my config. I also think it will make it fun to re-read my comments and text after some time :P
+
+The configuration will change with time, based upon programming languages used and so on. Some languages I just se try (see below) for, because I use them so rarely :P 
+
+
+*TODO:* consider adding some screenshots and similar for documentation.
+
+** Basic setup
+Before we begin, we have to do some basic setup. For the rest of the config, I will use =use-package= to install packages. I want newer packages, and packages not available in the gnu repos, so adding MELPA and the org repo (to get newest org mode). Then we install =use-package= and set te always ensure variable to make sure it always tries to download the packages we want. 
+
+
+#+BEGIN_SRC emacs-lisp
+  ;; TODO: do we need both melpa and melpa-stable. Isn't melpa enough? 
+  (require 'package)
+  (add-to-list 'package-archives
+               '("melpa" . "https://melpa.org/packages/"))
+  (add-to-list 'package-archives
+               '("melpa-stable" . "https://stable.melpa.org/packages/"))
+  (add-to-list 'package-archives
+               '("org" . "http://orgmode.org/elpa/") t)  ;; for newest version of org mode
+  (package-initialize)
+
+  ;; only refresh package contents if we havent downloaded it yet.
+  (unless package-archive-contents
+    (package-refresh-contents))
+
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+
+  ;; always download packages when we don't have them locally
+  (require 'use-package)
+  (setq use-package-always-ensure 't)
+#+END_SRC
+
+
+
+** EXWM - Emacs Window manager
+TODO: do this need to be moved to after the environment variable config? Using mostly OS X these days, so  should test next time I use this setup on a loonix box.
+
+
+On my GNU/Linux machines I have used EXWM as a window manager for quite a while. It makes navigating windows easier, and makes it possible to do everything in Emacs.
+
+#+BEGIN_SRC emacs-lisp
+  ;; TODO: test!! Using a Mac at the moment. Test when I use EXWM on a machine again
+  (if (getenv "USE_EXWM")
+      (use-package exwm
+        :init
+        ;; Standard setup with minor tweaks. Probably some things that can be removed.
+        ;; Shrink fringes to 1 pixel
+        (fringe-mode 1)
+
+        ;; Display the time in the modeline
+        (setq display-time-default-load-average nil)
+        (setq display-time-day-and-date t display-time-24hr-format t)
+        (display-time-mode t)
+
+        ;; TODO: do we need this? I use helm to switch buffers and stuff
+        (ido-mode 1)
+
+        ;; Emacs server is not required to run EXWM but it has some interesting uses
+        ;; (see next section)
+        (server-start)
+
+        ;; Probably not needed after use-package
+        ;; Load EXWM
+        ;;(require 'exwm)
+
+        ;; TODO: remove because of helm
+        ;; Fix problems with Ido
+        (require 'exwm-config)
+        (exwm-config-ido)
+
+        ;; Set the initial number of workspaces.
+        (setq exwm-workspace-number 2)
+
+        ;; Buffer names for EXWM
+        (add-hook 'exwm-update-class-hook
+                  (lambda ()
+                    (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                                (string= "gimp" exwm-instance-name))
+                      (exwm-workspace-rename-buffer exwm-class-name))))
+        (add-hook 'exwm-update-title-hook
+                  (lambda ()
+                    (when (or (not exwm-instance-name)
+                              (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                              (string= "gimp" exwm-instance-name))
+                      (exwm-workspace-rename-buffer exwm-title))))
+
+	  
+        ;; + Bind "s-0" to "s-3" to switch to the corresponding workspace.
+        (dotimes (i 4)
+          (exwm-input-set-key (kbd (format "s-%d" i))
+                              `(lambda ()
+                                 (interactive)
+                                 (exwm-workspace-switch-create ,i)
+                                 (message (concat "Switched to workspace: "
+                                                  (number-to-string ,i))))))
+	  
+        ;; + Application launcher ('M-&' also works if the output buffer does not
+        ;;   bother you). Note that there is no need for processes to be created by
+        ;;   Emacs.
+        (exwm-input-set-key (kbd "s-&")
+                            (lambda (command)
+                              (interactive (list (read-shell-command "$ ")))
+                              (start-process-shell-command command nil command)))
+
+
+        ;; quickly switch between line and char modes
+        (exwm-input-set-key (kbd "s-o") #'exwm-input-toggle-keyboard)
+
+        ;; quickly change keyboard layout
+        (lexical-let ((currLayout "no"))
+          (exwm-input-set-key (kbd "s-k")
+                              (lambda ()
+                                (interactive)
+                                (setq currLayout (if (string-equal currLayout "no") "us" "no"))
+                                (start-process-shell-command ""
+                                                             nil
+                                                             (concat "setxkbmap -layout " currLayout))
+                                (message (concat "Changed keyboard layout to: " currLayout)))))
+
+        ;; system tray for Dropbox, Skype volume control, wireless manager etc.
+        (require 'exwm-systemtray)
+        (exwm-systemtray-enable)
+
+
+        ;; turn on multimonitor support
+        (require 'exwm-randr)
+        (setq exwm-randr-workspace-output-plist '(1 "DP-1-1"))
+        (add-hook 'exwm-randr-screen-change-hook
+                  (lambda ()
+                    (start-process-shell-command
+                     "xrandr" nil "xrandr --output DP-1-1 --right-of eDP-1-1 --auto")))
+        (exwm-randr-enable)
+	  
+        (exwm-enable)))
+#+END_SRC
+
+Desktop environment can also be very useful when Emacs blocks the function keys (volume etc.). I have this issue with EXWM, and desktop-environment fixes it.
+#+BEGIN_SRC emacs-lisp
+  (use-package desktop-environment
+    :requires exwm
+    :init
+    (desktop-environment-mode))
+#+END_SRC
+
+
+** Behaviorial settings
+These settings control how Emacs behaves in general (i.e, for all modes); what UI elements to show, theming, what meta-key to use on Mac OS X, Helm to navigatge etc. :) 
+
+
+*** general
+I use some general settings to make Emacs feel better. 
+
+#+BEGIN_SRC emacs-lisp
+  ;; TODO: do these, the clipboard settings belong in editor settings instead?
+
+  ;; Get PATH from session instead of whatever idiotic things are done before
+  (use-package exec-path-from-shell
+    :init
+    (when (memq window-system '(mac ns x))
+      (exec-path-from-shell-initialize)))
+
+
+  ;; set default coding of buffers
+  (setq default-buffer-file-coding-system 'utf-8-unix)
+
+  ;; switched from tabs to spaces for indentation
+  ;; also set the indentation level to 4.
+  (setq indent-tabs-mode nil)
+  (setq-default tab-width 4)
+
+
+  ;; Don't autosave. 
+  (setq auto-save-default nil)
+
+
+  ;; GUI related settings
+  (if (display-graphic-p)
+      (progn
+        ;; Removed annoying UI elements
+        (menu-bar-mode -1)
+        (tool-bar-mode -1)
+        (scroll-bar-mode -1)
+	  
+        ;; shows battery status (useful when using EXWM)
+        (display-battery-mode 1)))
+
+  ;; disable the C-z sleep/suspend key
+  ;; rarely use emacs in terminal mode anymore and that is the only place it can be useful
+  ;; see http://stackoverflow.com/questions/28202546/hitting-ctrl-z-in-emacs-freezes-everything
+  ;;  for a way to have both if I ever want that again.
+  (global-unset-key (kbd "C-z"))
+
+  ;; disable the C-x C-b key, because I use helm (C-x b) instead
+  (global-unset-key (kbd "C-x C-b"))
+
+
+  (setq display-time-default-load-average nil)
+  (setq display-time-day-and-date t display-time-24hr-format t)
+  (display-time-mode t)
+
+
+  ;; make copy and paste use the same clipboard as emacs.
+  (setq x-select-enable-primary t
+        x-select-enable-clipboard t)
+
+
+  ;; sets monday to be the first day of the week in calendar
+  (setq calendar-week-start-day 1)
+
+  ;; save emacs backups in a different directory
+  ;; (some build-systems build automatically all files with a prefix, and .#something.someending breakes that)
+  (setq backup-directory-alist '(("." . "~/.emacsbackups")))
+
+
+  ;; Enable show-paren-mode (to visualize paranthesis) and make it possible to delete things we have marked
+  (show-paren-mode 1)
+  (delete-selection-mode 1)
+
+
+  ;; use y or n instead of yes or no
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+
+
+This one only applies to Mac, but makes my life easier. The different brackets became almost impossible to use without this :P Controlling which key is the actual meta key. 
+#+BEGIN_SRC emacs-lisp
+  (setq mac-command-modifier 'meta) 
+  (setq mac-option-modifier nil)
+#+END_SRC
+
+
+*** helm
+I use helm because i prefer it to ido or alternatives. It is simple to use, has a great UI, and to me it makes Emacs even more powerful as both a text editor and window manager (to switch windows). It will install after projectile (which makes project handling a breeze), which is found with the git and project handling setup [[*git and project handling]]. Here I simply activate it, make the search less rigid (not just beginning of strings, but anywhere in them), remove certain buffers from the buffer list and activate some key bindings globally to do various operations. 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+	:after projectile
+
+	:init
+	(helm-mode 1)
+	(projectile-global-mode 1)
+	(helm-projectile-on)
+	(helm-adaptive-mode 1)
+	(setq helm-M-x-fuzzy-match t
+		  projectile-completion-system 'helm
+		  helm-split-window-in-side-p t)
+	;; hide uninteresting buffers from buffer list
+	(add-to-list 'helm-boring-buffer-regexp-list (rx "magit-"))
+	(add-to-list 'helm-boring-buffer-regexp-list (rx "*helm"))
+
+	:bind
+	(("M-x" . helm-M-x)
+	 ("C-x C-f" . helm-find-files)
+	 ;; get the awesome buffer list instead of the standard stuff
+	 ("C-x b" . helm-mini)))
+#+END_SRC
+
+*** dashboard
+Emacs is always open at my machine, so I really enjoy a friendly startup screen :) dashboard provides what I want with projects (from projectiles list), recently edited files and latest news from Hackernews. To make the experience even better I also install all-the-icons to get pretty icons.
+*NOTE:* At first run, you should run =M-x all-the-icons-install-fonts= to get the fonts needed for the icons to show properly. 
+
+#+BEGIN_SRC emacs-lisp
+  ;; Getting pretty icons 
+  (use-package all-the-icons)
+
+  (use-package dashboard
+    :after (all-the-icons dashboard-hackernews)
+    :init
+    (dashboard-setup-startup-hook)
+    (setq dashboard-banner-logo-title "Welcome my queen! Make some kewl stuff today!"
+          dashboard-startup-banner 'logo
+          dashboard-center-content t
+          dashboard-set-heading-icons t
+          dashboard-set-file-icons t
+          dashboard-items '((projects . 5)
+                            (recents . 5)
+                            (hackernews . 5))))
+  (use-package dashboard-hackernews)
+#+END_SRC
+
+*** themes and ui
+To make Emacs better looking, I use the leuven-theme. This theme improves org-mode readability and makes Emacs blue and pretty in general :) I used to use doom-themes, moe-themes and so on with a simple theme switcher function, but I mostly just use leuven so I decided to remove them. The modeline is made prettier and more modern with doom modeline to get a beautiful powerline :) 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package leuven-theme
+    :init
+    (load-theme 'leuven t))
+
+  (use-package doom-modeline
+    :init
+    (doom-modeline-mode 1))
+#+END_SRC
+
+*** try
+Sometimes I like to try packages without having them as a permanent part of my Emacs setup. try does exactly that, where the packages are gone after Emacs is closed. 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package try)
+#+END_SRC
+
+
+** Editing  settings
+
+*** General editing
+TODO: should company related settings be here? Or in their own heading (Completion?)?
+
+
+Line numbers
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'prog-mode-hook 'display-line-numbers-mode)
+
+  ;; TODO: settings to mark the current line
+  (custom-set-faces
+   '(line-number-current-line ((t (:inherit line-number :background "white" :foreground "color-16")))))
+#+END_SRC
+
+Rainbow mode
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-mode
+               :hook prog-mode)
+#+END_SRC
+
+
+focus mode!!! Grays out the rest of the buffer, and only highlights the given function we are in. 
+#+BEGIN_SRC emacs-lisp
+  (use-package focus)
+#+END_SRC
+
+
+Yasnippet makes boiler plate and other code snippets much faster to write with snippets that activates with small keywords. Just type the keyword and TAB, and yasnippet will fill in the snippet :) (you may have to fill in some names like class name or parameter names after TAB off course...).
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :config
+    (yas-reload-all))
+#+END_SRC
+
+
+
+Sometimes we want to edit multiple places in the file at the same time. Most of the time this is just adding the same characters multiple places in the file in places with the same pattern, other times it is inserting a sequence of numbers.
+  #+BEGIN_SRC emacs-lisp
+    (use-package multiple-cursors
+      :bind
+      ("C->" . mc/mark-next-like-this))
+#+END_SRC
+
+
+Paredit makes paranthesis handling a breeze in Lisp-languages :) Only setting I really need is to make it possible to select something and delete the selection (including the paranthesis).
+  #+BEGIN_SRC emacs-lisp
+    (use-package paredit
+      :config 
+      ;; making paredit work with delete-selection-mode
+      ;; found on the excellent place called what the emacs d.
+      (put 'paredit-forward-delete 'delete-selection 'supersede)
+      (put 'paredit-backward-delete 'delete-selection 'supersede)
+      (put 'paredit-open-round 'delete-selection t)
+      (put 'paredit-open-square 'delete-selection t)
+      (put 'paredit-doublequote 'delete-selection t)
+      (put 'paredit-newline 'delete-selection t)
+
+      :hook
+      ((emacs-lisp-mode . paredit-mode)
+       (scheme-mode . paredit-mode)))
+#+END_SRC
+
+
+Certain strings should in my view be translated to unicode symbols, and so far I just set some defaults for all modes.
+#+BEGIN_SRC emacs-lisp
+  ;; should I defaults? or maybe one for c-like languages, one for lisp etc.?
+  (setq-default prettify-symbols-alist '(("lambda" . 955)
+                                         ("->" . 8594)
+                                         ("!=" . 8800)))
+  (global-prettify-symbols-mode)
+#+END_SRC
+
+
+Emojis in comments, org mode text and other places are really fun and makes the text feel more alive (instead of showing codes for emojis where applicable). (sometimes I turn it off because it ends up emojifying too much, but that is easy with =M-x emojify-mode=).
+#+BEGIN_SRC emacs-lisp
+  (use-package emojify
+    :init
+    (add-hook 'after-init-hook #'global-emojify-mode))
+#+END_SRC
+
+
+*** Spell checking
+Acivate spell checking for some relevant modes, set some preferred languages and makes the correction prettier with helm. 
+	
+#+BEGIN_SRC emacs-lisp
+  ;; FlySpell (spell checking)
+  (dolist (flyspellmodes '(text-mode-hook
+						   org-mode-hook
+						   latex-mode-hook))
+	(add-hook flyspellmodes 'turn-on-flyspell))
+
+  ;; comments and strings in code
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+  ;; sets american english as defult 
+  (setq ispell-dictionary "american")
+
+  ;; let us cycle american english (best written english) and norwegian 
+  (defun change-dictionary ()
+	(interactive)
+	(ispell-change-dictionary (if (string-equal ispell-current-dictionary "american")
+								  "norsk"
+								"american")))
+
+  ;; helm functionality for flyspell. To make it more user friendly
+  (use-package helm-flyspell
+	:after flyspell
+	:init
+	;; Disable standard keys for flyspell correct, and make my own for helm.
+	(define-key flyspell-mode-map (kbd "C-.") nil)
+	(define-key flyspell-mode-map (kbd "C-,") #'helm-flyspell-correct))
+#+END_SRC
+
+*** Completion general
+company (COMPLete ANY) provides base functionality for completions (ui elements, searching for candidates etc). For many modes, company is sufficient, but for some languages it can be great to use with something like lsp-mode to provide more advanced completion (like for Java and Kotlin). 
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+	:init
+	(global-company-mode)
+
+	;; set the completion to begin at once
+	(setq company-idle-delay 0
+		  company-echo-delay 0
+		  company-minimum-prefix-length 1)
+
+	:bind
+	;; trigger company to see a list of choices even when nothing is typed. maybe it quit because we clicked something. or maybe we dont know what to type yet :P
+	;; CTRL-ENTER. Because C-RET does not work. 
+	([(control return)] . company-complete))
+#+END_SRC
+
+
+*** IDE functionality - general
+*LSP = Language Server Protocol*
+lsp-mode uses LSP servers to provides IDE functionality like code completion (intellisense like using company-capf), navigation (jump to symbol), refactoring functionality and so on. lsp-ui is used to get prettier boxes and more info visible in an easy way (like javadoc). Currently dap-mode is added because I play a bit with it, and my first impressions are great so far (for the few times I use a debugger, I know I'm weird for not needing it much at all). 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode)
+
+  ;; helper boxes and other nice functionality (like javadoc for java)
+  (use-package lsp-ui)
+
+
+  ;; debugger component (for the few times I need it)
+  (use-package dap-mode
+    :after lsp-mode
+    :init
+    (dap-auto-configure-mode))
+#+END_SRC
+
+
+Some modes uses flycheck to provide syntax correctness checks (e.g, red lines below errors).
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :config
+    (setq flycheck-indication-mode nil)
+    (setq flycheck-highlighting-mode 'lines))
+#+END_SRC
+
+
+*** Programming-, scripting-, markup-languages and so on
+Some languages work great out of the box, some require a little tweaking. 
+
+
+**** C
+C does not really need much auto completion, but it can be great to have it for projects that use some external libraries (like libogc for Nintendo GameCube development, where you have a SDK for the console).
+
+*Prerequisites:* clang installed, configured =company-c-headers-path-user= (for C header completion) and =company-clang-arguments= (for company-clang, which is built-into company-mode). Both can be set to the same list of include paths (with the clang one starting with "-I"). .dir-locals.el works fine for this purpose :) (standard paths are default for company-clang if you do not cross-compile or something similar).
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-c-headers)
+#+END_SRC
+
+
+**** Java
+lsp-java :drool: 
+TODO: settings for the spring extension to the language server
+
+Java IDE-like functionality in Emacs. When we run this mode for the first time, the lsp server will be downloaded automatically. Works like a charm!
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-java
+    :init
+    (add-hook 'java-mode-hook 'lsp)
+
+    :bind
+    (:map java-mode-map 
+          ("M-RET" . lsp-java-organize-imports)))
+
+
+  ;; Java snippets for yasnippet. Found them very useful so far
+  (use-package java-snippets
+    :after yasnippet
+    :init
+    (add-hook 'java-mode-hook #'yas-minor-mode))
+#+END_SRC
+
+
+**** Kotlin
+lsp-mode works out of the box with Kotlin mode as long as [[https://github.com/fwcd/kotlin-language-server][kotlin-language-server]] is in the path :) So I only install Kotlin-mode :)
+
+#+BEGIN_SRC emacs-lisp
+  (use-package kotlin-mode
+    :hook
+    (kotlin-mode . lsp))
+#+END_SRC
+
+
+**** Web development
+Makes it more comfortable to edit mixed files (javascript + html in same document, jsx etc.). 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package web-mode
+    :init
+    (setq web-mode-enable-current-element-highlight t)
+
+    :mode
+    (("\\.html?$" . web-mode)
+     ("\\.jsx?$" . web-mode)))
+#+END_SRC
+
+**** TypeScript
+
+#+BEGIN_SRC emacs-lisp
+  ;; TODO: can we use lambda in hooks? doesnt seem that way?
+  (use-package tide
+    :init
+    (add-hook 'typescript-mode-hook '(lambda ()
+                                       (tide-setup)
+                                       (flycheck-mode 1)
+                                       (setq flycheck-check-syntax-automatically '(save mode-enabled))
+                                       (eldoc-mode 1)
+                                       (tide-hl-identifier-mode 1))))  
+#+END_SRC
+
+
+**** Scheme
+Use geiser to make Scheme great to work with. Not really used much anymore, but still fun to write some small procdures in Scheme once in a while :) 
+#+BEGIN_SRC emacs-lisp
+  (use-package geiser
+    :init
+    (setq geiser-active-implementations '(racket)))
+#+END_SRC
+
+**** Dockerfiles
+#+BEGIN_SRC emacs-lisp
+  (use-package dockerfile-mode
+    :init
+    (add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode)))
+#+END_SRC
+
+
+**** Gherkin-like feature files
+Used in Cucumber, Karate and more :) Useful to have for the situations where you edit a file like that.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package feature-mode)
+#+END_SRC
+
+**** Markdown
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode)
+#+END_SRC
+
+
+**** YAML
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode)
+#+END_SRC
+
+**** XML
+#+BEGIN_SRC emacs-lisp
+  (setq nxml-child-indent 4)
+  (setq nxml-attribute-indent 4)
+#+END_SRC
+
+*** git and project handling
+This is almost a reason to use Emacs by itself! Magit is the best way to experience git in my view. Simple and quick to use, together with its connection with git-gutter-fringe makes it super awesome!
+TODO: screenshots?
+
+TODO: git gutter not showing up before making changes... I need to save before it shows... sometimes never...
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :bind
+    ("C-x g" . magit-status))
+
+  (use-package git-gutter
+    :ensure git-gutter-fringe
+    :after (magit)
+    :init
+    (global-git-gutter-mode 1)
+    (setq-default left-fringe-width 20)
+
+    :hook
+    (magit-post-refresh . #'git-gutter:update-all-windows))
+
+
+  ;; TODO: maybe move it? Now it is very far down from where it is originally referenced (in helm)
+  (use-package projectile)
+  (use-package helm-projectile)
+#+END_SRC
+
+*** Other operations and tooling?
+A section like this to write about restclient and other similar topics? 
+
+Undo-tree. I LOOOOVE undo-tree <3 Instead of having a linear line of operations we can undo and redo, I have a tree I can navigate :D
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :init
+    (global-undo-tree-mode))
+#+END_SRC
+
+  TODO: should I have a screenshot of the tree
+
+
+ Emacs works great as a REST client (also used it for other HTTP requests, e.g, SOAP), mostly because of the amazing restclient(-mode):
+ #+BEGIN_SRC emacs-lisp
+    (use-package restclient)
+#+END_SRC
+TODO: should this be another place? Or does it belong in the editor category? Own category? Tooling and other? 
+
+*** Writing (books/org-mode etc.)
+Emacs can also be a great editor for editing books, note sand other things. Some people might miss formatting like headers while editing, but that is what org mode is for :) Blogging with org mode is also a fantastic experience! (also, this configuration is written with org-mode!!!)
+
+org mode (maybe move the intro from above?)
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :init
+    (setq org-startup-with-inline-images t
+        org-todo-keyword-faces '(("DONE" . "GREEN"))
+        org-hide-emphasis-markers t)
+
+    :hook
+    ;; make org mode easier to read with indentation
+    (org-mode . org-indent-mode))
+
+
+  ;; add bullets to prettify the org mode stars
+  (use-package org-bullets
+    :hook
+    (org-mode . org-bullets-mode))
+
+
+#+END_SRC
+
+
+Olivetti to improve readability. Olivetti centers the entire buffer like a sheet of paper and truncates the content. This helps my eyes when writing things that are more natural flowing text (articles, books, other org mode stuff). 
+#+BEGIN_SRC emacs-lisp
+  (use-package olivetti-mode
+    :ensure olivetti 
+    :init
+    (setq olivetti-minimum-body-width 100)
+    :hook org-mode)
+#+END_SRC
+
+
+
+I sometimes also use LaTeX (or export org to latex and take it from there). Then auctex is  useful.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Sets the zoom level of latex fragments (in Org Mode)
+  (defun update-org-latex-fragments ()  
+    (with-current-buffer (current-buffer)
+      (when (derived-mode-p 'LaTeX-mode 'TeX-mode 'latex-mode 'tex-mode)
+        (set-default 'preview-scale-function text-scale-mode-amount)
+        (preview-buffer))))
+  (add-hook 'text-scale-mode-hook 'update-org-latex-fragments)
+
+
+  ;; Issue with package name and providing it.
+  ;; use-package auctex gives an error with "failed to provide feature auctex" because of older naming in files.
+  ;; https://emacs.stackexchange.com/questions/41321/when-to-specify-a-package-name-in-use-packages-ensure-tag/41324#41324
+  ;; (use-package tex
+  ;;   :ensure auctex
+  ;;   :defer t
+  ;;   :config
+  ;;   ;; Preview of LaTeX formulae, tables, tikz drawings etc. 
+  ;;   (setq TeX-auto-save t)
+  ;;   (setq TeX-parse-self t)
+
+  ;;   ;; make C-. the button for preview in latex mode
+  ;;   (define-key LaTeX-mode-map (kbd "C-.") 'preview-buffer)
+  ;;   ;; let us use minted with the preview (minted fragments is not previewed :( )
+  ;;   (setcdr (assoc "LaTeX" TeX-command-list)
+  ;; 		  '("%`%l%(mode) -shell-escape%' %t"
+  ;; 			TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
+#+END_SRC
