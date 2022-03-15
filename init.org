@@ -35,12 +35,13 @@ Before we begin, we have to do some basic setup. For the rest of the config, I w
 
 
 
-** EXWM - Emacs Window manager
+** COMMENT EXWM - Emacs Window manager
 TODO: do this need to be moved to after the environment variable config? Using mostly OS X these days, so  should test next time I use this setup on a loonix box.
 
 
 On my GNU/Linux machines I have used EXWM as a window manager for quite a while. It makes navigating windows easier, and makes it possible to do everything in Emacs.
 
+# TODO: fix issues with it once I have a linux box I use it on again
 #+BEGIN_SRC emacs-lisp
   ;; TODO: test!! Using a Mac at the moment. Test when I use EXWM on a machine again
   (if (getenv "USE_EXWM")
