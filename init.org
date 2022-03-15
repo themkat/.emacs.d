@@ -238,7 +238,7 @@ I use helm because i prefer it to ido or alternatives. It is simple to use, has 
 
 #+BEGIN_SRC emacs-lisp
   (use-package helm
-	:after projectile
+	:after (projectile helm-projectile)
 
 	:init
 	(helm-mode 1)
