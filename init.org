@@ -42,7 +42,7 @@ TODO: do this need to be moved to after the environment variable config? Using m
 On my GNU/Linux machines I have used EXWM as a window manager for quite a while. It makes navigating windows easier, and makes it possible to do everything in Emacs.
 
 # TODO: fix issues with it once I have a linux box I use it on again
-#+BEGIN_SRC emacs-lisp :tangle (when (getenv "USE_EXWM") "yes")
+#+BEGIN_SRC emacs-lisp :tangle (if (getenv "USE_EXWM") "yes" "no")
   ;; TODO: test!! Using a Mac at the moment. Test when I use EXWM on a machine again
   (if (getenv "USE_EXWM")
       (use-package exwm
@@ -657,8 +657,7 @@ org mode (maybe move the intro from above?)
 
 Olivetti to improve readability. Olivetti centers the entire buffer like a sheet of paper and truncates the content. This helps my eyes when writing things that are more natural flowing text (articles, books, other org mode stuff). 
 #+BEGIN_SRC emacs-lisp
-  (use-package olivetti-mode
-    :ensure olivetti 
+  (use-package olivetti
     :init
     (setq olivetti-minimum-body-width 100)
     :hook org-mode)
