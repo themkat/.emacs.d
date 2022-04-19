@@ -34,6 +34,19 @@ Before we begin, we have to do some basic setup. For the rest of the config, I w
 #+END_SRC
 
 
+** Keep packages up-to-date
+I'm a bit lazy when it comes to updating packages manually, so automating this is a welcome addition :)
+
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-package-update
+    :config
+    (setq auto-package-update-interval 14
+          auto-package-update-delete-old-versions t
+          auto-package-update-prompt-before-update t
+          auto-package-update-show-preview t)
+    (auto-package-update-maybe))
+#+END_SRC
+
 
 ** EXWM - Emacs Window manager
 TODO: do this need to be moved to after the environment variable config? Using mostly OS X these days, so  should test next time I use this setup on a loonix box.
