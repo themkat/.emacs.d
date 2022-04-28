@@ -608,6 +608,14 @@ TODO: git gutter not showing up before making changes... I need to save before i
     :bind
     ("C-x g" . magit-status))
 
+  ;; show todos in magit status buffer
+  (use-package magit-todos
+	:after (magit)
+	:hook
+	(magit-status-mode . magit-todos-mode)
+	:bind
+	("C-x t" . helm-magit-todos))
+
   (use-package git-gutter
     :ensure git-gutter-fringe
     :after (magit)
