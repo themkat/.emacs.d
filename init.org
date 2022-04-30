@@ -182,7 +182,7 @@ I use some general settings to make Emacs feel better.
 
   ;; switched from tabs to spaces for indentation
   ;; also set the indentation level to 4.
-  (setq indent-tabs-mode nil)
+  (setq-default indent-tabs-mode nil)
   (setq-default tab-width 4)
 
 
@@ -551,7 +551,6 @@ Makes it more comfortable to edit mixed files (javascript + html in same documen
 **** TypeScript
 
 #+BEGIN_SRC emacs-lisp
-  ;; TODO: can we use lambda in hooks? doesnt seem that way?
   (use-package tide
     :init
     (add-hook 'typescript-mode-hook '(lambda ()
@@ -607,8 +606,6 @@ Used in Cucumber, Karate and more :) Useful to have for the situations where you
 This is almost a reason to use Emacs by itself! Magit is the best way to experience git in my view. Simple and quick to use, together with its connection with git-gutter-fringe makes it super awesome!
 TODO: screenshots?
 
-TODO: git gutter not showing up before making changes... I need to save before it shows... sometimes never...
-
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :bind
@@ -624,13 +621,13 @@ TODO: git gutter not showing up before making changes... I need to save before i
 
   (use-package git-gutter
     :ensure git-gutter-fringe
-    :after (magit)
+    :after magit
     :init
     (global-git-gutter-mode 1)
     (setq-default left-fringe-width 20)
 
     :hook
-    (magit-post-refresh . #'git-gutter:update-all-windows))
+    (magit-post-refresh . git-gutter:update-all-windows))
 
 
   ;; TODO: maybe move it? Now it is very far down from where it is originally referenced (in helm)
@@ -676,6 +673,7 @@ org mode (maybe move the intro from above?)
 
   ;; add bullets to prettify the org mode stars
   (use-package org-bullets
+    :after org
     :hook
     (org-mode . org-bullets-mode))
 
