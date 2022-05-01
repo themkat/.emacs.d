@@ -530,6 +530,11 @@ lsp-mode works out of the box with Kotlin mode as long as [[https://github.com/f
 
 #+BEGIN_SRC emacs-lisp
   (use-package kotlin-mode
+    :after (lsp-mode dap-mode)
+    :config
+    (require 'dap-kotlin)
+    ;; should probably have been in dap-kotlin instead of lsp-kotlin
+    (setq lsp-kotlin-debug-adapter-path (or (executable-find "kotlin-debug-adapter") ""))
     :hook
     (kotlin-mode . lsp))
 #+END_SRC
