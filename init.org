@@ -320,14 +320,10 @@ Sometimes I like to try packages without having them as a permanent part of my E
 ** Editing  settings
 
 *** General editing
-TODO: should company related settings be here? Or in their own heading (Completion?)?
-
-
 Line numbers
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'prog-mode-hook 'display-line-numbers-mode)
 
-  ;; TODO: settings to mark the current line
   (custom-set-faces
    '(line-number-current-line ((t (:inherit line-number :background "white" :foreground "color-16")))))
 #+END_SRC
@@ -503,7 +499,6 @@ C does not really need much auto completion, but it can be great to have it for 
 
 **** Java
 lsp-java :drool: 
-TODO: settings for the spring extension to the language server
 
 Java IDE-like functionality in Emacs. When we run this mode for the first time, the lsp server will be downloaded automatically. Works like a charm!
 
@@ -618,11 +613,11 @@ TODO: screenshots?
 
   ;; show todos in magit status buffer
   (use-package magit-todos
-	:after (magit)
-	:hook
-	(magit-status-mode . magit-todos-mode)
-	:bind
-	("C-x t" . helm-magit-todos))
+    :after (magit)
+    :hook
+    (magit-status-mode . magit-todos-mode)
+    :bind
+    ("C-x t" . helm-magit-todos))
 
   (use-package git-gutter
     :ensure git-gutter-fringe
