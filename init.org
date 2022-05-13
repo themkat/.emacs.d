@@ -40,7 +40,7 @@ I'm a bit lazy when it comes to updating packages manually, so automating this i
 #+BEGIN_SRC emacs-lisp
   (use-package auto-package-update
     :config
-    (setq auto-package-update-interval 14
+    (setq auto-package-update-interval 31
           auto-package-update-delete-old-versions t
           auto-package-update-prompt-before-update t
           auto-package-update-show-preview t)
