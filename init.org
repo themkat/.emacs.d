@@ -496,6 +496,13 @@ C does not really need much auto completion, but it can be great to have it for 
   (use-package company-c-headers)
 #+END_SRC
 
+**** Rust
+Recently started experimenting more with Rust. rustic seems to be the best package for working with it.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rustic)
+#+END_SRC
+
 
 **** Java
 lsp-java :drool: 
