@@ -700,6 +700,30 @@ Olivetti to improve readability. Olivetti centers the entire buffer like a sheet
 #+END_SRC
 
 
+Currently experimenting with presentations from Emacs as well:
+#+BEGIN_SRC emacs-lisp
+  ;; hiding the mode line can be useful for presentations
+  (use-package hide-mode-line)
+
+  (defun org-tree-slide--start-handler ()
+    (hide-mode-line-mode 1)
+    (set-face-attribute 'org-meta-line nil
+                        :foreground (face-attribute 'default :background)
+                        :background (face-attribute 'default :background)))
+
+  (defun org-tree-slide--stop-handler ()
+    (hide-mode-line-mode nil)
+    (set-face-attribute 'org-meta-line nil
+                        :foreground nil
+                        :background nil))
+
+  (use-package org-tree-slide
+    :config
+    (add-hook 'org-tree-slide-play-hook  #'org-tree-slide--start-handler)
+    (add-hook 'org-tree-slide-stop-hook  #'org-tree-slide--stop-handler))
+#+END_SRC
+
+
 
 I sometimes also use LaTeX (or export org to latex and take it from there). Then auctex is  useful.
 
