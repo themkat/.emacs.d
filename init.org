@@ -670,8 +670,9 @@ org mode (maybe move the intro from above?)
   (use-package org
     :init
     (setq org-startup-with-inline-images t
-        org-todo-keyword-faces '(("DONE" . "GREEN"))
-        org-hide-emphasis-markers t)
+          org-todo-keyword-faces '(("DONE" . "GREEN"))
+          org-hide-emphasis-markers t
+          org-image-actual-width nil)
 
     :hook
     ;; make org mode easier to read with indentation
