@@ -456,7 +456,10 @@ lsp-mode uses LSP servers to provides IDE functionality like code completion (in
   (use-package lsp-mode)
 
   ;; helper boxes and other nice functionality (like javadoc for java)
-  (use-package lsp-ui)
+  (use-package lsp-ui
+    :after lsp-mode
+    :config
+    (lsp-ui-sideline-show-code-actions t))
 
   ;; Additional helpers using treemacs
   ;; (symbols view, errors, dependencies for Java etc.)
