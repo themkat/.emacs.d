@@ -39,11 +39,13 @@ I'm a bit lazy when it comes to updating packages manually, so automating this i
 
 #+BEGIN_SRC emacs-lisp
   (use-package auto-package-update
+    :custom
+    (auto-package-update-interval 31)
+    (auto-package-update-delete-old-versions t)
+    (auto-package-update-prompt-before-update t)
+    (auto-package-update-show-preview t)
+  
     :config
-    (setq auto-package-update-interval 31
-          auto-package-update-delete-old-versions t
-          auto-package-update-prompt-before-update t
-          auto-package-update-show-preview t)
     (auto-package-update-maybe))
 #+END_SRC
 
@@ -458,7 +460,7 @@ lsp-mode uses LSP servers to provides IDE functionality like code completion (in
   ;; helper boxes and other nice functionality (like javadoc for java)
   (use-package lsp-ui
     :after lsp-mode
-    :config
+    :custom
     (lsp-ui-sideline-show-code-actions t))
 
   ;; Additional helpers using treemacs
@@ -479,9 +481,9 @@ lsp-mode uses LSP servers to provides IDE functionality like code completion (in
 Some modes uses flycheck to provide syntax correctness checks (e.g, red lines below errors).
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
-    :config
-    (setq flycheck-indication-mode nil)
-    (setq flycheck-highlighting-mode 'lines))
+    :custom
+    (flycheck-indication-mode nil)
+    (flycheck-highlighting-mode 'lines))
 #+END_SRC
 
 
@@ -618,6 +620,7 @@ TODO: screenshots?
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
+    :commands magit-status
     :bind
     ("C-x g" . magit-status))
 
