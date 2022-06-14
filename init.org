@@ -435,18 +435,19 @@ company (COMPLete ANY) provides base functionality for completions (ui elements,
 
 #+BEGIN_SRC emacs-lisp
   (use-package company
-	:init
-	(global-company-mode)
+    :init
+    (global-company-mode)
 
-	;; set the completion to begin at once
-	(setq company-idle-delay 0
-		  company-echo-delay 0
-		  company-minimum-prefix-length 1)
-
-	:bind
-	;; trigger company to see a list of choices even when nothing is typed. maybe it quit because we clicked something. or maybe we dont know what to type yet :P
-	;; CTRL-ENTER. Because C-RET does not work. 
-	([(control return)] . company-complete))
+    :custom
+    ;; set the completion to begin at once
+    (company-idle-delay 0)
+    (company-echo-delay 0)
+    (company-minimum-prefix-length 1)
+  
+    :bind
+    ;; trigger company to see a list of choices even when nothing is typed. maybe it quit because we clicked something. or maybe we dont know what to type yet :P
+    ;; CTRL-ENTER. Because C-RET does not work. 
+    ([(control return)] . company-complete))
 #+END_SRC
 
 
@@ -552,8 +553,8 @@ Makes it more comfortable to edit mixed files (javascript + html in same documen
 
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
-    :init
-    (setq web-mode-enable-current-element-highlight t)
+    :custom
+    (web-mode-enable-current-element-highlight t)
 
     :mode
     (("\\.html?$" . web-mode)
@@ -674,11 +675,11 @@ Emacs can also be a great editor for editing books, note sand other things. Some
 org mode (maybe move the intro from above?)
 #+BEGIN_SRC emacs-lisp
   (use-package org
-    :init
-    (setq org-startup-with-inline-images t
-          org-todo-keyword-faces '(("DONE" . "GREEN"))
-          org-hide-emphasis-markers t
-          org-image-actual-width nil)
+    :custom
+    (org-startup-with-inline-images t)
+    (org-todo-keyword-faces '(("DONE" . "GREEN")))
+    (org-hide-emphasis-markers t)
+    (org-image-actual-width nil)
 
     :hook
     ;; make org mode easier to read with indentation
@@ -690,8 +691,6 @@ org mode (maybe move the intro from above?)
     :after org
     :hook
     (org-mode . org-bullets-mode))
-
-
 #+END_SRC
 
 
