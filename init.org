@@ -6,6 +6,27 @@ The configuration will change with time, based upon programming languages used a
 
 *TODO:* consider adding some screenshots and similar for documentation.
 
+** Table of contents :TOC_3:
+- [[#emacs-configuration][.emacs configuration]]
+  - [[#basic-setup][Basic setup]]
+  - [[#keep-packages-up-to-date][Keep packages up-to-date]]
+  - [[#exwm---emacs-window-manager][EXWM - Emacs Window manager]]
+  - [[#behaviorial-settings][Behaviorial settings]]
+    - [[#general][general]]
+    - [[#helm][helm]]
+    - [[#dashboard][dashboard]]
+    - [[#themes-and-ui][themes and ui]]
+    - [[#try][try]]
+  - [[#editing--settings][Editing  settings]]
+    - [[#general-editing][General editing]]
+    - [[#spell-checking][Spell checking]]
+    - [[#completion-general][Completion general]]
+    - [[#ide-functionality---general][IDE functionality - general]]
+    - [[#programming--scripting--markup-languages-and-so-on][Programming-, scripting-, markup-languages and so on]]
+    - [[#git-and-project-handling][git and project handling]]
+    - [[#other-operations-and-tooling][Other operations and tooling?]]
+    - [[#writing-booksorg-mode-etc][Writing (books/org-mode etc.)]]
+
 ** Basic setup
 Before we begin, we have to do some basic setup. For the rest of the config, I will use =use-package= to install packages. I want newer packages, and packages not available in the gnu repos, so adding MELPA and the org repo (to get newest org mode). Then we install =use-package= and set te always ensure variable to make sure it always tries to download the packages we want. 
 
@@ -691,6 +712,12 @@ org mode (maybe move the intro from above?)
     :after org
     :hook
     (org-mode . org-bullets-mode))
+
+
+  ;; add a table of contents to sections tagged with TOC on save (updates it by need)
+  (use-package toc-org
+    :hook
+    (org-mode . toc-org-mode))
 #+END_SRC
 
 
