@@ -4,7 +4,11 @@ If you  are reading this, I finally got around to writing my .emacs config using
 The configuration will change with time, based upon programming languages used and so on. Some languages I just se try (see below) for, because I use them so rarely :P 
 
 
-*TODO:* consider adding some screenshots and similar for documentation.
+When starting my configuration, it will look like the following (see below for configuration of dashboard, modeline etc. :) ):
+
+[[./screenshot.png]]
+
+
 
 ** Table of contents :TOC_3:
 - [[#emacs-configuration][.emacs configuration]]
