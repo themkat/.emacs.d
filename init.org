@@ -674,6 +674,11 @@ TODO: screenshots?
   (use-package helm-projectile)
 #+END_SRC
 
+How to this look? In this Emacs repo with my local untracked file (should probably make a gitignore), todos and changes, it looks about like this in the magit status buffer:
+
+[[./magit.png]]
+
+
 *** Other operations and tooling?
 A section like this to write about restclient and other similar topics? 
 
