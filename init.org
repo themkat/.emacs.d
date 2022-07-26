@@ -600,6 +600,17 @@ Makes it more comfortable to edit mixed files (javascript + html in same documen
 #+END_SRC
 
 
+**** Python
+I sometimes write Python code for various things, sometimes as a calculator :P (SymPy, NumPy and MatplotLib <3 ). I choose to start lsp manually due to sometimes not needing a language server for minor edits (which is what I mostly do with Python).
+
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-pyright
+    :after lsp-mode
+    :init
+    (require 'lsp-pyright))
+#+END_SRC
+
+
 **** Scheme
 Use geiser to make Scheme great to work with. Not really used much anymore, but still fun to write some small procdures in Scheme once in a while :) 
 #+BEGIN_SRC emacs-lisp
