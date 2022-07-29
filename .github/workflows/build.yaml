@@ -16,4 +16,8 @@ jobs:
           version: 27.2
       - name: Tangle, byte-compile (replaces old init.el) and run new setup
         run: |
-          HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --script init.el
+          RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el 2>&1)
+          echo "$RUN_DATA"
+          WARNINGS=$(echo "$RUN_DATA" | sed '{/Warning/N;s/\n//;}' |  grep Warning | sed -E 's/^(.*\.el)/- \*\*\1\*\*/')
+          LOAD_ERRORS=$(echo "$RUN_DATA" | grep "Cannot load" | sed 's/^/- /')
+          echo -e "# Tangle and byte-compile report\n## Errors\n$LOAD_ERRORS\n## Warnings\n$WARNINGS" >> $GITHUB_STEP_SUMMARY
