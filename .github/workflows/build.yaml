@@ -16,4 +16,7 @@ jobs:
           version: 27.2
       - name: Tangle, byte-compile (replaces old init.el) and run new setup
         run: |
-          HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --script init.el
+          RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --eval "(setq truncate-lines nil)" --script init.el)
+          echo "$RUN_DATA"
+          WARNINGS=$(echo "$RUN_DATA" 2>&1 | grep Warning)
+          echo "# Tangle and byte-compile report\n## Warnings\n$WARNINGS" >> $GITHUB_STEP_SUMMARY
