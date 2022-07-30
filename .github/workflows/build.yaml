@@ -21,3 +21,4 @@ jobs:
           WARNINGS=$(echo "$RUN_DATA" | sed '{/Warning/N;s/\n//;}' |  grep Warning | sed -E 's/^(.*\.el)/- \*\*\1\*\*/')
           LOAD_ERRORS=$(echo "$RUN_DATA" | grep "Cannot load" | sed 's/^/- /')
           echo -e "# Tangle and byte-compile report\n## Errors\n$LOAD_ERRORS\n## Warnings\n$WARNINGS" >> $GITHUB_STEP_SUMMARY
+          [ -z $LOAD_ERRORS ] || exit 1
