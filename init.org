@@ -1,3 +1,4 @@
+[[https://github.com/themkat/.emacs.d/actions/workflows/build.yaml/badge.svg]]
 * .emacs configuration
 If you  are reading this, I finally got around to writing my .emacs config using Org mode. Why? Because it makes is easy to document the whys of my config. I also think it will make it fun to re-read my comments and text after some time :P
 
