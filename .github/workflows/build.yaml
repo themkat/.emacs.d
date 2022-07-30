@@ -1,6 +1,11 @@
 name: Run setup through Emacs and see if it gives errors
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  # run every month just in case (packages may have been updated and cause errors on various variables etc.)
+  schedule:
+    - cron: '0 10 1 * *'
 
 # Why have a pipeline?
 # - To see that quick pushes don't break anything
