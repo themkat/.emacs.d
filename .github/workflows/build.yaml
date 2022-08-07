@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: purcell/setup-emacs@v3.0
         with:
-          version: 27.2
+          version: 28.1
       - name: Tangle, byte-compile (replaces old init.el) and run new setup
         run: |
           RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el 2>&1)
