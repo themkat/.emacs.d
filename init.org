@@ -532,7 +532,10 @@ C does not really need much auto completion, but it can be great to have it for 
 Recently started experimenting more with Rust. rustic seems to be the best package for working with it.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package rustic)
+  (use-package rustic
+    :after (yasnippet)
+    :hook
+    (rustic-mode . yas-minor-mode))
 #+END_SRC
 
 
