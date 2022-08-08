@@ -746,7 +746,7 @@ org mode (maybe move the intro from above?)
 
 
 Olivetti to improve readability. Olivetti centers the entire buffer like a sheet of paper and truncates the content. This helps my eyes when writing things that are more natural flowing text (articles, books, other org mode stuff). 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle (if (display-graphic-p)) "yes" "no")
   (use-package olivetti
     :if window-system
     :after org
