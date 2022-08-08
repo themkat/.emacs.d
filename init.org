@@ -2,7 +2,7 @@
 * .emacs configuration
 If you  are reading this, I finally got around to writing my .emacs config using Org mode. Why? Because it makes is easy to document the whys of my config. I also think it will make it fun to re-read my comments and text after some time :P
 
-The configuration will change with time, based upon programming languages used and so on. Some languages I just se try (see below) for, because I use them so rarely :P 
+The configuration will change with time, based upon programming languages used and so on. For some languages I just use try to use them in the current session (see below), because I use them so rarely :P 
 
 
 When starting my configuration, it will look like the following (see below for configuration of dashboard, modeline etc. :) ):
