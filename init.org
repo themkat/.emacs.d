@@ -783,31 +783,31 @@ Currently experimenting with presentations from Emacs as well:
 
 I sometimes also use LaTeX (or export org to latex and take it from there). Then auctex is  useful.
 
-#+BEGIN_SRC emacs-lisp
-  ;; Sets the zoom level of latex fragments (in Org Mode)
-  (defun update-org-latex-fragments ()  
-    (with-current-buffer (current-buffer)
-      (when (derived-mode-p 'LaTeX-mode 'TeX-mode 'latex-mode 'tex-mode)
-        (set-default 'preview-scale-function text-scale-mode-amount)
-        (preview-buffer))))
-  (add-hook 'text-scale-mode-hook 'update-org-latex-fragments)
+#+BEGIN_SRC emacs-lisp :tangle (if (display-graphic-p) "yes" "no")
+    ;; Sets the zoom level of latex fragments (in Org Mode)
+    (defun update-org-latex-fragments ()  
+      (with-current-buffer (current-buffer)
+        (when (derived-mode-p 'LaTeX-mode 'TeX-mode 'latex-mode 'tex-mode)
+          (set-default 'preview-scale-function text-scale-mode-amount)
+          (preview-buffer))))
+    (add-hook 'text-scale-mode-hook 'update-org-latex-fragments)
 
 
-  ;; Issue with package name and providing it.
-  ;; use-package auctex gives an error with "failed to provide feature auctex" because of older naming in files.
-  ;; https://emacs.stackexchange.com/questions/41321/when-to-specify-a-package-name-in-use-packages-ensure-tag/41324#41324
-  ;; (use-package tex
-  ;;   :ensure auctex
-  ;;   :defer t
-  ;;   :config
-  ;;   ;; Preview of LaTeX formulae, tables, tikz drawings etc. 
-  ;;   (setq TeX-auto-save t)
-  ;;   (setq TeX-parse-self t)
+    ;; Issue with package name and providing it.
+    ;; use-package auctex gives an error with "failed to provide feature auctex" because of older naming in files.
+    ;; https://emacs.stackexchange.com/questions/41321/when-to-specify-a-package-name-in-use-packages-ensure-tag/41324#41324
+    ;; (use-package tex
+    ;;   :ensure auctex
+    ;;   :defer t
+    ;;   :config
+    ;;   ;; Preview of LaTeX formulae, tables, tikz drawings etc. 
+    ;;   (setq TeX-auto-save t)
+    ;;   (setq TeX-parse-self t)
 
-  ;;   ;; make C-. the button for preview in latex mode
-  ;;   (define-key LaTeX-mode-map (kbd "C-.") 'preview-buffer)
-  ;;   ;; let us use minted with the preview (minted fragments is not previewed :( )
-  ;;   (setcdr (assoc "LaTeX" TeX-command-list)
-  ;; 		  '("%`%l%(mode) -shell-escape%' %t"
-  ;; 			TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
+    ;;   ;; make C-. the button for preview in latex mode
+    ;;   (define-key LaTeX-mode-map (kbd "C-.") 'preview-buffer)
+    ;;   ;; let us use minted with the preview (minted fragments is not previewed :( )
+    ;;   (setcdr (assoc "LaTeX" TeX-command-list)
+    ;; 		  '("%`%l%(mode) -shell-escape%' %t"
+    ;; 			TeX-run-TeX nil (latex-mode doctex-mode) :help "Run LaTeX")))
 #+END_SRC
