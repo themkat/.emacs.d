@@ -11,7 +11,7 @@ When starting my configuration, it will look like the following (see below for c
 
 
 
-** Table of contents :TOC_3:
+** Table of contents :TOC_4:
 - [[#emacs-configuration][.emacs configuration]]
   - [[#basic-setup][Basic setup]]
   - [[#keep-packages-up-to-date][Keep packages up-to-date]]
@@ -28,6 +28,19 @@ When starting my configuration, it will look like the following (see below for c
     - [[#completion-general][Completion general]]
     - [[#ide-functionality---general][IDE functionality - general]]
     - [[#programming--scripting--markup-languages-and-so-on][Programming-, scripting-, markup-languages and so on]]
+      - [[#c][C]]
+      - [[#rust][Rust]]
+      - [[#java][Java]]
+      - [[#kotlin][Kotlin]]
+      - [[#web-development][Web development]]
+      - [[#typescript][TypeScript]]
+      - [[#python][Python]]
+      - [[#scheme][Scheme]]
+      - [[#dockerfiles][Dockerfiles]]
+      - [[#gherkin-like-feature-files][Gherkin-like feature files]]
+      - [[#markdown][Markdown]]
+      - [[#yaml][YAML]]
+      - [[#xml][XML]]
     - [[#git-and-project-handling][git and project handling]]
     - [[#other-operations-and-tooling][Other operations and tooling?]]
     - [[#writing-booksorg-mode-etc][Writing (books/org-mode etc.)]]
