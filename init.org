@@ -18,6 +18,7 @@ When starting my configuration, it will look like the following (see below for c
   - [[#exwm---emacs-window-manager][EXWM - Emacs Window manager]]
   - [[#behaviorial-settings][Behaviorial settings]]
     - [[#general][general]]
+    - [[#key-help][Key help]]
     - [[#helm][helm]]
     - [[#installing-system-packages-apt-homebrew-etc][Installing system packages (apt, homebrew etc.)]]
     - [[#dashboard][dashboard]]
@@ -286,6 +287,18 @@ This one only applies to Mac, but makes my life easier. The different brackets b
 #+BEGIN_SRC emacs-lisp
   (setq mac-command-modifier 'meta) 
   (setq mac-option-modifier nil)
+#+END_SRC
+
+
+*** Key help
+Sometimes I forget a hotkey-sequence I don't use that often, or a better case just remember the beginning of a longer sequence. Then which-key comes in handy! which-key shows possible continuations of a key-sequence. If you type C-x with your keyboard, it will suggest many continuations like C-+, C--, h etc.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :custom
+    (which-key-idle-delay 5)
+    :config
+    (which-key-mode))
 #+END_SRC
 
 
