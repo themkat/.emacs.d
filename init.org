@@ -314,6 +314,17 @@ I use helm because i prefer it to ido or alternatives. It is simple to use, has 
      ("C-x b" . helm-mini)))
 #+END_SRC
 
+
+*** Installing system packages (apt, homebrew etc.)
+*TODO: Check if this should be somewhere else in the config*
+Having searches for system packages and installations directly in Emacs is pretty neat! 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-system-packages
+    :after helm)
+#+END_SRC
+
+
 *** dashboard
 Emacs is always open at my machine, so I really enjoy a friendly startup screen :) dashboard provides what I want with projects (from projectiles list), recently edited files and latest news from Hackernews. To make the experience even better I also install all-the-icons to get pretty icons.
 *NOTE:* At first run, you should run =M-x all-the-icons-install-fonts= to get the fonts needed for the icons to show properly. 
