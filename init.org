@@ -520,7 +520,9 @@ company (COMPLete ANY) provides base functionality for completions (ui elements,
 lsp-mode uses LSP servers to provides IDE functionality like code completion (intellisense like using company-capf), navigation (jump to symbol), refactoring functionality and so on. lsp-ui is used to get prettier boxes and more info visible in an easy way (like javadoc). Currently dap-mode is added because I play a bit with it, and my first impressions are great so far (for the few times I use a debugger, I know I'm weird for not needing it much at all). 
 
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-mode)
+  (use-package lsp-mode
+    :bind
+    ("M-RET" . lsp-execute-code-action))
 
   ;; helper boxes and other nice functionality (like javadoc for java)
   (use-package lsp-ui
