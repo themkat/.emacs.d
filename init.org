@@ -771,6 +771,7 @@ org mode (maybe move the intro from above?)
   (use-package org
     :custom
     (org-startup-with-inline-images t)
+    (org-startup-folded t)
     (org-todo-keyword-faces '(("DONE" . "GREEN")))
     (org-hide-emphasis-markers t)
     (org-image-actual-width nil)
