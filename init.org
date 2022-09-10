@@ -639,6 +639,14 @@ Makes it more comfortable to edit mixed files (javascript + html in same documen
      ("\\.jsx?$" . web-mode)))
 #+END_SRC
 
+Having eldoc for CSS and SASS helps a lot for remembering input parameters without looking stuff up:
+#+BEGIN_SRC emacs-lisp
+  (use-package css-eldoc
+    :hook
+    (css-mode . turn-on-css-eldoc)
+    (scss-mode . turn-on-css-eldoc))
+#+END_SRC
+
 **** TypeScript
 
 #+BEGIN_SRC emacs-lisp
