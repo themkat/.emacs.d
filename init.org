@@ -512,6 +512,29 @@ company (COMPLete ANY) provides base functionality for completions (ui elements,
     ;; trigger company to see a list of choices even when nothing is typed. maybe it quit because we clicked something. or maybe we dont know what to type yet :P
     ;; CTRL-ENTER. Because C-RET does not work. 
     ([(control return)] . company-complete))
+
+
+  ;; a nicer way to show company completions with icons and doc popup where available (lsp etc.)
+  ;; Also doesn't clutter up the screen with super-big multiline truncated lines
+  (use-package company-box
+    :after company
+    :if (display-graphic-p)
+    :custom
+    (company-box-frame-behavior 'point)
+    (company-box-show-single-candidate t)
+    (company-box-doc-delay 1)
+
+    :hook
+    (company-mode . company-box-mode))
+
+  ;; little hack function to make company box frame bigger
+  (defun themkat/company-box-fix-size ()
+    (interactive)
+    (let* ((box-frame (company-box--get-frame)))
+      (when (not (null box-frame))
+        (set-face-attribute 'default
+                            box-frame
+                            :height 180))))
 #+END_SRC
 
 
