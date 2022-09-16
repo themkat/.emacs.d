@@ -44,7 +44,6 @@ When starting my configuration, it will look like the following (see below for c
       - [[#yaml][YAML]]
       - [[#xml][XML]]
     - [[#git-and-project-handling][git and project handling]]
-    - [[#other-operations-and-tooling][Other operations and tooling?]]
     - [[#writing-booksorg-mode-etc][Writing (books/org-mode etc.)]]
 
 ** Basic setup
@@ -459,6 +458,16 @@ Certain strings should in my view be translated to unicode symbols, and so far I
 #+END_SRC
 
 
+Undo-tree. I LOOOOVE undo-tree <3 Instead of having a linear line of operations we can undo and redo, I have a tree I can navigate :D
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :init
+    (global-undo-tree-mode)
+  
+    :custom
+    (undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
+#+END_SRC
+
 Emojis in comments, org mode text and other places are really fun and makes the text feel more alive (instead of showing codes for emojis where applicable). (sometimes I turn it off because it ends up emojifying too much, but that is easy with =M-x emojify-mode=).
 #+BEGIN_SRC emacs-lisp
   (use-package emojify
@@ -676,6 +685,12 @@ Having eldoc for CSS and SASS helps a lot for remembering input parameters witho
     (scss-mode . turn-on-css-eldoc))
 #+END_SRC
 
+ Emacs works great as a REST client (also used it for other HTTP requests, e.g, SOAP), mostly because of the amazing restclient(-mode):
+#+BEGIN_SRC emacs-lisp
+    (use-package restclient)
+#+END_SRC
+
+
 **** TypeScript
 
 #+BEGIN_SRC emacs-lisp
@@ -780,25 +795,6 @@ How to this look? In this Emacs repo with my local untracked file (should probab
 [[./magit.png]]
 
 
-*** Other operations and tooling?
-A section like this to write about restclient and other similar topics? 
-
-Undo-tree. I LOOOOVE undo-tree <3 Instead of having a linear line of operations we can undo and redo, I have a tree I can navigate :D
-#+BEGIN_SRC emacs-lisp
-  (use-package undo-tree
-	:init
-	(global-undo-tree-mode)
-	(setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
-#+END_SRC
-
-  TODO: should I have a screenshot of the tree
-
-
- Emacs works great as a REST client (also used it for other HTTP requests, e.g, SOAP), mostly because of the amazing restclient(-mode):
- #+BEGIN_SRC emacs-lisp
-    (use-package restclient)
-#+END_SRC
-TODO: should this be another place? Or does it belong in the editor category? Own category? Tooling and other? 
 
 *** Writing (books/org-mode etc.)
 Emacs can also be a great editor for editing books, note sand other things. Some people might miss formatting like headers while editing, but that is what org mode is for :) Blogging with org mode is also a fantastic experience! (also, this configuration is written with org-mode!!!)
