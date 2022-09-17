@@ -621,6 +621,10 @@ Recently started experimenting more with Rust. rustic seems to be the best packa
 #+BEGIN_SRC emacs-lisp
   (use-package rustic
     :after (yasnippet)
+
+    :custom
+    (rustic-format-trigger 'on-save)
+
     :hook
     (rustic-mode . yas-minor-mode))
 #+END_SRC
