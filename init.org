@@ -624,6 +624,7 @@ Recently started experimenting more with Rust. rustic seems to be the best packa
 
     :custom
     (rustic-format-trigger 'on-save)
+    (rustic-format-on-save-method 'rustic-format-buffer)
 
     :hook
     (rustic-mode . yas-minor-mode))
