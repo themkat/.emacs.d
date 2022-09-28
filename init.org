@@ -638,8 +638,8 @@ Java IDE-like functionality in Emacs. When we run this mode for the first time, 
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-java
-    :init
-    (add-hook 'java-mode-hook 'lsp)
+    :hook
+    (java-mode . lsp)
 
     :bind
     (:map java-mode-map 
@@ -649,8 +649,8 @@ Java IDE-like functionality in Emacs. When we run this mode for the first time, 
   ;; Java snippets for yasnippet. Found them very useful so far
   (use-package java-snippets
     :after yasnippet
-    :init
-    (add-hook 'java-mode-hook #'yas-minor-mode))
+    :hook
+    (java-mode . yas-minor-mode))
 #+END_SRC
 
 
