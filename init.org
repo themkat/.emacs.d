@@ -814,6 +814,7 @@ org mode (maybe move the intro from above?)
     (org-todo-keyword-faces '(("DONE" . "GREEN")))
     (org-hide-emphasis-markers t)
     (org-image-actual-width nil)
+    (org-support-shift-select t)
 
     :hook
     ;; make org mode easier to read with indentation
