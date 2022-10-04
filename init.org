@@ -34,8 +34,8 @@ When starting my configuration, it will look like the following (see below for c
       - [[#rust][Rust]]
       - [[#java][Java]]
       - [[#kotlin][Kotlin]]
-      - [[#web-development][Web development]]
       - [[#typescript][TypeScript]]
+      - [[#web-development-html-css-basic-js-etc][Web development (HTML, CSS, basic JS etc.)]]
       - [[#python][Python]]
       - [[#scheme][Scheme]]
       - [[#dockerfiles][Dockerfiles]]
@@ -669,17 +669,60 @@ lsp-mode works out of the box with Kotlin mode as long as [[https://github.com/f
     (kotlin-mode . yas-minor-mode))
 #+END_SRC
 
+**** TypeScript
+#+BEGIN_SRC emacs-lisp
+  ;; Function to activate tide by need
+  (defun themkat/activate-tide ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode 1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode 1)
+    (tide-hl-identifier-mode 1))
 
-**** Web development
+  (use-package tide
+    :init
+    (add-hook 'typescript-mode-hook #'themkat/activate-tide))
+#+END_SRC
+
+**** Web development (HTML, CSS, basic JS etc.)
 Makes it more comfortable to edit mixed files (javascript + html in same document, jsx etc.). 
 
 #+BEGIN_SRC emacs-lisp
+  (defun themkat/complete-web-mode ()
+    (interactive)
+    (let ((current-scope (web-mode-language-at-pos (point))))
+      (cond ((string-equal "javascript" current-scope)
+             (company-tide 'interactive))
+            ((string-equal "css" current-scope)
+             (company-css 'interactive))
+            (t
+             (company-dabbrev-code 'interactive)))))
+
+  (defun themkat/eldoc-web-mode ()
+    (let ((current-scope (web-mode-language-at-pos (point))))
+      (cond ((string-equal "javascript" current-scope)
+             (tide-eldoc-function))
+            ((string-equal "css" current-scope)
+             (css-eldoc-function))
+            (t
+             nil))))
+
+  (defun themkat/setup-web-mode-mixed ()
+    (web-mode)
+    (themkat/activate-tide)
+    (setq-local eldoc-documentation-function #'themkat/eldoc-web-mode))
+
   (use-package web-mode
+    :after (tide css-eldoc)
     :custom
     (web-mode-enable-current-element-highlight t)
 
+    :bind
+    ([(control return)] . themkat/complete-web-mode)
+
     :mode
-    (("\\.html?$" . web-mode)
+    (("\\.html?$" . themkat/setup-web-mode-mixed)
      ("\\.jsx?$" . web-mode)))
 #+END_SRC
 
@@ -696,19 +739,6 @@ Having eldoc for CSS and SASS helps a lot for remembering input parameters witho
     (use-package restclient)
 #+END_SRC
 
-
-**** TypeScript
-
-#+BEGIN_SRC emacs-lisp
-  (use-package tide
-    :init
-    (add-hook 'typescript-mode-hook '(lambda ()
-                                       (tide-setup)
-                                       (flycheck-mode 1)
-                                       (setq flycheck-check-syntax-automatically '(save mode-enabled))
-                                       (eldoc-mode 1)
-                                       (tide-hl-identifier-mode 1))))  
-#+END_SRC
 
 
 **** Python
