@@ -417,6 +417,12 @@ Yasnippet makes boiler plate and other code snippets much faster to write with s
   (use-package yasnippet
     :config
     (yas-reload-all))
+
+
+  ;; install useful snippets
+  ;; Thought I already had installed these, must have been an older setup I had :P Years pass by so fast 
+  (use-package yasnippet-snippets
+    :after yasnippet)
 #+END_SRC
 
 
