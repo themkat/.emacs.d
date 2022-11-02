@@ -12,7 +12,7 @@ on:
 # - (Older) packages might be deleted from Melpa (happened with Pretty-Lambdada), and then I can fix it before experiencing it on a new machine (which might happen much later when I'm too dependent on that package)
 # - See that the changes will work on any machine and don't depend on local circumstances
 jobs:
-  build:
+  build-linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,6 +20,24 @@ jobs:
         with:
           version: 28.1
       - name: Tangle, byte-compile (replaces old init.el) and run new setup
+        run: |
+          RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el 2>&1)
+          echo "$RUN_DATA"
+          WARNINGS=$(echo "$RUN_DATA" | sed '{/Warning/N;s/\n//;}' |  grep Warning | sed -E 's/^(.*\.el)/- \*\*\1\*\*/')
+          LOAD_ERRORS=$(echo "$RUN_DATA" | grep -E "(Cannot load)|(Not found)" | sed 's/^/- /')
+          echo -e "# Tangle and byte-compile report\n## Errors\n$LOAD_ERRORS\n## Warnings\n$WARNINGS" >> $GITHUB_STEP_SUMMARY
+          [ -z $LOAD_ERRORS ] || exit 1
+
+
+  build-osx:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Emacs
+        run: |
+          brew install emacs
+      - name: Tangle, byte-compile (replaces old init.el) and run new setup
+        # TODO: consider if this should be an action! now it it duplicated
         run: |
           RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el 2>&1)
           echo "$RUN_DATA"
