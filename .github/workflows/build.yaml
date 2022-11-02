@@ -56,5 +56,5 @@ jobs:
           choco install emacs
       - name: Tangle, byte-compile (replaces old init.el) and run new setup
         run: |
-          set HOME=%GITHUB_WORKSPACE%/..
+          set HOME=${{ env.GITHUB_WORKSPACE }}\..
           emacs --no-window-system --batch --script init.el
