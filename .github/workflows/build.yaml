@@ -45,3 +45,15 @@ jobs:
           LOAD_ERRORS=$(echo "$RUN_DATA" | grep -E "(Cannot load)|(Not found)" | sed 's/^/- /')
           echo -e "# Tangle and byte-compile report\n## Errors\n$LOAD_ERRORS\n## Warnings\n$WARNINGS" >> $GITHUB_STEP_SUMMARY
           [ -z $LOAD_ERRORS ] || exit 1
+
+  # verify that setup loads on Windows. Just in case I ever have to use it...
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Emacs
+        run: |
+          choco install emacs
+      - name: Tangle, byte-compile (replaces old init.el) and run new setup
+        run: |
+          HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el
