@@ -43,6 +43,7 @@ When starting my configuration, it will look like the following (see below for c
       - [[#markdown][Markdown]]
       - [[#yaml][YAML]]
       - [[#xml][XML]]
+      - [[#shell-scripting][Shell scripting]]
     - [[#git-and-project-handling][git and project handling]]
     - [[#writing-booksorg-mode-etc][Writing (books/org-mode etc.)]]
 
@@ -796,6 +797,12 @@ Used in Cucumber, Karate and more :) Useful to have for the situations where you
 #+BEGIN_SRC emacs-lisp
   (setq nxml-child-indent 4)
   (setq nxml-attribute-indent 4)
+#+END_SRC
+
+**** Shell scripting
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'sh-mode-hook #'yas-minor-mode)
 #+END_SRC
 
 *** git and project handling
