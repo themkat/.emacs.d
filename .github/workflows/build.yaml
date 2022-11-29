@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: purcell/setup-emacs@v3.0
+      - uses: purcell/setup-emacs@master
         with:
           version: 28.1
       - name: Tangle, byte-compile (replaces old init.el) and run new setup
