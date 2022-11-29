@@ -43,7 +43,6 @@ When starting my configuration, it will look like the following (see below for c
       - [[#markdown][Markdown]]
       - [[#yaml][YAML]]
       - [[#xml][XML]]
-      - [[#shell-scripting][Shell scripting]]
     - [[#git-and-project-handling][git and project handling]]
     - [[#writing-booksorg-mode-etc][Writing (books/org-mode etc.)]]
 
@@ -417,7 +416,10 @@ Yasnippet makes boiler plate and other code snippets much faster to write with s
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
     :config
-    (yas-reload-all))
+    (yas-reload-all)
+
+    :hook
+    (sh-mode . yas-minor-mode))
 
 
   ;; install useful snippets
