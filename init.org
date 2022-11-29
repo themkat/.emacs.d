@@ -31,6 +31,7 @@ When starting my configuration, it will look like the following (see below for c
     - [[#ide-functionality---general][IDE functionality - general]]
     - [[#programming--scripting--markup-languages-and-so-on][Programming-, scripting-, markup-languages and so on]]
       - [[#c][C]]
+      - [[#assembly-various-flavors][Assembly (various flavors)]]
       - [[#rust][Rust]]
       - [[#java][Java]]
       - [[#kotlin][Kotlin]]
@@ -623,6 +624,13 @@ C does not really need much auto completion, but it can be great to have it for 
 #+BEGIN_SRC emacs-lisp
   (use-package company-c-headers)
 #+END_SRC
+
+**** Assembly (various flavors)
+6502 Assembly (especially for Commodore 64):
+#+BEGIN_SRC emacs-lisp
+  (use-package mos-mode)
+#+END_SRC
+(my own package lol)
 
 **** Rust
 Recently started experimenting more with Rust. rustic seems to be the best package for working with it.
