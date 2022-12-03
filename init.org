@@ -359,7 +359,7 @@ Emacs is always open at my machine, so I really enjoy a friendly startup screen 
     (dashboard-startup-banner 'logo)
     (dashboard-center-content t)
     (dashboard-set-navigator t)
-    (dashboard-navigator-buttons '((("*" "Install system package" "Install system package" (lambda (&rest _) (helm-system-packages))))))
+    (dashboard-navigator-buttons '((("⤓" " Install system package" " Install system package" (lambda (&rest _) (helm-system-packages))))))
     (dashboard-set-heading-icons t)
     (dashboard-set-file-icons t)
     (dashboard-items '((projects . 5)
