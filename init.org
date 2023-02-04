@@ -737,8 +737,11 @@ Makes it more comfortable to edit mixed files (javascript + html in same documen
     :custom
     (web-mode-enable-current-element-highlight t)
 
+    :init
+    (require 'web-mode)
+
     :bind
-    ([(control return)] . themkat/complete-web-mode)
+    (:map web-mode-map ([(control return)] . themkat/complete-web-mode))
 
     :mode
     (("\\.html?$" . themkat/setup-web-mode-mixed)
