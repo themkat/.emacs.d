@@ -572,7 +572,7 @@ lsp-mode uses LSP servers to provides IDE functionality like code completion (in
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
     :bind
-    ("M-RET" . lsp-execute-code-action))
+    (:map lsp-mode-map ("M-RET" . lsp-execute-code-action)))
 
   ;; helper boxes and other nice functionality (like javadoc for java)
   (defun lsp-ui-show-doc-helper ()
@@ -587,7 +587,7 @@ lsp-mode uses LSP servers to provides IDE functionality like code completion (in
     (lsp-ui-sideline-show-code-actions t)
     (lsp-ui-doc-position 'at-point)
     :bind
-    ("M-s M-d" . lsp-ui-show-doc-helper))
+    (:map lsp-mode-map ("M-s M-d" . lsp-ui-show-doc-helper)))
 
   ;; Additional helpers using treemacs
   ;; (symbols view, errors, dependencies for Java etc.)
