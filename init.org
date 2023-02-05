@@ -52,6 +52,9 @@ Before we begin, we have to do some basic setup. For the rest of the config, I w
 
 
 #+BEGIN_SRC emacs-lisp
+  ;;; -*- lexical-binding: t; -*-
+  ;; sets lexical bindings so we get real closres with let etc. like in Scheme
+
   ;; TODO: do we need both melpa and melpa-stable. Isn't melpa enough? 
   (require 'package)
   (add-to-list 'package-archives
@@ -158,17 +161,16 @@ Then on launch it will run the following setup for using EXWM:
     ;; quickly switch between line and char modes
     (exwm-input-set-key (kbd "s-o") #'exwm-input-toggle-keyboard)
 
-    ;; TODO: fix this section if i still need it. Useful on small devices like GPD Win 2
     ;; quickly change keyboard layout
-    ;; (lexical-let ((currLayout "no"))
-    ;;              (exwm-input-set-key (kbd "s-k")
-    ;;                                  (lambda ()
-    ;;                                    (interactive)
-    ;;                                    (setq currLayout (if (string-equal currLayout "no") "us" "no"))
-    ;;                                    (start-process-shell-command ""
-    ;;                                                                 nil
-    ;;                                                                 (concat "setxkbmap -layout " currLayout))
-    ;;                                    (message (concat "Changed keyboard layout to: " currLayout)))))
+    (let ((currLayout "no"))
+      (exwm-input-set-key (kbd "s-k")
+                          (lambda ()
+                            (interactive)
+                            (setq currLayout (if (string-equal currLayout "no") "us" "no"))
+                            (start-process-shell-command ""
+                                                         nil
+                                                         (concat "setxkbmap -layout " currLayout))
+                            (message (concat "Changed keyboard layout to: " currLayout)))))
 
     ;; system tray for Dropbox, Skype volume control, wireless manager etc.
     (require 'exwm-systemtray)
