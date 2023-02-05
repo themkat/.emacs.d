@@ -158,16 +158,17 @@ Then on launch it will run the following setup for using EXWM:
     ;; quickly switch between line and char modes
     (exwm-input-set-key (kbd "s-o") #'exwm-input-toggle-keyboard)
 
+    ;; TODO: fix this section if i still need it. Useful on small devices like GPD Win 2
     ;; quickly change keyboard layout
-    (lexical-let ((currLayout "no"))
-                 (exwm-input-set-key (kbd "s-k")
-                                     (lambda ()
-                                       (interactive)
-                                       (setq currLayout (if (string-equal currLayout "no") "us" "no"))
-                                       (start-process-shell-command ""
-                                                                    nil
-                                                                    (concat "setxkbmap -layout " currLayout))
-                                       (message (concat "Changed keyboard layout to: " currLayout)))))
+    ;; (lexical-let ((currLayout "no"))
+    ;;              (exwm-input-set-key (kbd "s-k")
+    ;;                                  (lambda ()
+    ;;                                    (interactive)
+    ;;                                    (setq currLayout (if (string-equal currLayout "no") "us" "no"))
+    ;;                                    (start-process-shell-command ""
+    ;;                                                                 nil
+    ;;                                                                 (concat "setxkbmap -layout " currLayout))
+    ;;                                    (message (concat "Changed keyboard layout to: " currLayout)))))
 
     ;; system tray for Dropbox, Skype volume control, wireless manager etc.
     (require 'exwm-systemtray)
