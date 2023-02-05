@@ -92,106 +92,105 @@ I'm a bit lazy when it comes to updating packages manually, so automating this i
 
 
 ** EXWM - Emacs Window manager
-TODO: do this need to be moved to after the environment variable config? Using mostly OS X these days, so  should test next time I use this setup on a loonix box.
+On my GNU/Linux machines I have used EXWM as a window manager for quite a while. It makes navigating windows easier, and makes it possible to do everything in Emacs <3 To set it up, I set up a custom X-session with a .xinitrc file for my user:
 
+#+BEGIN_SRC bash :tangle "no"
+  # various settings like sound applets depending on distro and tooling
+  # examples include nm-applet, xfsettingsd & etc. to be able to piggyback on some xcfe tooling etc.
 
-On my GNU/Linux machines I have used EXWM as a window manager for quite a while. It makes navigating windows easier, and makes it possible to do everything in Emacs.
+  # define this environment variable to enable tangling and running of exwm config
+  export USE_EXWM="yes"
+  exec dbus-launch --exit-with-session emacs
+#+END_SRC
 
-# TODO: fix issues with it once I have a linux box I use it on again
+Then on launch it will run the following setup for using EXWM:
+
 #+BEGIN_SRC emacs-lisp :tangle (if (getenv "USE_EXWM") "yes" "no")
-  ;; TODO: test!! Using a Mac at the moment. Test when I use EXWM on a machine again
   (if (getenv "USE_EXWM")
       (use-package exwm
         :init
-        ;; Standard setup with minor tweaks. Probably some things that can be removed.
-        ;; Shrink fringes to 1 pixel
-        (fringe-mode 1)
+        (progn
+          ;; Standard setup with minor tweaks. Probably some things that can be removed.
+          ;; Shrink fringes to 1 pixel
+          (fringe-mode 1)
 
-        ;; Display the time in the modeline
-        (setq display-time-default-load-average nil)
-        (setq display-time-day-and-date t display-time-24hr-format t)
-        (display-time-mode t)
+          ;; Display the time in the modeline
+          (setq display-time-default-load-average nil)
+          (setq display-time-day-and-date t display-time-24hr-format t)
+          (display-time-mode t)
 
-        ;; TODO: do we need this? I use helm to switch buffers and stuff
-        (ido-mode 1)
+          ;; Emacs server is not required to run EXWM but it has some interesting uses
+          ;; (see next section)
+          (server-start)
 
-        ;; Emacs server is not required to run EXWM but it has some interesting uses
-        ;; (see next section)
-        (server-start)
+          ;; Load EXWM
+          (require 'exwm)
 
-        ;; Probably not needed after use-package
-        ;; Load EXWM
-        ;;(require 'exwm)
+          ;; Set the initial number of workspaces.
+          (setq exwm-workspace-number 2)
 
-        ;; TODO: remove because of helm
-        ;; Fix problems with Ido
-        (require 'exwm-config)
-        (exwm-config-ido)
-
-        ;; Set the initial number of workspaces.
-        (setq exwm-workspace-number 2)
-
-        ;; Buffer names for EXWM
-        (add-hook 'exwm-update-class-hook
-                  (lambda ()
-                    (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+          ;; Buffer names for EXWM
+          (add-hook 'exwm-update-class-hook
+                    (lambda ()
+                      (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                                  (string= "gimp" exwm-instance-name))
+                        (exwm-workspace-rename-buffer exwm-class-name))))
+          (add-hook 'exwm-update-title-hook
+                    (lambda ()
+                      (when (or (not exwm-instance-name)
+                                (string-prefix-p "sun-awt-X11-" exwm-instance-name)
                                 (string= "gimp" exwm-instance-name))
-                      (exwm-workspace-rename-buffer exwm-class-name))))
-        (add-hook 'exwm-update-title-hook
-                  (lambda ()
-                    (when (or (not exwm-instance-name)
-                              (string-prefix-p "sun-awt-X11-" exwm-instance-name)
-                              (string= "gimp" exwm-instance-name))
-                      (exwm-workspace-rename-buffer exwm-title))))
-
-	  
-        ;; + Bind "s-0" to "s-3" to switch to the corresponding workspace.
-        (dotimes (i 4)
-          (exwm-input-set-key (kbd (format "s-%d" i))
-                              `(lambda ()
-                                 (interactive)
-                                 (exwm-workspace-switch-create ,i)
-                                 (message (concat "Switched to workspace: "
-                                                  (number-to-string ,i))))))
-	  
-        ;; + Application launcher ('M-&' also works if the output buffer does not
-        ;;   bother you). Note that there is no need for processes to be created by
-        ;;   Emacs.
-        (exwm-input-set-key (kbd "s-&")
-                            (lambda (command)
-                              (interactive (list (read-shell-command "$ ")))
-                              (start-process-shell-command command nil command)))
+                        (exwm-workspace-rename-buffer exwm-title))))
 
 
-        ;; quickly switch between line and char modes
-        (exwm-input-set-key (kbd "s-o") #'exwm-input-toggle-keyboard)
+          ;; + Bind "s-0" to "s-3" to switch to the corresponding workspace.
+          (dotimes (i 4)
+            (exwm-input-set-key (kbd (format "s-%d" i))
+                                `(lambda ()
+                                   (interactive)
+                                   (exwm-workspace-switch-create ,i)
+                                   (message (concat "Switched to workspace: "
+                                                    (number-to-string ,i))))))
 
-        ;; quickly change keyboard layout
-        (lexical-let ((currLayout "no"))
-          (exwm-input-set-key (kbd "s-k")
-                              (lambda ()
-                                (interactive)
-                                (setq currLayout (if (string-equal currLayout "no") "us" "no"))
-                                (start-process-shell-command ""
-                                                             nil
-                                                             (concat "setxkbmap -layout " currLayout))
-                                (message (concat "Changed keyboard layout to: " currLayout)))))
-
-        ;; system tray for Dropbox, Skype volume control, wireless manager etc.
-        (require 'exwm-systemtray)
-        (exwm-systemtray-enable)
+          ;; + Application launcher ('M-&' also works if the output buffer does not
+          ;;   bother you). Note that there is no need for processes to be created by
+          ;;   Emacs.
+          (exwm-input-set-key (kbd "s-&")
+                              (lambda (command)
+                                (interactive (list (read-shell-command "$ ")))
+                                (start-process-shell-command command nil command)))
 
 
-        ;; turn on multimonitor support
-        (require 'exwm-randr)
-        (setq exwm-randr-workspace-output-plist '(1 "DP-1-1"))
-        (add-hook 'exwm-randr-screen-change-hook
-                  (lambda ()
-                    (start-process-shell-command
-                     "xrandr" nil "xrandr --output DP-1-1 --right-of eDP-1-1 --auto")))
-        (exwm-randr-enable)
-	  
-        (exwm-enable)))
+          ;; quickly switch between line and char modes
+          (exwm-input-set-key (kbd "s-o") #'exwm-input-toggle-keyboard)
+
+          ;; quickly change keyboard layout
+          (lexical-let ((currLayout "no"))
+                       (exwm-input-set-key (kbd "s-k")
+                                           (lambda ()
+                                             (interactive)
+                                             (setq currLayout (if (string-equal currLayout "no") "us" "no"))
+                                             (start-process-shell-command ""
+                                                                          nil
+                                                                          (concat "setxkbmap -layout " currLayout))
+                                             (message (concat "Changed keyboard layout to: " currLayout)))))
+
+          ;; system tray for Dropbox, Skype volume control, wireless manager etc.
+          (require 'exwm-systemtray)
+          (exwm-systemtray-enable)
+
+
+          ;; turn on multimonitor support
+          ;; TODO: probably needs to be tuned for each machine as the randr screen identifiers will be different
+          (require 'exwm-randr)
+          (setq exwm-randr-workspace-output-plist '(1 "DP-1-1"))
+          (add-hook 'exwm-randr-screen-change-hook
+                    (lambda ()
+                      (start-process-shell-command
+                       "xrandr" nil "xrandr --output DP-1-1 --right-of eDP-1-1 --auto")))
+          (exwm-randr-enable)
+
+          (exwm-enable))))
 #+END_SRC
 
 Desktop environment can also be very useful when Emacs blocks the function keys (volume etc.). I have this issue with EXWM, and desktop-environment fixes it.
