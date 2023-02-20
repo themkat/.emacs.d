@@ -679,12 +679,22 @@ Java IDE-like functionality in Emacs. When we run this mode for the first time, 
 lsp-mode works out of the box with Kotlin mode as long as [[https://github.com/fwcd/kotlin-language-server][kotlin-language-server]] is in the path :) So I only install Kotlin-mode :)
 
 #+BEGIN_SRC emacs-lisp
+  (defun themkat/kotlin-register-debug-templates ()
+    ;; various debug templates for Kotlin will be put here
+    (dap-register-debug-template "Kotlin tests with launcher"
+                               (list :type "kotlin"
+                                     :request "launch"
+                                     :mainClass "org.junit.platform.console.ConsoleLauncher --scan-class-path"
+                                     :enableJsonLogging nil
+                                     :noDebug nil)))
+
   (use-package kotlin-mode
     :after (lsp-mode dap-mode yasnippet)
     :config
     (require 'dap-kotlin)
     ;; should probably have been in dap-kotlin instead of lsp-kotlin
     (setq lsp-kotlin-debug-adapter-path (or (executable-find "kotlin-debug-adapter") ""))
+    (themkat/kotlin-register-debug-templates)
     :hook
     (kotlin-mode . lsp)
     (kotlin-mode . yas-minor-mode))
