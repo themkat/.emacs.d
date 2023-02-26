@@ -622,7 +622,7 @@ Some languages work great out of the box, some require a little tweaking.
 **** C
 C does not really need much auto completion, but it can be great to have it for projects that use some external libraries (like libogc for Nintendo GameCube development, where you have a SDK for the console). I used to just use company-c-headers and company-clang for this, but realized that some extra popups with documentation comments, error checking, completion etc. was most welcome! CCLS is a language server that provides that for C, C++, CUDA C etc.
 
-*Prerequisites:* To get all include paths and settings for a project correct, one should create a =compile_commands.json= file that CCLS will read. I use CompileDB to generate this file, as it seems to generate a useful file even for projects where tools like Bear have problems. For CMake projects (ugh), one simply adds =-DCMAKE_EXPORT_COMPILE_COMMANDS=YES= to the cmake command.
+*Prerequisites:* To get all include paths and settings for a project correct, one should create a =compile_commands.json= file that CCLS will read. I use [[https://github.com/nickdiego/compiledb][CompileDB]] to generate this file, as it seems to generate a useful file even for projects where tools like Bear have problems. For CMake projects (ugh), one simply adds =-DCMAKE_EXPORT_COMPILE_COMMANDS=YES= to the cmake command.
 
 
 #+BEGIN_SRC emacs-lisp
