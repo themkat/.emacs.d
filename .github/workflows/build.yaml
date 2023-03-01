@@ -3,6 +3,7 @@ name: Run setup through Emacs and see if it gives errors
 on:
   push:
   pull_request:
+  workflow_dispatch:
   # run every month just in case (packages may have been updated and cause errors on various variables etc.)
   schedule:
     - cron: '0 10 1 * *'
