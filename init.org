@@ -265,6 +265,9 @@ I use some general settings to make Emacs feel better.
   (setq select-enable-primary t
         select-enable-clipboard t)
 
+  ;; Ensure I can use paste from the Mac OS X clipboard ALWAYS (or close)
+  (when (memq window-system '(mac ns))
+    (setq interprogram-paste-function (lambda () (shell-command-to-string "pbpaste"))))
 
   ;; sets monday to be the first day of the week in calendar
   (setq calendar-week-start-day 1)
