@@ -629,7 +629,7 @@ C does not really need much auto completion, but it can be great to have it for 
 
 #+BEGIN_SRC emacs-lisp
   ;; configure built in here with ensure nil
-  (use-package c-mode
+  (use-package cc-mode
     :ensure nil
     :after (lsp-mode)
     :hook
