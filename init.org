@@ -276,6 +276,9 @@ I use some general settings to make Emacs feel better.
   ;; (some build-systems build automatically all files with a prefix, and .#something.someending breakes that)
   (setq backup-directory-alist '(("." . "~/.emacsbackups")))
 
+  ;; Don't create lockfiles. Many build systems that continously monitor the file system get confused by them (e.g, Quarkus). This sometimes causes the build systems to not work anymore before restarting
+  (setq create-lockfiles nil)
+
 
   ;; Enable show-paren-mode (to visualize paranthesis) and make it possible to delete things we have marked
   (show-paren-mode 1)
