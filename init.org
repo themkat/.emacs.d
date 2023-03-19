@@ -903,6 +903,7 @@ While term.el and shell are good enough for some use cases, they do not work wel
   ;; Does not work on Windows, but we can just avoid compiling dependencies and using it
   ;; (if I'm ever forced to use Windows again for work or similar)
   (use-package vterm
+    :command vterm
     :custom
     (vterm-always-compile-module t)
     :bind
