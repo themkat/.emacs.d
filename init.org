@@ -45,6 +45,7 @@ When starting my configuration, it will look like the following (see below for c
       - [[#yaml][YAML]]
       - [[#xml][XML]]
     - [[#git-and-project-handling][git and project handling]]
+    - [[#sidebar-tree-navigation][Sidebar tree navigation]]
     - [[#writing-booksorg-mode-etc][Writing (books/org-mode etc.)]]
 
 ** Basic setup
@@ -875,6 +876,20 @@ How to this look? In this Emacs repo with my local untracked file (should probab
 
 [[./magit.png]]
 
+
+*** Sidebar tree navigation
+TODO: see if I should put this in another place. May be useful to do some before-after tuning with lsp-treemacs as well.
+
+
+It can sometimes be convenient to view the current project, or just a file system in general, as a tree structure much like many bigger IDEs does in a side bar. 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package treemacs
+    :bind
+    ("<f8>" . treemacs-display-current-project-exclusively))
+
+  ;; TODO: consider if I need treemacs-projectile
+#+END_SRC
 
 
 *** Writing (books/org-mode etc.)
