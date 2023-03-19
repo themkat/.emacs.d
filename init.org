@@ -46,6 +46,7 @@ When starting my configuration, it will look like the following (see below for c
       - [[#xml][XML]]
     - [[#git-and-project-handling][git and project handling]]
     - [[#sidebar-tree-navigation][Sidebar tree navigation]]
+    - [[#better-terminals][Better terminals]]
     - [[#writing-booksorg-mode-etc][Writing (books/org-mode etc.)]]
 
 ** Basic setup
@@ -889,6 +890,19 @@ It can sometimes be convenient to view the current project, or just a file syste
     ("<f8>" . treemacs-display-current-project-exclusively))
 
   ;; TODO: consider if I need treemacs-projectile
+#+END_SRC
+
+
+*** Better terminals
+TODO: should this be in another place?
+
+
+While term.el and shell are good enough for some use cases, they do not work well with interactive terminal processes. For Rust, it might be useful to have a terminal buffer with bacon in it, or a Quarkus dev session for a Quarkus project in Java/Kotlin. Also allows us to use standard Emacs keybindings to navigate buffers like =C-x b= (helm mini in my setup), which term.el does not support. 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package vterm
+    :bind
+    ("<f7>" . vterm))
 #+END_SRC
 
 
