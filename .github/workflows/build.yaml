@@ -20,6 +20,11 @@ jobs:
       - uses: purcell/setup-emacs@master
         with:
           version: 28.1
+      # TODO: this is ugly and only needed for vterm to succeed in the pipeline...
+      - name: Install dependency needed for some Emacs packages
+        run: |
+          apt-get update
+          apt-get install -y libtool cmake
       - name: Tangle, byte-compile (replaces old init.el) and run new setup
         run: |
           RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el 2>&1)
