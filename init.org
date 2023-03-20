@@ -885,9 +885,10 @@ TODO: see if I should put this in another place. May be useful to do some before
 It can sometimes be convenient to view the current project, or just a file system in general, as a tree structure much like many bigger IDEs does in a side bar. 
 
 #+BEGIN_SRC emacs-lisp
+  ;; TODO: any way to make F8 toggle the sidebar?
   (use-package treemacs
     :bind
-    ("<f8>" . treemacs-display-current-project-exclusively))
+    ("<f8>" . treemacs-add-and-display-current-project-exclusively))
 
   ;; TODO: consider if I need treemacs-projectile
 #+END_SRC
