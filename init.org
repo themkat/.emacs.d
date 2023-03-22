@@ -725,8 +725,12 @@ lsp-mode works out of the box with Kotlin mode as long as [[https://github.com/f
     (tide-hl-identifier-mode 1))
 
   (use-package tide
+    :after typescript-mode
     :init
     (add-hook 'typescript-mode-hook #'themkat/activate-tide))
+
+  ;; typescript-mode used to be included in another package (probably tide?), but not anymore it seems
+  (use-package typescript-mode)
 #+END_SRC
 
 **** Web development (HTML, CSS, basic JS etc.)
