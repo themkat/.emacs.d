@@ -814,8 +814,7 @@ Use geiser to make Scheme great to work with. Not really used much anymore, but 
 **** Dockerfiles
 #+BEGIN_SRC emacs-lisp
   (use-package dockerfile-mode
-    :init
-    (add-to-list 'auto-mode-alist '("Dockerfile" . dockerfile-mode)))
+    :mode "Dockerfile")
 #+END_SRC
 
 
