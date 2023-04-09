@@ -708,9 +708,8 @@ lsp-mode works out of the box with Kotlin mode as long as [[https://github.com/f
     ;; should probably have been in dap-kotlin instead of lsp-kotlin
     (setq lsp-kotlin-debug-adapter-path (or (executable-find "kotlin-debug-adapter") ""))
     (themkat/kotlin-register-debug-templates)
-    :hook
-    (kotlin-mode . lsp)
-    (kotlin-mode . yas-minor-mode))
+    :hook ((kotlin-mode . lsp)
+           (kotlin-mode . yas-minor-mode)))
 #+END_SRC
 
 **** TypeScript
