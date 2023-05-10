@@ -642,6 +642,12 @@ C does not really need much auto completion, but it can be great to have it for 
      (c-mode . yas-minor-mode)))
 #+END_SRC
 
+
+Some projects also use CMake as a build system in the C and C++ world. Handy to have CMake syntax highlighting available:
+#+BEGIN_SRC emacs-lisp
+  (use-package cmake-mode)
+#+END_SRC
+
 **** Assembly (various flavors)
 6502 Assembly (especially for Commodore 64):
 #+BEGIN_SRC emacs-lisp
