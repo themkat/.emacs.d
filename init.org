@@ -647,6 +647,7 @@ Some projects also use CMake as a build system in the C and C++ world. Handy to 
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode)
 #+END_SRC
+(just activate lsp using M-x in a CMake buffer after this to get completion etc.! Requires installation of [[https://emacs-lsp.github.io/lsp-mode/page/lsp-cmake/][cmake-language-server]])
 
 **** Assembly (various flavors)
 6502 Assembly (especially for Commodore 64):
