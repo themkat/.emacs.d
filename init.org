@@ -885,6 +885,7 @@ TODO: screenshots?
 
 How to this look? In this Emacs repo with my local untracked file (should probably make a gitignore), todos and changes, it looks about like this in the magit status buffer:
 
+#+ATTR_ORG: :width 800
 [[./magit.png]]
 
 
