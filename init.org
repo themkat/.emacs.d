@@ -720,6 +720,10 @@ lsp-mode works out of the box with Kotlin mode as long as [[https://github.com/f
            (kotlin-mode . yas-minor-mode)))
 #+END_SRC
 
+
+I have written briefly on my blog about Kotlin in Emacs. [[https://themkat.net/2021/11/03/kotlin_in_emacs.html][Article 1]] and [[https://themkat.net/2022/09/24/kotlin_in_emacs_redux.html][Article 2]]. They contain some minor tips and tricks, as well as other links that might prove useful.
+
+
 **** TypeScript
 #+BEGIN_SRC emacs-lisp
   ;; Function to activate tide by need
