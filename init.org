@@ -40,6 +40,7 @@ When starting my configuration, it will look like the following (see below for c
       - [[#web-development-html-css-basic-js-etc][Web development (HTML, CSS, basic JS etc.)]]
       - [[#python][Python]]
       - [[#scheme][Scheme]]
+      - [[#go][Go]]
       - [[#dockerfiles][Dockerfiles]]
       - [[#gherkin-like-feature-files][Gherkin-like feature files]]
       - [[#markdown][Markdown]]
@@ -820,6 +821,12 @@ Use geiser to make Scheme great to work with. Not really used much anymore, but 
   (use-package geiser
     :init
     (setq geiser-active-implementations '(racket)))
+#+END_SRC
+
+**** Go
+I sometimes read or do minor edits to Golang source files. Good to have syntax highlighting in those cases.
+#+BEGIN_SRC emacs-lisp
+  (use-package go-mode)
 #+END_SRC
 
 **** Dockerfiles
