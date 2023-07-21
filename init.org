@@ -832,7 +832,7 @@ I sometimes read or do minor edits to Golang source files. Good to have syntax h
 **** Dockerfiles
 #+BEGIN_SRC emacs-lisp
   (use-package dockerfile-mode
-    :mode "Dockerfile")
+    :mode "Dockerfile\\'")
 #+END_SRC
 
 
