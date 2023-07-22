@@ -799,7 +799,9 @@ Having eldoc for CSS and SASS helps a lot for remembering input parameters witho
 
  Emacs works great as a REST client (also used it for other HTTP requests, e.g, SOAP), mostly because of the amazing restclient(-mode):
 #+BEGIN_SRC emacs-lisp
-    (use-package restclient)
+  (use-package restclient
+    :mode
+    ("\\.http\\'" . restclient-mode))
 #+END_SRC
 
 
