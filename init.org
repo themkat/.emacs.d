@@ -584,7 +584,12 @@ lsp-mode uses LSP servers to provides IDE functionality like code completion (in
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
     :bind
-    (:map lsp-mode-map ("M-RET" . lsp-execute-code-action)))
+    (:map lsp-mode-map ("M-RET" . lsp-execute-code-action))
+
+    ;; Save automatically on lsp-rename etc. Usually it opens buffers in the background that contains the edits...
+    ;; https://github.com/emacs-lsp/lsp-mode/issues/4087
+    :hook
+    (lsp-after-apply-edits . save-buffer))
 
   ;; helper boxes and other nice functionality (like javadoc for java)
   (defun lsp-ui-show-doc-helper ()
