@@ -869,7 +869,6 @@ Used in Cucumber, Karate and more :) Useful to have for the situations where you
 
 *** git and project handling
 This is almost a reason to use Emacs by itself! Magit is the best way to experience git in my view. Simple and quick to use, together with its connection with git-gutter-fringe makes it super awesome!
-TODO: screenshots?
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
@@ -908,9 +907,6 @@ How to this look? In this Emacs repo with my local untracked file (should probab
 
 
 *** Sidebar tree navigation
-TODO: see if I should put this in another place. May be useful to do some before-after tuning with lsp-treemacs as well.
-
-
 It can sometimes be convenient to view the current project, or just a file system in general, as a tree structure much like many bigger IDEs does in a side bar. 
 
 #+BEGIN_SRC emacs-lisp
@@ -919,7 +915,6 @@ It can sometimes be convenient to view the current project, or just a file syste
     :bind
     ("<f8>" . treemacs-add-and-display-current-project-exclusively))
 
-  ;; TODO: consider if I need treemacs-projectile
 #+END_SRC
 
 
