@@ -913,8 +913,14 @@ It can sometimes be convenient to view the current project, or just a file syste
   ;; TODO: any way to make F8 toggle the sidebar?
   (use-package treemacs
     :bind
-    ("<f8>" . treemacs-add-and-display-current-project-exclusively))
+    ("<f8>" . themkat/treemacs-toggle))
 
+  ;; caveat: only toggles on selection. selects the treemacs window if not
+  (defun themkat/treemacs-toggle ()
+    (interactive)
+    (if (treemacs-is-treemacs-window-selected?)
+        (window--delete)
+      (treemacs-add-and-display-current-project-exclusively)))
 #+END_SRC
 
 
