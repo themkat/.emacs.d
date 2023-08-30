@@ -912,7 +912,6 @@ How to this look? In this Emacs repo with my local untracked file (should probab
 It can sometimes be convenient to view the current project, or just a file system in general, as a tree structure much like many bigger IDEs does in a side bar. 
 
 #+BEGIN_SRC emacs-lisp
-  ;; TODO: any way to make F8 toggle the sidebar?
   (use-package treemacs
     :bind
     ("<f8>" . themkat/treemacs-toggle))
@@ -927,9 +926,6 @@ It can sometimes be convenient to view the current project, or just a file syste
 
 
 *** Better terminals
-TODO: should this be in another place?
-
-
 While term.el and shell are good enough for some use cases, they do not work well with interactive terminal processes. For Rust, it might be useful to have a terminal buffer with bacon in it, or a Quarkus dev session for a Quarkus project in Java/Kotlin. Also allows us to use standard Emacs keybindings to navigate buffers like =C-x b= (helm mini in my setup), which term.el does not support. 
 
 #+BEGIN_SRC emacs-lisp
