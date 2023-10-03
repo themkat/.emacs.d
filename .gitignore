@@ -11,3 +11,13 @@ elpa/*
 /projectile-bookmarks.eld
 /recentf
 /url/cookies
+init.elc
+.cache
+.cask
+.dap-breakpoints
+eclipse.jdt.ls
+eshell
+games
+workspace
+request
+transient
