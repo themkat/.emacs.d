@@ -366,14 +366,27 @@ Emacs is always open at my machine, so I really enjoy a friendly startup screen 
     :init
     (dashboard-setup-startup-hook)
 
+    ;; seems like the latest versions do some fuckery with the project list or something.
+    ;; Need an extra refresh after initialization for my own settings to show up now.
+    ;; (did not need this before. Would rather keep the :custom block instead of setq spamming)
+    :hook
+    (dashboard-after-initialize . dashboard-refresh-buffer)
+
     :custom
     (dashboard-banner-logo-title "Welcome my queen! Make some kewl stuff today!")
     (dashboard-startup-banner 'logo)
     (dashboard-center-content t)
     (dashboard-set-navigator t)
     (dashboard-navigator-buttons '((("⤓" " Install system package" " Install system package" (lambda (&rest _) (helm-system-packages))))))
-    (dashboard-set-heading-icons t)
+    (dashboard-icon-type 'all-the-icons)
+    ;; TODO: enable again when they work
+    ;;       https://github.com/emacs-dashboard/emacs-dashboard/issues/459
+    (dashboard-set-heading-icons nil)
     (dashboard-set-file-icons t)
+    ;; TODO: see if we can activate the footer again in the future
+    ;;       Seems like nil gets sent to the insert function now. Unsure if it happens pre Emacs 29
+    ;;       The first element is an icon, so might be related to the other icon issues.
+    (dashboard-set-footer nil)
     (dashboard-items '((projects . 5)
                        (recents . 5)
                        (hackernews . 5))))
