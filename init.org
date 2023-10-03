@@ -411,7 +411,7 @@ Line numbers
   (add-to-list 'prog-mode-hook 'display-line-numbers-mode)
 
   (custom-set-faces
-   '(line-number-current-line ((t (:inherit line-number :background "white" :foreground "color-16")))))
+   '(line-number-current-line ((t (:inherit line-number :background "white" :foreground "black")))))
 #+END_SRC
 
 Rainbow mode
