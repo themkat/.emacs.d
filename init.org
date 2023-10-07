@@ -408,6 +408,35 @@ To make Emacs better looking, I use the leuven-theme. This theme improves org-mo
     (doom-modeline-mode 1))
 #+END_SRC
 
+
+Recently I also started using tabs with the centaur-tabs package:
+#+BEGIN_SRC emacs-lisp
+  ;; Unset the default behavior of the C-x <left> and <right> arrow key navigation
+  (global-unset-key (kbd "C-x <left>"))
+  (global-unset-key (kbd "C-x <right>"))
+
+  (use-package centaur-tabs
+    :after (dashboard org)
+
+    :config
+    (centaur-tabs-group-by-projectile-project)
+    (centaur-tabs-mode 1)
+
+    :custom
+    (centaur-tabs-set-icons t)
+    (centaur-tabs-plain-icons t)
+    (centaur-tabs-set-modified-marker t)
+
+    :bind
+    (("C-x <left>" . centaur-tabs-backward-tab)
+     ("C-x <right>" . centaur-tabs-forward-tab))
+
+    ;; TODO: EXWM buffers
+    :hook
+    ((dashboard-mode . centaur-tabs-local-mode)
+     (org-src-mode . centaur-tabs-local-mode)))
+#+END_SRC
+
 *** try
 Sometimes I like to try packages without having them as a permanent part of my Emacs setup. try does exactly that, where the packages are gone after Emacs is closed. 
 
