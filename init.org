@@ -531,9 +531,7 @@ Undo-tree. I LOOOOVE undo-tree <3 Instead of having a linear line of operations 
     (global-undo-tree-mode)
   
     :custom
-    (undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
-    (undo-tree-limit 40000)
-    (undo-limit 40000))
+    (undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
 #+END_SRC
 
 Emojis in comments, org mode text and other places are really fun and makes the text feel more alive (instead of showing codes for emojis where applicable). (sometimes I turn it off because it ends up emojifying too much, but that is easy with =M-x emojify-mode=).
