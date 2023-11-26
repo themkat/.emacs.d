@@ -46,6 +46,7 @@ When starting my configuration, it will look like the following (see below for c
       - [[#markdown][Markdown]]
       - [[#yaml][YAML]]
       - [[#xml][XML]]
+      - [[#wgsl---webgpu-shading-language][WGSL - WebGPU Shading Language]]
     - [[#git-and-project-handling][git and project handling]]
     - [[#sidebar-tree-navigation][Sidebar tree navigation]]
     - [[#better-terminals][Better terminals]]
@@ -910,6 +911,10 @@ Used in Cucumber, Karate and more :) Useful to have for the situations where you
   (setq nxml-attribute-indent 4)
 #+END_SRC
 
+**** WGSL - WebGPU Shading Language
+#+BEGIN_SRC emacs-lisp
+  (use-package wgsl-mode)
+#+END_SRC
 *** git and project handling
 This is almost a reason to use Emacs by itself! Magit is the best way to experience git in my view. Simple and quick to use, together with its connection with git-gutter-fringe makes it super awesome!
 
