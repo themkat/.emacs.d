@@ -913,8 +913,11 @@ Used in Cucumber, Karate and more :) Useful to have for the situations where you
 
 **** WGSL - WebGPU Shading Language
 #+BEGIN_SRC emacs-lisp
-  (use-package wgsl-mode)
+  (use-package wgsl-mode
+    :hook
+    ((wgsl-mode . lsp)))
 #+END_SRC
+
 *** git and project handling
 This is almost a reason to use Emacs by itself! Magit is the best way to experience git in my view. Simple and quick to use, together with its connection with git-gutter-fringe makes it super awesome!
 
