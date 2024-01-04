@@ -559,7 +559,7 @@ Certain strings should in my view be translated to unicode symbols, and so far I
 Undo-tree. I LOOOOVE undo-tree <3 Instead of having a linear line of operations we can undo and redo, I have a tree I can navigate :D
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
-    :init
+    :config
     (add-to-list 'undo-tree-incompatible-major-modes #'nxml-mode)
     (global-undo-tree-mode)
 
