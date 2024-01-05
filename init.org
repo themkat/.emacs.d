@@ -446,7 +446,6 @@ Recently I also started using tabs with the centaur-tabs package:
                   (error nil))
                 (f-expand (projectile-project-root)))
                ;; Try to group as part of projectile project if indirectly part of it (started from the same directory, not yet tracked, or maybe temporary buffer)
-               ;; (useful for temporary buffers, vterm terminals started in same directory, rustic runs etc.)
                (get-closest-projectile-project default-directory)
                ((string-equal "*" (substring (buffer-name) 0 1))
                 "proc-buffers")
