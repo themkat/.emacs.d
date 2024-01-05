@@ -465,7 +465,8 @@ Recently I also started using tabs with the centaur-tabs package:
     ;; TODO: EXWM buffers
     :hook
     ((dashboard-mode . centaur-tabs-local-mode)
-     (org-src-mode . centaur-tabs-local-mode)))
+     (org-src-mode . centaur-tabs-local-mode)
+     (calendar-mode . centaur-tabs-local-mode)))
 #+END_SRC
 
 *** try
