@@ -291,6 +291,14 @@ I use some general settings to make Emacs feel better.
 
   ;; use y or n instead of yes or no
   (defalias 'yes-or-no-p 'y-or-n-p)
+
+
+  ;; Instead of making annoying beeps, blink the modeline on various errors.
+  ;; Taxed/Stolen from:
+  ;; http://whattheemacsd.com/appearance.el-02.html
+  (setq ring-bell-function (lambda ()
+                             (invert-face 'mode-line)
+                             (run-with-timer 0.1 nil 'invert-face 'mode-line)))
 #+END_SRC
 
 
