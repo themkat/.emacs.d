@@ -488,6 +488,13 @@ Sometimes I like to try packages without having them as a permanent part of my E
   (use-package try)
 #+END_SRC
 
+*** goto-line with preview
+goto-line waits until we hit enter to show us which line we went to. Sometimes I am off by a few digits, and preview helps me move faster.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package goto-line-preview)
+#+END_SRC
+
 
 ** Editing  settings
 
