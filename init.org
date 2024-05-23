@@ -82,6 +82,25 @@ Before we begin, we have to do some basic setup. For the rest of the config, I w
 #+END_SRC
 
 
+Some packages are also not in a package manager, and I may want to install it directly from a repo. Straight is good for this type of scenario!
+#+BEGIN_SRC emacs-lisp
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name
+          "straight/repos/straight.el/bootstrap.el"
+          (or (bound-and-true-p straight-base-dir)
+              user-emacs-directory)))
+        (bootstrap-version 7))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+#+END_SRC
+
 ** Keep packages up-to-date
 I'm a bit lazy when it comes to updating packages manually, so automating this is a welcome addition :)
 
