@@ -1065,14 +1065,14 @@ org mode (maybe move the intro from above?)
 
     :hook
     ;; make org mode easier to read with indentation
-    (org-mode . org-indent-mode))
+    ((org-mode . org-indent-mode)))
 
   ;; More modern styles in org mode
   ;; (prettier tables, less eyesores with visible hashes #, built in bullets etc.)
   (use-package org-modern
     :after org
     :hook
-    (org-mode . org-modern-mode))
+    ((org-mode . org-modern-mode)))
 
   ;; add a table of contents to sections tagged with TOC on save (updates it by need)
   (use-package toc-org
