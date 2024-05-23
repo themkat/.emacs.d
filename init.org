@@ -1101,6 +1101,10 @@ org mode (maybe move the intro from above?)
   ;; (prettier tables, less eyesores with visible hashes #, built in bullets etc.)
   (use-package org-modern
     :after org
+
+    :custom
+    (org-modern-fold-stars '(("▶" . "▼") ("▷" . "▽") ("☐" . "☐") ("▹" . "▿") ("▸" . "▾")))
+
     :hook
     ((org-mode . org-modern-mode)))
 
