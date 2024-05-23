@@ -1095,10 +1095,7 @@ org mode (maybe move the intro from above?)
     (org-hide-emphasis-markers t)
     (org-image-actual-width nil)
     (org-support-shift-select t)
-
-    :hook
-    ;; make org mode easier to read with indentation
-    ((org-mode . org-indent-mode)))
+    (org-pretty-entities t))
 
   ;; More modern styles in org mode
   ;; (prettier tables, less eyesores with visible hashes #, built in bullets etc.)
