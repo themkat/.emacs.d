@@ -288,6 +288,8 @@ I use some general settings to make Emacs feel better.
   (show-paren-mode 1)
   (delete-selection-mode 1)
 
+  ;; don't show the emacs splash screen as I use a custom dashboard instead
+  (setq inhibit-startup-screen t)
 
   ;; use y or n instead of yes or no
   (defalias 'yes-or-no-p 'y-or-n-p)
