@@ -962,6 +962,15 @@ Used in Cucumber, Karate and more :) Useful to have for the situations where you
     ((wgsl-mode . lsp)))
 #+END_SRC
 
+**** Zig
+I have recently started writing more Zig code. Hopefully I will continue doing so, so this section is not just spam :)
+#+BEGIN_SRC emacs-lisp
+  (use-package zig-mode
+    :hook
+    ((zig-mode . lsp)))
+#+END_SRC
+
+
 *** git and project handling
 This is almost a reason to use Emacs by itself! Magit is the best way to experience git in my view. Simple and quick to use, together with its connection with git-gutter-fringe makes it super awesome!
 
