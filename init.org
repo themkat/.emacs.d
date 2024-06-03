@@ -1000,7 +1000,8 @@ I have recently started writing more Zig code. Hopefully I will continue doing s
 #+BEGIN_SRC emacs-lisp
   (use-package zig-mode
     :hook
-    ((zig-mode . lsp)))
+    ((zig-mode . lsp)
+     (zig-mode . yas-minor-mode)))
 #+END_SRC
 
 
