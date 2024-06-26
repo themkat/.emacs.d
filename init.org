@@ -564,7 +564,8 @@ Sometimes we want to edit multiple places in the file at the same time. Most of 
   #+BEGIN_SRC emacs-lisp
     (use-package multiple-cursors
       :bind
-      ("C->" . mc/mark-next-like-this))
+      ("C->" . mc/mark-next-like-this)
+      ("C-<" . mc/mark-previous-like-this))
 #+END_SRC
 
 
