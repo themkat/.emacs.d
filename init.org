@@ -334,6 +334,12 @@ This one only applies to Mac, but makes my life easier. The different brackets b
 #+END_SRC
 
 
+It is nice to open images in Emacs. Make ImageMagick or similar convert images that are not supported natively for me:
+#+BEGIN_SRC emacs-lisp
+  (setq image-use-external-converter t)
+#+END_SRC
+
+
 *** Key help
 Sometimes I forget a hotkey-sequence I don't use that often, or a better case just remember the beginning of a longer sequence. Then which-key comes in handy! which-key shows possible continuations of a key-sequence. If you type C-x with your keyboard, it will suggest many continuations like C-+, C--, h etc.
 
