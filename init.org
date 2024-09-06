@@ -495,7 +495,9 @@ Recently I also started using tabs with the centaur-tabs package:
 
     :bind
     (("C-x <left>" . centaur-tabs-backward-tab)
-     ("C-x <right>" . centaur-tabs-forward-tab))
+     ("C-x <right>" . centaur-tabs-forward-tab)
+     ("C-z <left>" . centaur-tabs-move-current-tab-to-left)
+     ("C-z <right>" . centaur-tabs-move-current-tab-to-right))
 
     ;; TODO: EXWM buffers
     ;; Disable tab bars in the below modes
