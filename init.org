@@ -323,6 +323,11 @@ I use some general settings to make Emacs feel better.
   (setq ring-bell-function (lambda ()
                              (invert-face 'mode-line)
                              (run-with-timer 0.1 nil 'invert-face 'mode-line)))
+
+
+  ;; Make me confirm before exiting Emacs
+  ;; I have become a clumsy piece of shit with my age, and sometimes exit Emacs by mistake
+  (setq confirm-kill-emacs 'yes-or-no-p)
 #+END_SRC
 
 
