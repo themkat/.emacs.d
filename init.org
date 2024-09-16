@@ -442,6 +442,10 @@ To make Emacs better looking, I use the leuven-theme. This theme improves org-mo
 #+BEGIN_SRC emacs-lisp
   (use-package leuven-theme)
 
+  ;; just to make sure dash, f and s are present.
+  (use-package dash)
+  (use-package s)
+  (use-package f)
   ;; TODO: use-package here eventually
   (eval-after-load 's
     (progn   (require 's)
@@ -459,11 +463,6 @@ Recently I also started using tabs with the centaur-tabs package:
   ;; Unset the default behavior of the C-x <left> and <right> arrow key navigation
   (global-unset-key (kbd "C-x <left>"))
   (global-unset-key (kbd "C-x <right>"))
-
-  ;; just to make sure dash, f and s are present.
-  (use-package dash)
-  (use-package s)
-  (use-package f)
 
   (use-package centaur-tabs
     :after (dashboard org)
