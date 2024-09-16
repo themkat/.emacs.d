@@ -29,7 +29,7 @@ jobs:
           sudo apt-get install -y libtool-bin cmake
       - name: Tangle, byte-compile (replaces old init.el) and run new setup
         run: |
-          RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el 2>&1)
+          RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el 2>&1 | cat)
           echo "$RUN_DATA"
           WARNINGS=$(echo "$RUN_DATA" | sed '{/Warning/N;s/\n//;}' |  grep Warning | sed -E 's/^(.*\.el)/- \*\*\1\*\*/')
           LOAD_ERRORS=$(echo "$RUN_DATA" | grep -E "(Cannot load)|(Not found)" | sed 's/^/- /')
@@ -49,7 +49,7 @@ jobs:
       - name: Tangle, byte-compile (replaces old init.el) and run new setup
         # TODO: consider if this should be an action! now it it duplicated
         run: |
-          RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el 2>&1)
+          RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el 2>&1 | cat)
           echo "$RUN_DATA"
           WARNINGS=$(echo "$RUN_DATA" | sed '{/Warning/N;s/\n//;}' |  grep Warning | sed -E 's/^(.*\.el)/- \*\*\1\*\*/')
           LOAD_ERRORS=$(echo "$RUN_DATA" | grep -E "(Cannot load)|(Not found)" | sed 's/^/- /')
