@@ -440,9 +440,13 @@ Emacs is always open at my machine, so I really enjoy a friendly startup screen 
 To make Emacs better looking, I use the leuven-theme. This theme improves org-mode readability and makes Emacs blue and pretty in general :) I used to use doom-themes, moe-themes and so on with a simple theme switcher function, but I mostly just use leuven so I decided to remove them. The modeline is made prettier and more modern with doom modeline to get a beautiful powerline :) 
 
 #+BEGIN_SRC emacs-lisp
-  (use-package leuven-theme
-    :init
-    (load-theme 'leuven t))
+  (use-package leuven-theme)
+
+  ;; TODO: use-package here eventually
+  (eval-after-load 's
+    (progn   (require 's)
+             (add-to-list 'custom-theme-load-path (s-concat user-emacs-directory "themes/pink-bliss-uwu"))
+             (load-theme 'pink-bliss-uwu 't)))
 
   (use-package doom-modeline
     :init
