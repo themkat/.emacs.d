@@ -336,6 +336,12 @@ I use some general settings to make Emacs feel better.
   (let ((desired-font "-*-Monaspace Radon-regular-normal-normal-*-12-*-*-*-p-0-iso10646-1"))
     (unless (null (find-font (font-spec :name desired-font)))
       (set-frame-font desired-font nil t)))
+
+
+  ;; More comfortable smooth scrolling
+  ;; (also showing whats ahead with scroll-margin. That means that it starts smoothly scrolling 15 lines before it reaches top or bottom)
+  (setq scroll-conservatively 10
+        scroll-margin 15)
 #+END_SRC
 
 
