@@ -534,13 +534,23 @@ Recently I also started using tabs with the centaur-tabs package:
      (lsp-treemacs-generic-mode . centaur-tabs-local-mode)))
 #+END_SRC
 
-*** Documentation viewers inside Emacs
+*** Documentation viewers
 
 man-pages are good, but sometimes I need a shorter version For that, tldr is great! 
 #+BEGIN_SRC emacs-lisp
   (use-package tldr)
 #+END_SRC
 
+devdocs are also pretty handy to have, especially pre-downloaded entries I can read directly in Emacs:
+#+BEGIN_SRC emacs-lisp
+  (use-package devdocs)
+#+END_SRC
+*NOTE*: Remember to download documentation with =devdocs-install= before intended use.
+
+Usage:
+- devdocs-peruse opens a specific documentation (e.g, kotlin-1.9, rust book, Spring Boot etc.)
+- devdocs-lookup lets me see a list of the topics in that specific doc. 
+ 
 *** try
 Sometimes I like to try packages without having them as a permanent part of my Emacs setup. try does exactly that, where the packages are gone after Emacs is closed. 
 
