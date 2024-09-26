@@ -534,6 +534,13 @@ Recently I also started using tabs with the centaur-tabs package:
      (lsp-treemacs-generic-mode . centaur-tabs-local-mode)))
 #+END_SRC
 
+*** Documentation viewers inside Emacs
+
+man-pages are good, but sometimes I need a shorter version For that, tldr is great! 
+#+BEGIN_SRC emacs-lisp
+  (use-package tldr)
+#+END_SRC
+
 *** try
 Sometimes I like to try packages without having them as a permanent part of my Emacs setup. try does exactly that, where the packages are gone after Emacs is closed. 
 
