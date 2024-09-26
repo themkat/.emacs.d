@@ -440,10 +440,6 @@ Emacs is always open at my machine, so I really enjoy a friendly startup screen 
     ;;       https://github.com/emacs-dashboard/emacs-dashboard/issues/459
     (dashboard-set-heading-icons nil)
     (dashboard-set-file-icons t)
-    ;; TODO: see if we can activate the footer again in the future
-    ;;       Seems like nil gets sent to the insert function now. Unsure if it happens pre Emacs 29
-    ;;       The first element is an icon, so might be related to the other icon issues.
-    (dashboard-set-footer nil)
     (dashboard-projects-backend 'projectile)
     (dashboard-items '((projects . 5)
                        (recents . 5)
