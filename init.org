@@ -406,8 +406,7 @@ I use helm because i prefer it to ido or alternatives. It is simple to use, has 
 Having searches for system packages and installations directly in Emacs is pretty neat! 
 
 #+BEGIN_SRC emacs-lisp
-  (use-package helm-system-packages
-    :after helm)
+  (use-package helm-system-packages)
 #+END_SRC
 
 
@@ -689,11 +688,11 @@ Acivate spell checking for some relevant modes, set some preferred languages and
 
   ;; helm functionality for flyspell. To make it more user friendly
   (use-package helm-flyspell
-	:after flyspell
-	:init
-	;; Disable standard keys for flyspell correct, and make my own for helm.
-	(define-key flyspell-mode-map (kbd "C-.") nil)
-	(define-key flyspell-mode-map (kbd "C-,") #'helm-flyspell-correct))
+    :after (helm flyspell)
+    :init
+    ;; Disable standard keys for flyspell correct, and make my own for helm.
+    (define-key flyspell-mode-map (kbd "C-.") nil)
+    (define-key flyspell-mode-map (kbd "C-,") #'helm-flyspell-correct))
 #+END_SRC
 
 *** Completion general
@@ -1084,7 +1083,12 @@ This is almost a reason to use Emacs by itself! Magit is the best way to experie
 
   ;; TODO: maybe move it? Now it is very far down from where it is originally referenced (in helm)
   (use-package projectile)
-  (use-package helm-projectile)
+  (use-package helm-projectile
+    :after helm
+    :config
+    (helm-projectile-on)
+    :bind
+    (("C-x C-b" . helm-projectile-switch-to-buffer)))
 #+END_SRC
 
 How to this look? In this Emacs repo with my local untracked file (should probably make a gitignore), todos and changes, it looks about like this in the magit status buffer:
