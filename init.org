@@ -7,7 +7,7 @@ The configuration will change with time, based upon programming languages used a
 
 When starting my configuration, it will look like the following (see below for configuration of dashboard, modeline etc. :) ):
 
-#+ATTR_ORG: :width 800
+#+ATTR_ORG: :width 600
 [[./screenshot.png]]
 
 
