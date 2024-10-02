@@ -701,7 +701,7 @@ company (COMPLete ANY) provides base functionality for completions (ui elements,
 
 #+BEGIN_SRC emacs-lisp
   (use-package company
-    :init
+    :config
     (global-company-mode)
 
     :custom
