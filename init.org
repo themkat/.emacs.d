@@ -21,6 +21,7 @@ When starting my configuration, it will look like the following (see below for c
     - [[#general][general]]
     - [[#key-help][Key help]]
     - [[#helm][helm]]
+    - [[#navigating-windows-better][Navigating windows better]]
     - [[#installing-system-packages-apt-homebrew-etc][Installing system packages (apt, homebrew etc.)]]
     - [[#dashboard][dashboard]]
     - [[#themes-and-ui][themes and ui]]
@@ -398,6 +399,20 @@ I use helm because i prefer it to ido or alternatives. It is simple to use, has 
      ("C-x C-f" . helm-find-files)
      ;; get the awesome buffer list instead of the standard stuff
      ("C-x b" . helm-mini)))
+
+#+END_SRC
+
+*** Navigating windows better
+For years I navigated windows in Emacs with =C-x o= because of habit. Not anymore! After starting using the Sway window manager, I realized how tedious it was. You can say that Sway cured my Stockholm syndrome, and now I can navigate with =M-<arrow key>= to navigate to buffer windows based on position.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package windmove
+    :ensure nil
+    :bind*
+    (("M-<left>" . windmove-left)
+     ("M-<right>" . windmove-right)
+     ("M-<up>" . windmove-up)
+     ("M-<down>" . windmove-down)))
 #+END_SRC
 
 
