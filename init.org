@@ -679,35 +679,39 @@ Emojis in comments, org mode text and other places are really fun and makes the 
 
 
 *** Spell checking
-Acivate spell checking for some relevant modes, set some preferred languages and makes the correction prettier with helm. 
-	
+Acivate spell checking for some relevant modes, set some preferred languages and makes the correction prettier with helm.
+
+*NOTE: Remember to install aspell and relevant dictionaries. Seems like Homebrew package on OS X only contain the abomination known as Nynorsk, so the REAL Norwegian language known as Bokmål will have to be installed manually. I needed MacPorts to be able to do that on OSX. Linux distros at least have packages like MacPorts do for sane languages.*
+
 #+BEGIN_SRC emacs-lisp
   ;; FlySpell (spell checking)
   (dolist (flyspellmodes '(text-mode-hook
-						   org-mode-hook
-						   latex-mode-hook))
-	(add-hook flyspellmodes 'turn-on-flyspell))
-
-  ;; comments and strings in code
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+                           org-mode-hook
+                           latex-mode-hook
+                           ;; strings in code
+                           prog-mode-hook))
+    (add-hook flyspellmodes 'turn-on-flyspell))
 
   ;; sets american english as defult 
-  (setq ispell-dictionary "american")
+  (setq ispell-dictionary "american"
+        ispell-program-name "aspell")
 
   ;; let us cycle american english (best written english) and norwegian 
-  (defun change-dictionary ()
-	(interactive)
-	(ispell-change-dictionary (if (string-equal ispell-current-dictionary "american")
-								  "norsk"
-								"american")))
+  (defun themkat/change-dictionary ()
+    (interactive)
+    (ispell-change-dictionary (if (string-equal ispell-current-dictionary "american")
+                                  "norsk"
+                                "american")))
 
   ;; helm functionality for flyspell. To make it more user friendly
   (use-package helm-flyspell
     :after (helm flyspell)
     :init
     ;; Disable standard keys for flyspell correct, and make my own for helm.
-    (define-key flyspell-mode-map (kbd "C-.") nil)
-    (define-key flyspell-mode-map (kbd "C-,") #'helm-flyspell-correct))
+    :bind
+    (:map flyspell-mode-map
+          ("C-." . themkat/change-dictionary)
+          ("C-," . helm-flyspell-correct)))
 #+END_SRC
 
 *** Completion general
