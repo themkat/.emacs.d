@@ -864,8 +864,7 @@ Recently started experimenting more with Rust. rustic seems to be the best packa
     :after (yasnippet)
 
     :custom
-    (rustic-format-trigger 'on-save)
-    (rustic-format-on-save-method 'rustic-format-buffer)
+    (rustic-format-trigger nil)
     (lsp-rust-all-features t)
 
     :hook
