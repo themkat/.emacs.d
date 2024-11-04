@@ -345,6 +345,11 @@ I use some general settings to make Emacs feel better.
   ;; (also showing whats ahead with scroll-margin. That means that it starts smoothly scrolling 15 lines before it reaches top or bottom)
   (setq scroll-conservatively 10
         scroll-margin 15)
+
+
+  ;; Start Emacs server so I don't have to do it manually anymore
+  ;; (useful for emacsclient -n filename from other processes)
+  (server-start)
 #+END_SRC
 
 
