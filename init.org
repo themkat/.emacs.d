@@ -692,10 +692,12 @@ Acivate spell checking for some relevant modes, set some preferred languages and
   ;; FlySpell (spell checking)
   (dolist (flyspellmodes '(text-mode-hook
                            org-mode-hook
-                           latex-mode-hook
-                           ;; strings in code
-                           prog-mode-hook))
+                           latex-mode-hook))
     (add-hook flyspellmodes 'turn-on-flyspell))
+
+  ;; strings in code
+  (add-hook 'prog-mode          
+            'flyspell-prog-mode)
 
   ;; sets american english as defult 
   (setq ispell-dictionary "american"
@@ -873,7 +875,9 @@ Recently started experimenting more with Rust. rustic seems to be the best packa
     (lsp-rust-all-features t)
 
     :hook
-    (rustic-mode . yas-minor-mode))
+    ((rustic-mode . yas-minor-mode)
+     ;; keeping it here due to flyspell being built in, and prog-mode hook not activating it
+     (rustic-mode . flyspell-prog-mode)))
 #+END_SRC
 
 
