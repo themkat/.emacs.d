@@ -1120,7 +1120,6 @@ Emacs can also be a great editor for editing books, note sand other things. Some
 org mode (maybe move the intro from above?)
 #+BEGIN_SRC emacs-lisp
   (use-package org
-    :demand t
     :custom
     (org-startup-with-inline-images t)
     (org-startup-folded t)
