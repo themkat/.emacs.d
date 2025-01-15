@@ -473,6 +473,11 @@ To make Emacs better looking, I use the leuven-theme. This theme improves org-mo
   (use-package doom-modeline
     :init
     (doom-modeline-mode 1))
+
+  ;; Nyan Cat re-added, as it gives color to my dull gray life
+  (use-package nyan-mode
+    :config
+    (nyan-mode))
 #+END_SRC
 
 
