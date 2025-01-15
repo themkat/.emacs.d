@@ -69,6 +69,15 @@ Before we begin, we have to do some basic setup. For the rest of the config, I w
                '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-archives
                '("org" . "http://orgmode.org/elpa/") t)  ;; for newest version of org mode
+
+  ;; For codemetrics and other jcs packages
+  (add-to-list 'package-archives '( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/") t)
+
+  ;; set some explicit priorities to avoid jcs taking precedence
+  (setq package-archive-priorities '(("melpa"    . 5)
+                                     ("org"      . 4)
+                                     ("jcs-elpa" . 0)))
+
   (package-initialize)
 
   ;; only refresh package contents if we havent downloaded it yet.
@@ -81,29 +90,6 @@ Before we begin, we have to do some basic setup. For the rest of the config, I w
   ;; always download packages when we don't have them locally
   (require 'use-package)
   (setq use-package-always-ensure 't)
-#+END_SRC
-
-
-Some packages are also not in a package manager, and I may want to install it directly from a repo. Straight is good for this type of scenario!
-#+BEGIN_SRC emacs-lisp
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name
-          "straight/repos/straight.el/bootstrap.el"
-          (or (bound-and-true-p straight-base-dir)
-              user-emacs-directory)))
-        (bootstrap-version 7))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
-
-  ;; Avoid straight.el fucking with org-mode
-  (use-package org :straight (:type built-in))
 #+END_SRC
 
 ** Keep packages up-to-date
@@ -856,8 +842,6 @@ Recently started experimenting more with Rust. rustic seems to be the best packa
 
 
 **** Java
-lsp-java :drool: 
-
 Java IDE-like functionality in Emacs. When we run this mode for the first time, the lsp server will be downloaded automatically. Works like a charm!
 
 #+BEGIN_SRC emacs-lisp
@@ -1136,7 +1120,6 @@ Emacs can also be a great editor for editing books, note sand other things. Some
 org mode (maybe move the intro from above?)
 #+BEGIN_SRC emacs-lisp
   (use-package org
-    :straight nil
     :demand t
     :custom
     (org-startup-with-inline-images t)
