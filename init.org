@@ -26,6 +26,7 @@ When starting my configuration, it will look like the following (see below for c
     - [[#dashboard][dashboard]]
     - [[#themes-and-ui][themes and ui]]
     - [[#documentation-viewers][Documentation viewers]]
+    - [[#casual-suite][casual suite]]
     - [[#try][try]]
   - [[#editing--settings][Editing  settings]]
     - [[#general-editing][General editing]]
@@ -534,6 +535,39 @@ Usage:
 - devdocs-peruse opens a specific documentation (e.g, kotlin-1.9, rust book, Spring Boot etc.)
 - devdocs-lookup lets me see a list of the topics in that specific doc. 
  
+*** casual suite
+Casual suite provides more intuitive keyboard driven operations to various modes, powered by transient (which means nice helper UIs with hints like Magit!). Some examples include image-mode, Makefiles etc. 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package casual)
+
+  ;; unset C-o so we can use it for casual functions
+  (global-unset-key (kbd "C-o"))
+
+  ;; configure image-mode to have casual bindings
+  (use-package image-mode
+    :ensure nil
+    :after casual
+    :config
+    (require 'casual-image)
+  
+    :hook
+    (image-mode . casual-image-tmenu)
+
+    :bind
+    (:map image-mode-map
+          ("C-o" . casual-image-tmenu)))
+
+  ;; Configure dired to have casual bindings
+  (use-package dired
+    :ensure nil
+    :after casual
+
+    :bind
+    (:map dired-mode-map
+          ("C-o" . casual-dired-tmenu)))
+#+END_SRC
+
 *** try
 Sometimes I like to try packages without having them as a permanent part of my Emacs setup. try does exactly that, where the packages are gone after Emacs is closed. 
 
