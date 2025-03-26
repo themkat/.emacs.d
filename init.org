@@ -610,6 +610,8 @@ focus mode!!! Grays out the rest of the buffer, and only highlights the given fu
 Yasnippet makes boiler plate and other code snippets much faster to write with snippets that activates with small keywords. Just type the keyword and TAB, and yasnippet will fill in the snippet :) (you may have to fill in some names like class name or parameter names after TAB off course...).
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
+    :demand t
+  
     :config
     (yas-reload-all)
 
