@@ -822,8 +822,7 @@ Some modes uses flycheck to provide syntax correctness checks (e.g, red lines be
 
 I also find it useful to be able to see cognitive complexity metrics while coding.
 #+BEGIN_SRC emacs-lisp
-  (use-package codemetrics
-    :straight (codemetrics :type git :host github :repo "jcs-elpa/codemetrics"))
+  (use-package codemetrics)
 
   ;; some dependencies
   ;; (tree-sitter can be used for way more things, but I mainly use it for codemetrics atm)
