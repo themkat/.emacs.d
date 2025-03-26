@@ -28,6 +28,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libtool-bin cmake
       - name: Tangle, byte-compile (replaces old init.el) and run new setup
+        shell: bash
         run: |
           RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el 2>&1 | cat)
           echo "$RUN_DATA"
