@@ -51,6 +51,7 @@ jobs:
           brew install emacs libtool
       - name: Tangle, byte-compile (replaces old init.el) and run new setup
         # TODO: consider if this should be an action! now it it duplicated
+        shell: bash
         run: |
           RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el 2>&1 | cat)
           echo "$RUN_DATA"
