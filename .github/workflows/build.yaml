@@ -21,7 +21,7 @@ jobs:
           submodules: 'true'
       - uses: purcell/setup-emacs@master
         with:
-          version: 29.1
+          version: 29.4
       # TODO: this is ugly and only needed for vterm to succeed in the pipeline...
       - name: Install dependency needed for some Emacs packages
         run: |
