@@ -54,13 +54,10 @@ jobs:
         run: |
           RUN_DATA=$(HOME=$GITHUB_WORKSPACE/.. emacs --no-window-system --batch --script init.el 2>&1 | cat)
           echo "$RUN_DATA"
-          echo "Pipeline done"
           WARNINGS=$(echo "$RUN_DATA" | sed '{/Warning/N;s/\n//;}' |  grep Warning | sed -E 's/^(.*\.el)/- \*\*\1\*\*/')
           LOAD_ERRORS=$(echo "$RUN_DATA" | grep -E "(Cannot load)|(Not found)" | sed 's/^/- /')
-          echo "Populated most variables"
           MISSING_FILES=$(echo "$RUN_DATA" | grep "(file-missing" || : )
           echo -e "# Tangle and byte-compile report\n## Errors\n$LOAD_ERRORS\n## Warnings\n$WARNINGS" >> $GITHUB_STEP_SUMMARY
-          echo "Created summary"
           [ -z "$MISSING_FILES" ] || exit 1
           [ -z "$LOAD_ERRORS" ] || exit 1
 
