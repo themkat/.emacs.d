@@ -44,7 +44,6 @@ When starting my configuration, it will look like the following (see below for c
       - [[#python][Python]]
       - [[#scheme][Scheme]]
       - [[#dockerfiles][Dockerfiles]]
-      - [[#gherkin-like-feature-files][Gherkin-like feature files]]
       - [[#markdown][Markdown]]
       - [[#yaml][YAML]]
       - [[#xml][XML]]
@@ -1035,13 +1034,6 @@ Use geiser to make Scheme great to work with. Not really used much anymore, but 
     :mode "Dockerfile\\'")
 #+END_SRC
 
-
-**** Gherkin-like feature files
-Used in Cucumber, Karate and more :) Useful to have for the situations where you edit a file like that.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package feature-mode)
-#+END_SRC
 
 **** Markdown
 #+BEGIN_SRC emacs-lisp
