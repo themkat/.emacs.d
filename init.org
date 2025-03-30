@@ -1083,9 +1083,7 @@ This is almost a reason to use Emacs by itself! Magit is the best way to experie
   (use-package magit-todos
     :after (magit)
     :hook
-    (magit-status-mode . magit-todos-mode)
-    :bind
-    ("C-x t" . helm-magit-todos))
+    (magit-status-mode . magit-todos-mode))
 
   (use-package git-gutter
     :ensure git-gutter-fringe
