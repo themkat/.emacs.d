@@ -1,11 +1,12 @@
 [[https://github.com/themkat/.emacs.d/actions/workflows/build.yaml][file:https://github.com/themkat/.emacs.d/actions/workflows/build.yaml/badge.svg]]
 * .emacs configuration
-If you  are reading this, I finally got around to writing my .emacs config using Org mode. Why? Because it makes is easy to document the whys of my config. I also think it will make it fun to re-read my comments and text after some time :P
-
-The configuration will change with time, based upon programming languages used and so on. For some languages I just use try to use them in the current session (see below), because I use them so rarely :P 
+Very opinionated setup of Emacs, and obviously using literate config in org-mode :heart: That means that the Emacs Lisp source code snippets are tangled into their own file, and executed on startup. See init.el for how that is achieved.
 
 
-When starting my configuration, it will look like the following (see below for configuration of dashboard, modeline etc. :) ):
+You might wonder why I would use org-mode for my config? Because it makes documenting my setup simpler, and much easier to read. 
+
+
+The configuration will change with time, based upon preferences, what I work on, and so on. The commit history will be sort of a time capsule as time goes by. I use Emacs for everything, so I use a lot of different packages. For some of them I just use =try= to use them in the current session (see below), because I use them so rarely :stuck_out_tongue:
 
 #+ATTR_ORG: :width 600
 [[./screenshot.png]]
