@@ -62,12 +62,9 @@ Before we begin, we have to do some basic setup. For the rest of the config, I w
   ;;; -*- lexical-binding: t; -*-
   ;; sets lexical bindings so we get real closres with let etc. like in Scheme
 
-  ;; TODO: do we need both melpa and melpa-stable. Isn't melpa enough? 
   (require 'package)
   (add-to-list 'package-archives
                '("melpa" . "https://melpa.org/packages/"))
-  (add-to-list 'package-archives
-               '("melpa-stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-archives
                '("org" . "http://orgmode.org/elpa/") t)  ;; for newest version of org mode
 
