@@ -328,6 +328,9 @@ I use some general settings to make Emacs feel better.
         scroll-margin 15)
 
 
+  ;; Delete duplicates in M-x history log. Avoids cluttering up helm-M-x and similar
+  (setq history-delete-duplicates t)
+
   ;; Start Emacs server so I don't have to do it manually anymore
   ;; (useful for emacsclient -n filename from other processes)
   (server-start)
