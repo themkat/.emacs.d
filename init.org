@@ -225,8 +225,6 @@ These settings control how Emacs behaves in general (i.e, for all modes); what U
 I use some general settings to make Emacs feel better. 
 
 #+BEGIN_SRC emacs-lisp
-  ;; TODO: do these, the clipboard settings belong in editor settings instead?
-
   ;; Get PATH from session instead of whatever idiotic things are done before
   (use-package exec-path-from-shell
     :init
@@ -254,7 +252,7 @@ I use some general settings to make Emacs feel better.
         (menu-bar-mode -1)
         (tool-bar-mode -1)
         (scroll-bar-mode -1)
-	  
+
         ;; shows battery status (useful when using EXWM)
         (display-battery-mode 1)))
 
@@ -404,7 +402,6 @@ For years I navigated windows in Emacs with =C-x o= because of habit. Not anymor
 
 
 *** Installing system packages (apt, homebrew etc.)
-*TODO: Check if this should be somewhere else in the config*
 Having searches for system packages and installations directly in Emacs is pretty neat! 
 
 #+BEGIN_SRC emacs-lisp
@@ -461,7 +458,8 @@ To make Emacs better looking, I use the leuven-theme. This theme improves org-mo
   (use-package dash)
   (use-package s)
   (use-package f)
-  ;; TODO: use-package here eventually
+
+  ;; use my local version of pink-bliss-uwu
   (eval-after-load 's
     (progn   (require 's)
              (add-to-list 'custom-theme-load-path (s-concat user-emacs-directory "themes/pink-bliss-uwu"))
@@ -1132,7 +1130,6 @@ While term.el and shell are good enough for some use cases, they do not work wel
     :hook
     (vterm-mode . (lambda ()
                     ;; Settings to mimic dracula I use for zsh.
-                    ;; TODO: probably a better way
                     (setq-local buffer-face-mode-face '(:background "#000000" :foreground "#FFFFFF"))
                     (buffer-face-mode 1)
                     (text-scale-adjust 2)))
