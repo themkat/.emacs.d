@@ -1162,7 +1162,7 @@ org mode (maybe move the intro from above?)
     :after org
 
     :custom
-    (org-modern-fold-stars '(("▶" . "▼") ("▷" . "▽") ("☐" . "☐") ("▹" . "▿") ("▸" . "▾")))
+    (org-modern-fold-stars '(("▶" . "▼") ("▷" . "▽") ("☐" . "☐") ("▹" . "▿") ("▸" . "▾") ("◒" . "◑")))
 
     :hook
     ((org-mode . org-modern-mode)))
