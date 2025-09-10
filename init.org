@@ -225,7 +225,7 @@ I use some general settings to make Emacs feel better.
   ;; Get PATH from session instead of whatever idiotic things are done before
   (use-package exec-path-from-shell
     :init
-    (when (memq window-system '(mac ns x))
+    (when (memq window-system '(mac ns x pgtk))
       (exec-path-from-shell-initialize))
 
     :custom
