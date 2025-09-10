@@ -82,9 +82,6 @@ Before we begin, we have to do some basic setup. For the rest of the config, I w
   (unless package-archive-contents
     (package-refresh-contents))
 
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
-
   ;; always download packages when we don't have them locally
   (require 'use-package)
   (setq use-package-always-ensure 't)
