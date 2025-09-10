@@ -1165,7 +1165,7 @@ org mode (maybe move the intro from above?)
     (org-modern-fold-stars '(("▶" . "▼") ("▷" . "▽") ("☐" . "☐") ("▹" . "▿") ("▸" . "▾") ("◒" . "◑")))
 
     :hook
-    ((org-mode . org-modern-mode)))
+    (org-mode . org-modern-mode))
 
   ;; add a table of contents to sections tagged with TOC on save (updates it by need)
   (use-package toc-org
