@@ -226,7 +226,10 @@ I use some general settings to make Emacs feel better.
   (use-package exec-path-from-shell
     :init
     (when (memq window-system '(mac ns x))
-      (exec-path-from-shell-initialize)))
+      (exec-path-from-shell-initialize))
+
+    :custom
+    (exec-path-from-shell-arguments nil))
 
 
   ;; set default coding of buffers
