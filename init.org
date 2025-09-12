@@ -323,6 +323,9 @@ I use some general settings to make Emacs feel better.
   ;; Delete duplicates in M-x history log. Avoids cluttering up helm-M-x and similar
   (setq history-delete-duplicates t)
 
+  ;; Don't spamfuck the native compilation warnings every time I start Emacs
+  (setq native-comp-async-report-warnings-errors 'silent)
+
   ;; Start Emacs server so I don't have to do it manually anymore
   ;; (useful for emacsclient -n filename from other processes)
   (server-start)
