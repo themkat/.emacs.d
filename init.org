@@ -20,6 +20,7 @@ The configuration will change with time, based upon preferences, what I work on,
   - [[#exwm---emacs-window-manager][EXWM - Emacs Window manager]]
   - [[#behaviorial-settings][Behaviorial settings]]
     - [[#general][general]]
+    - [[#path-variable-from-shell][PATH variable from shell]]
     - [[#key-help][Key help]]
     - [[#helm][helm]]
     - [[#navigating-windows-better][Navigating windows better]]
@@ -222,16 +223,6 @@ These settings control how Emacs behaves in general (i.e, for all modes); what U
 I use some general settings to make Emacs feel better. 
 
 #+BEGIN_SRC emacs-lisp
-  ;; Get PATH from session instead of whatever idiotic things are done before
-  (use-package exec-path-from-shell
-    :init
-    (when (memq window-system '(mac ns x pgtk))
-      (exec-path-from-shell-initialize))
-
-    :custom
-    (exec-path-from-shell-arguments nil))
-
-
   ;; set default coding of buffers
   (setq default-buffer-file-coding-system 'utf-8-unix)
 
@@ -344,6 +335,19 @@ It is nice to open images in Emacs. Make ImageMagick or similar convert images t
   (setq image-use-external-converter t)
 #+END_SRC
 
+
+*** PATH variable from shell
+I use =exec-path-from-shell= to get the PATH environment variable from a non-interactive shell, which is zsh on all (or most of?) my machines. Non-interactive means that the shell is quicker to start, which means that it won't slow down Emacs too much. That also implies that I have to define the environment variables in =.zprofile= instead of =.zshrc=. Worth it due to interactive shell (i.e, argument =-i= to shell) making Emacs startup times sloooow. 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+    :init
+    (when (memq window-system '(mac ns x pgtk))
+      (exec-path-from-shell-initialize))
+
+    :custom
+    (exec-path-from-shell-arguments nil))
+#+END_SRC
 
 *** Key help
 Sometimes I forget a hotkey-sequence I don't use that often, or a better case just remember the beginning of a longer sequence. Then which-key comes in handy! which-key shows possible continuations of a key-sequence. If you type C-x with your keyboard, it will suggest many continuations like C-+, C--, h etc.
