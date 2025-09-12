@@ -66,15 +66,12 @@ Before we begin, we have to do some basic setup. For the rest of the config, I w
   (require 'package)
   (add-to-list 'package-archives
                '("melpa" . "https://melpa.org/packages/"))
-  (add-to-list 'package-archives
-               '("org" . "http://orgmode.org/elpa/") t)  ;; for newest version of org mode
 
   ;; For codemetrics and other jcs packages
   (add-to-list 'package-archives '( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/") t)
 
   ;; set some explicit priorities to avoid jcs taking precedence
   (setq package-archive-priorities '(("melpa"    . 5)
-                                     ("org"      . 4)
                                      ("jcs-elpa" . 0)))
 
   (package-initialize)
@@ -93,6 +90,8 @@ I'm a bit lazy when it comes to updating packages manually, so automating this i
 
 #+BEGIN_SRC emacs-lisp
   (use-package auto-package-update
+    :disabled t
+    
     :custom
     (auto-package-update-interval 31)
     (auto-package-update-delete-old-versions t)
