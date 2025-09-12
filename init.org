@@ -38,6 +38,7 @@ The configuration will change with time, based upon preferences, what I work on,
       - [[#c][C]]
       - [[#assembly-various-flavors][Assembly (various flavors)]]
       - [[#rust][Rust]]
+      - [[#lean4-mathematical-proofs][Lean4 (mathematical proofs)]]
       - [[#java][Java]]
       - [[#kotlin][Kotlin]]
       - [[#typescript][TypeScript]]
@@ -868,6 +869,15 @@ Recently started experimenting more with Rust. rustic seems to be the best packa
      (rustic-mode . flyspell-prog-mode)))
 #+END_SRC
 
+
+**** Lean4 (mathematical proofs)
+Lean is a nice little theorem proofer and programming language. Learning it these days, and starting to enjoy it :heart_eyes_cat: Hope to get real practical use for it the deeper I get into my math studies at uni. 
+#+BEGIN_SRC emacs-lisp
+  (use-package lean4-mode
+    :commands lean4-mode
+    :vc (:url "https://github.com/leanprover-community/lean4-mode.git"
+         :rev :last-release))
+#+END_SRC
 
 **** Java
 Java IDE-like functionality in Emacs. When we run this mode for the first time, the lsp server will be downloaded automatically. Works like a charm!
