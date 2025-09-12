@@ -30,6 +30,7 @@ The configuration will change with time, based upon preferences, what I work on,
     - [[#documentation-viewers][Documentation viewers]]
     - [[#casual-suite][casual suite]]
     - [[#try][try]]
+    - [[#goto-line-with-preview][goto-line with preview]]
   - [[#editing--settings][Editing  settings]]
     - [[#general-editing][General editing]]
     - [[#spell-checking][Spell checking]]
@@ -574,7 +575,8 @@ Sometimes I like to try packages without having them as a permanent part of my E
 goto-line waits until we hit enter to show us which line we went to. Sometimes I am off by a few digits, and preview helps me move faster.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package goto-line-preview)
+  (use-package goto-line-preview
+    :defer t)
 #+END_SRC
 
 
