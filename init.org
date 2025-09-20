@@ -813,7 +813,10 @@ Some modes uses flycheck to provide syntax correctness checks (e.g, red lines be
   (use-package flycheck
     :custom
     (flycheck-indication-mode nil)
-    (flycheck-highlighting-mode 'lines))
+    (flycheck-highlighting-mode 'lines)
+    ;; Flycheck has some stupid low limits on errors shown. Lsp in stuff like lean reaches these limits fast, and ends up turning off flycheck for lsp for some reason.
+    ;; Also... It's over 9000!
+    (flycheck-checker-error-threshold 9001))
 #+END_SRC
 
 
