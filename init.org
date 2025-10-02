@@ -1166,7 +1166,10 @@ org mode (maybe move the intro from above?)
     (org-hide-emphasis-markers t)
     (org-image-actual-width nil)
     (org-support-shift-select t)
-    (org-pretty-entities t))
+    (org-pretty-entities t)
+    ;; Minted is the only latex source code blocks I enjoy working with
+    (org-latex-src-block-backend 'minted)
+    (org-latex-minted-options '(("frame" "lines") ("linenos=true") ("breaklines"))))
 
   ;; More modern styles in org mode
   ;; (prettier tables, less eyesores with visible hashes #, built in bullets etc.)
