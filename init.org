@@ -822,11 +822,13 @@ Some modes uses flycheck to provide syntax correctness checks (e.g, red lines be
 
 I also find it useful to be able to see cognitive complexity metrics while coding.
 #+BEGIN_SRC emacs-lisp
-  (use-package codemetrics)
+  (use-package codemetrics
+    :disabled)
 
   ;; some dependencies
   ;; (tree-sitter can be used for way more things, but I mainly use it for codemetrics atm)
-  (use-package tree-sitter-langs)
+  (use-package tree-sitter-langs
+    :disabled)
 #+END_SRC
 
 
@@ -852,14 +854,16 @@ C does not really need much auto completion, but it can be great to have it for 
 
 Some projects also use CMake as a build system in the C and C++ world. Handy to have CMake syntax highlighting available:
 #+BEGIN_SRC emacs-lisp
-  (use-package cmake-mode)
+  (use-package cmake-mode
+    :defer t)
 #+END_SRC
 (just activate lsp using M-x in a CMake buffer after this to get completion etc.! Requires installation of [[https://emacs-lsp.github.io/lsp-mode/page/lsp-cmake/][cmake-language-server]])
 
 **** Assembly (various flavors)
 6502 Assembly (especially for Commodore 64):
 #+BEGIN_SRC emacs-lisp
-  (use-package mos-mode)
+  (use-package mos-mode
+    :defer t)
 #+END_SRC
 (my own package lol)
 
@@ -868,6 +872,7 @@ Recently started experimenting more with Rust. rustic seems to be the best packa
 
 #+BEGIN_SRC emacs-lisp
   (use-package rustic
+    :defer t
     :after (yasnippet)
 
     :custom
@@ -925,6 +930,7 @@ lsp-mode works out of the box with Kotlin mode as long as [[https://github.com/f
                                      :noDebug nil)))
 
   (use-package kotlin-mode
+    :defer t
     :after (lsp-mode dap-mode yasnippet)
     :config
     (require 'dap-kotlin)
@@ -988,6 +994,7 @@ Makes it more comfortable to edit mixed files (javascript + html in same documen
     (setq-local eldoc-documentation-function #'themkat/eldoc-web-mode))
 
   (use-package web-mode
+    :defer t
     :after (tide css-eldoc)
     :custom
     (web-mode-enable-current-element-highlight t)
@@ -1014,6 +1021,7 @@ Having eldoc for CSS and SASS helps a lot for remembering input parameters witho
  Emacs works great as a REST client (also used it for other HTTP requests, e.g, SOAP), mostly because of the amazing restclient(-mode):
 #+BEGIN_SRC emacs-lisp
   (use-package restclient
+    :defer t
     :mode
     ("\\.http\\'" . restclient-mode))
 #+END_SRC
@@ -1054,7 +1062,8 @@ Use geiser to make Scheme great to work with. Not really used much anymore, but 
 
 **** YAML
 #+BEGIN_SRC emacs-lisp
-  (use-package yaml-mode)
+  (use-package yaml-mode
+    :defer t)
 #+END_SRC
 
 **** XML
