@@ -74,4 +74,4 @@ jobs:
         run: |
           $env:HOME = "D:\a\.emacs.d\"
           # turn off native code generation thingy. Windows is awful, and getting MinGW to work is a downright abortion...
-          emacs --no-window-system --batch --eval '(setq native-comp-generated-trampolines nil)' --script init.el
+          emacs --no-window-system --batch --eval '(setq native-comp-generated-trampolines nil native-comp-jit-compilation nil)' --script init.el
