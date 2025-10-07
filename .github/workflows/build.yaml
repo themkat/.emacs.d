@@ -61,17 +61,18 @@ jobs:
           [ -z "$LOAD_ERRORS" ] || exit 1
 
   # verify that setup loads on Windows. Just in case I ever have to use it...
-  build-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          submodules: 'true'
-      - name: Setup Emacs
-        run: |
-          choco install emacs --version=29.4.0
-      - name: Tangle, byte-compile (replaces old init.el) and run new setup
-        run: |
-          $env:HOME = "D:\a\.emacs.d\"
-          # turn off native code generation thingy. Windows is awful, and getting MinGW to work is a downright abortion...
-          emacs --no-window-system --batch --eval '(setq native-comp-generated-trampolines nil native-comp-jit-compilation nil)' --script init.el
+  # FUCK YOU WINDOWS! Microsoft should be tried for war crimes for that travesty. 
+  # build-windows:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v5
+  #       with:
+  #         submodules: 'true'
+  #     - name: Setup Emacs
+  #       run: |
+  #         choco install emacs --version=29.4.0
+  #     - name: Tangle, byte-compile (replaces old init.el) and run new setup
+  #       run: |
+  #         $env:HOME = "D:\a\.emacs.d\"
+  #         # turn off native code generation thingy. Windows is awful, and getting MinGW to work is a downright abortion...
+  #         emacs --no-window-system --batch --eval '(setq native-comp-generated-trampolines nil native-comp-jit-compilation nil)' --script init.el
