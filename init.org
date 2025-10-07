@@ -776,13 +776,17 @@ lsp-mode uses LSP servers to provides IDE functionality like code completion (in
     ;; Save automatically on lsp-rename etc. Usually it opens buffers in the background that contains the edits...
     ;; https://github.com/emacs-lsp/lsp-mode/issues/4087
     :hook
-    (lsp-after-apply-edits . save-buffer))
+    (lsp-after-apply-edits . save-buffer)
 
-  ;; helper boxes and other nice functionality (like javadoc for java)
-  (defun lsp-ui-show-doc-helper ()
-    (interactive)
-    (if (lsp-ui-doc--visible-p)
-        (lsp-ui-doc-hide)
+    ;; Some language servers are slow. wait a big longer for reply
+    :custom
+    (lsp-response-timeout 20))
+
+    ;; helper boxes and other nice functionality (like javadoc for java)
+    (defun lsp-ui-show-doc-helper ()
+      (interactive)
+      (if (lsp-ui-doc--visible-p)
+          (lsp-ui-doc-hide)
         (lsp-ui-doc-show)))
 
   (use-package lsp-ui
