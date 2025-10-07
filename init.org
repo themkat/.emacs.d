@@ -1216,17 +1216,15 @@ Olivetti to improve readability. Olivetti centers the entire buffer like a sheet
 #+END_SRC
 
 
-TODO: animated gifs:
-https://github.com/shg/org-inline-anim.el
 
-TODO: math previews more nicely thn the imagemagick solution. zoom etc.
-https://gitlab.com/matsievskiysv/math-preview/
 
 I've tried many LaTeX math preview solutions over the years, but they all have drawbacks. Some generate images that I can't zoom with the rest of the text, while others require elaborate workflows and package installs. [[https://gitlab.com/matsievskiysv/math-preview/][math-preview]] is a breath of fresh air, as it only requires one external package (=npm install -g git+https://gitlab.com/matsievskiysv/math-preview=). It can also zoom flawlessly! Have used it with try for a while, so time to add it:
 
 #+BEGIN_SRC emacs-lisp
   (use-package math-preview)
 #+END_SRC
+
+# TODO: animated gifs. Cool for presentations. https://github.com/shg/org-inline-anim.el
 
 
 # TODO: replace with org-present?
