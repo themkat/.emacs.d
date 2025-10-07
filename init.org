@@ -208,7 +208,7 @@ Then on launch it will run the following setup for using EXWM:
 #+END_SRC
 
 Desktop environment can also be very useful when Emacs blocks the function keys (volume etc.). I have this issue with EXWM, and desktop-environment fixes it.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle (if (getenv "USE_EXWM") "yes" "no")
   (use-package desktop-environment
     :requires exwm
     :init
