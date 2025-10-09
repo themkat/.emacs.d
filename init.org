@@ -48,6 +48,7 @@ The configuration will change with time, based upon preferences, what I work on,
       - [[#python][Python]]
       - [[#scheme][Scheme]]
       - [[#dockerfiles][Dockerfiles]]
+      - [[#swift-ios-xcode-projects-specifically][Swift (iOS XCode projects specifically)]]
       - [[#markdown][Markdown]]
       - [[#yaml][YAML]]
       - [[#xml][XML]]
@@ -1057,6 +1058,211 @@ Use geiser to make Scheme great to work with. Not really used much anymore, but 
     :mode "Dockerfile\\'")
 #+END_SRC
 
+
+
+**** Swift (iOS XCode projects specifically)
+# TODO: if it grows any bigger, consider making it a separate package
+# TODO: only detangle if on macs.
+This year (2025), I started experimenting with iOS app development again. The experience itself is okay, but you quickly get married to XCode. I ended up using way more time in XCode than I wanted, and created some Emacs tooling to replace XCode equivalent. All powered by Apples own cli tooling. Still use XCode for previews, but most application logic can now be written in Emacs <3 (if I try to develop other Apple platforms in the future, I may extend it. I really think the Vision Pro seems cool).
+
+
+Why not just use the run on device logic in Swift-mode? It requires a somewhat buggy external program (ios-deploy), as well as needing USB connection. I want Wifi deploy with ONLY standard XCode tooling. It's the-current-year after all. My setup also focuses on getting auto completion for XCode Swift projects to work.
+
+
+Requirements:
+- XCode installed, as well as XCode command line tools (included in standard installs).
+- [[https://github.com/SolaWing/xcode-build-server][xcode-build-server]] should be installed. Can be installed with homebrew. Used for BSP (build server protocol), so sourcekit-lsp can read XCode related build settings and iOS symbols (e.g, SwiftUI imports).
+
+
+Some prerequisites:
+- Start lsp mode, so we get a root directory for the project.
+- Run =themkat/setup-xcode-project= to setup xcode related auto completion. Select your application scheme from here. This will set a directory local variable which will be used later. If you want to change the scheme, re-run the setup. *NOTE: This will also build your project, which is needed by xcode-build-server to work. If the build fails, just use g to re-run like you would do in any compile-buffer.*
+- Shutdown and restart lsp-mode.
+- You will now have auto completion in Swift code for SwiftUI and local project dependencies.
+
+
+*NOTE: I rarely use the simulator/emulator thingies, and mostly use real devices. I might add simulator runs later.*
+
+
+NOTE: XCode version fiddling and upgrade of components may be necessary. Due to xcode-build-server and your local xcode working together, there may be inconsistencies if you swift xcode-versions with xcode-select. I could not get it consistent without also using the newest xcode version here. 
+
+#+BEGIN_SRC emacs-lisp
+  ;; Assumes a lsp root. Works with my other tooling
+  (defvar themkat/ios-devices-list-should-update nil)
+
+  ;; TODO: replace dir-locals stuff with something better.
+
+  (defun themkat/ios-get-devices ()
+    "Returns a a-list of device names and ids"
+    (let ((ios-devices-file (file-name-concat user-emacs-directory "ios-devices.json"))
+          (json-array-type 'list)
+          (json-object-type 'alist))
+      (when (or (not (file-exists-p ios-devices-file))
+                themkat/ios-devices-list-should-update)
+        (message "Device file does not exist. Creating.")
+        (shell-command (concat "xcrun devicectl list devices -j " ios-devices-file) nil)
+        ;; Set user flag so we do not update 
+        (setq themkat/ios-devices-list-should-update nil))
+
+      ;; Read json data from file
+      (-map (lambda (device-info)
+              ;; device-name + id pairs
+              (cons (cdr (assoc 'name (assoc 'deviceProperties device-info)))
+                    (cdr (assoc 'identifier device-info))))
+            (cdr (assoc 'devices
+                        (assoc 'result (json-read-file ios-devices-file)))))))
+
+  (defun themkat/ios-project-get-schemes ()
+    "Returns the valid schemes for the current project."
+    (let ((default-directory (lsp-workspace-root))
+          (json-array-type 'list)
+          (json-object-type 'alist))
+      (cdr (assoc 'schemes
+                  (assoc 'project
+                         (json-read-from-string (shell-command-to-string "xcodebuild -list -json")))))))
+
+  ;; Project settings that Emacs needs
+  (defvar themkat/ios-current-scheme)
+  (defvar themkat/ios-current-device)
+
+
+  (defun themkat/ios-change-device ()
+    "Changes the currently selected device and returns a pair of the name and identifier of that device."
+    (interactive)
+    (let ((default-directory (lsp-workspace-root))
+          (selected-device (helm :sources (helm-build-sync-source "ios-devices"
+                                            :candidates (-map (-lambda ((name . identifier))
+                                                                (cons name (cons name identifier)))
+                                                              (themkat/ios-get-devices)))
+                                 :buffer "*Select iOS device*")))
+      (setq-local themkat/ios-current-device selected-device)
+      (add-dir-local-variable nil 'themkat/ios-current-device selected-device)
+      selected-device))
+
+  (defun themkat/ios-change-scheme ()
+    "Changes the currently selected scheme, and return it for simple use after being set."
+    (interactive)
+    (let ((default-directory (lsp-workspace-root))
+          (selected-scheme (helm :sources (helm-build-sync-source "project-schemes"
+                                            :candidates (themkat/ios-project-get-schemes))
+                                 :buffer "*Select project scheme*")))
+      (setq-local themkat/ios-current-scheme selected-scheme)
+      (add-dir-local-variable nil 'themkat/ios-current-scheme selected-scheme)
+      selected-scheme))
+
+  (defun themkat/ios-get-build-settings ()
+    "Sets an alist of relevant build settings for the current configuration, and also return it for quick usage."
+    (let* ((default-directory (lsp-workspace-root))
+           (json-array-type 'list)
+           (json-object-type 'alist)
+           (device (themkat/ios-get-device))
+           (scheme (themkat/ios-get-scheme))
+           (build-settings (cdr (assoc 'buildSettings
+                                       (car (json-read-from-string (shell-command-to-string (concat "xcodebuild "
+                                                                                               " -scheme " scheme
+                                                                                               " -destination " "\"platform=iOS,name=" (car device) "\""
+                                                                                               " -showBuildSettings -json"))))))))
+      build-settings))
+
+
+  (defmacro def-get-variable-or-fallback-func (name variable fallback-func)
+    "Stupid macro for generating get or fallback function getters."
+    `(defun ,name ()
+       (if (and (boundp ',variable)
+                (not (null ,variable)))
+           ,variable
+         (funcall ',fallback-func))))
+
+  ;; Simple wrapper handlers to fetch project information
+  (def-get-variable-or-fallback-func
+   themkat/ios-get-device
+   themkat/ios-current-device
+   themkat/ios-change-device)
+
+  (def-get-variable-or-fallback-func
+   themkat/ios-get-scheme
+   themkat/ios-current-scheme
+   themkat/ios-change-scheme)
+
+  (defun themkat/ios-find-app-file ()
+    "Find a .app directory resulting from a xcodebuild invocation."
+    (let* ((default-directory (lsp-workspace-root))
+           (build-settings (themkat/ios-get-build-settings))
+           (target-dir (cdr (assoc 'TARGET_BUILD_DIR build-settings)))
+           (app-file (cdr (assoc 'WRAPPER_NAME build-settings))))
+      (f-join target-dir app-file)))
+
+  (defun themkat/ios-get-bundle-identifier ()
+    (let ((default-directory (lsp-workspace-root))
+          (build-settings (themkat/ios-get-build-settings)))
+      (cdr (assoc 'PRODUCT_BUNDLE_IDENTIFIER build-settings))))
+
+
+  (defun themkat/ios-create-xcodebuild-build-command (&optional simulator-build-p)
+    "Creates an xcodebuild build command from current settings"
+    (let* ((default-directory (lsp-workspace-root))
+           (scheme (themkat/ios-get-scheme))
+           (device (themkat/ios-get-device))
+           ;; TODO: any way we could re-generate the build-settings only here?
+           (build-settings (themkat/ios-get-build-settings))
+           (project-file (cdr (assoc 'PROJECT_FILE_PATH build-settings))))
+      (concat "xcodebuild clean build"
+              " -project " project-file
+              " -scheme " scheme
+              " -destination " (if simulator-build-p
+                                   "\"generic/platform=iOS Simulator\""
+                                 (concat "\"platform=iOS,name=" (car device) "\"")))))
+
+  (defun themkat/ios-create-build-server-command ()
+    "Creates a xcode-build-server command from the current settings."
+    (let* ((default-directory (lsp-workspace-root))
+           (scheme (themkat/ios-get-scheme))
+           (build-settings (themkat/ios-get-build-settings))
+           (project-file (cdr (assoc 'PROJECT_FILE_PATH build-settings))))
+      (concat "xcode-build-server config "
+              " -project " project-file
+              " -scheme " scheme)))
+
+  (defun themkat/ios-create-run-on-device-command ()
+    "Creates a command to install and run the application on device."
+    (let* ((default-directory (lsp-workspace-root))
+           (device (themkat/ios-get-device))
+           (app-location (themkat/ios-find-app-file))
+           (bundle-id (themkat/ios-get-bundle-identifier))
+           (install-command (concat "xcrun devicectl device install app --device " (cdr device) " " app-location))
+           (run-command (concat "xcrun devicectl device process launch --device " (cdr device) " " bundle-id)))
+      (concat install-command " && " run-command)))
+
+  ;; Just use compile with some chained commands here? We can probably just create various commands in functions to avoid duplication
+  (defun themkat/ios-build-project ()
+    (interactive)
+    (unless (lsp-workspace-root)
+      (error "not in a workspace root! You should activate lsp-mode dumbass"))
+    (let ((default-directory (lsp-workspace-root)))
+      ;; Build and regenerate xcode-build-server stuff.
+      ;; Seems to work best with simulator builds, so using that to get completion to work.
+      (compile (concat (themkat/ios-create-xcodebuild-build-command 'LSP_SETUP)
+                       " && "
+                       (themkat/ios-create-build-server-command)))))
+
+  (defalias 'themkat/setup-xcode-project
+    'themkat/ios-build-project)
+
+  (defun themkat/ios-run-on-device ()
+    "Builds and run project on device."
+    (interactive)
+    (compile (concat (themkat/ios-create-xcodebuild-build-command)
+                     " && "
+                     (themkat/ios-create-run-on-device-command))))
+
+  (use-package swift-mode)
+
+  (use-package lsp-sourcekit
+    :after lsp-mode
+    :config
+    ;; Use sourcekit-lsp from path
+    (setq lsp-sourcekit-executable (executable-find "sourcekit-lsp")))
+#+END_SRC
 
 **** Markdown
 #+BEGIN_SRC emacs-lisp
