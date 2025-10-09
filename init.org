@@ -1063,7 +1063,7 @@ Use geiser to make Scheme great to work with. Not really used much anymore, but 
 **** Swift (iOS XCode projects specifically)
 # TODO: if it grows any bigger, consider making it a separate package
 # TODO: only detangle if on macs.
-This year (2025), I started experimenting with iOS app development again. The experience itself is okay, but you quickly get married to XCode. I ended up using way more time in XCode than I wanted, and created some Emacs tooling to replace XCode equivalent. All powered by Apples own cli tooling. Still use XCode for previews, but most application logic can now be written in Emacs <3 (if I try to develop other Apple platforms in the future, I may extend it. I really think the Vision Pro seems cool).
+This year (2025), I started experimenting with iOS app development. The experience itself is okay, but you quickly get married to XCode. I ended up using way more time in XCode than I wanted, and created some Emacs tooling to replace 99 % of my XCode usage. All powered by Apples own cli tooling. Still use XCode for previews, but most application logic can now be written in Emacs <3 (if I try to develop other Apple platforms in the future, I may extend it. I really think the Vision Pro seems cool).
 
 
 Why not just use the run on device logic in Swift-mode? It requires a somewhat buggy external program (ios-deploy), as well as needing USB connection. I want Wifi deploy with ONLY standard XCode tooling. It's the-current-year after all. My setup also focuses on getting auto completion for XCode Swift projects to work.
