@@ -1062,7 +1062,6 @@ Use geiser to make Scheme great to work with. Not really used much anymore, but 
 
 **** Swift (iOS XCode projects specifically)
 # TODO: if it grows any bigger, consider making it a separate package
-# TODO: only detangle if on macs.
 This year (2025), I started experimenting with iOS app development. The experience itself is okay, but you quickly get married to XCode. I ended up using way more time in XCode than I wanted, and created some Emacs tooling to replace 99 % of my XCode usage. All powered by Apples own cli tooling. Still use XCode for previews, but most application logic can now be written in Emacs <3 (if I try to develop other Apple platforms in the future, I may extend it. I really think the Vision Pro seems cool).
 
 
@@ -1086,7 +1085,7 @@ Some prerequisites:
 
 NOTE: XCode version fiddling and upgrade of components may be necessary. Due to xcode-build-server and your local xcode working together, there may be inconsistencies if you swift xcode-versions with xcode-select. I could not get it consistent without also using the newest xcode version here. 
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle (if (eq system-type 'darwin) "yes" "no")
   ;; Assumes a lsp root. Works with my other tooling
   (defvar themkat/ios-devices-list-should-update nil)
 
