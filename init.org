@@ -1012,7 +1012,8 @@ Makes it more comfortable to edit mixed files (javascript + html in same documen
 
     :mode
     (("\\.html?$" . themkat/setup-web-mode-mixed)
-     ("\\.jsx?$" . web-mode)))
+     ("\\.jsx?$" . web-mode)
+     ("\\.tsx$" . web-mode)))
 #+END_SRC
 
 Having eldoc for CSS and SASS helps a lot for remembering input parameters without looking stuff up:
