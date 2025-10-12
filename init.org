@@ -1255,7 +1255,9 @@ NOTE: XCode version fiddling and upgrade of components may be necessary. Due to 
                      " && "
                      (themkat/ios-create-run-on-device-command))))
 
-  (use-package swift-mode)
+  (use-package swift-mode
+    :hook
+    (swift-mode . yas-minor-mode))
 
   (use-package lsp-sourcekit
     :after lsp-mode
