@@ -1387,7 +1387,7 @@ org mode (maybe move the intro from above?)
     (org-hide-emphasis-markers t)
     (org-image-actual-width nil)
     (org-support-shift-select t)
-    (org-pretty-entities t)
+    (org-pretty-entities nil)
     ;; Use separate faces for inline latex
     (org-highlight-latex-and-related '(latex))
     ;; Minted is the only latex source code blocks I enjoy working with
