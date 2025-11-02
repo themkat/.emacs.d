@@ -1426,6 +1426,16 @@ Olivetti to improve readability. Olivetti centers the entire buffer like a sheet
 #+END_SRC
 
 
+In org-mode (and LaTeX in general) I often need math formulas. Traditionally I have used lookup sites like [[https://en.wikibooks.org/wiki/LaTeX/Mathematics][the LaTeX mathematics wikibooks site]], but these days I enjoy having some autocompletion. company-math works great for that:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-math
+    :after org
+    :hook
+    (org-mode . (lambda ()
+                  (setq-local company-backends (append '((company-math-symbols-latex))
+                                                       company-backends)))))
+#+END_SRC
 
 
 I've tried many LaTeX math preview solutions over the years, but they all have drawbacks. Some generate images that I can't zoom with the rest of the text, while others require elaborate workflows and package installs. [[https://gitlab.com/matsievskiysv/math-preview/][math-preview]] is a breath of fresh air, as it only requires one external package (=npm install -g git+https://gitlab.com/matsievskiysv/math-preview=). It can also zoom flawlessly! Have used it with try for a while, so time to add it:
