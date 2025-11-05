@@ -25,6 +25,7 @@ The configuration will change with time, based upon preferences, what I work on,
     - [[#helm][helm]]
     - [[#navigating-windows-better][Navigating windows better]]
     - [[#installing-system-packages-apt-homebrew-etc][Installing system packages (apt, homebrew etc.)]]
+    - [[#pdf-reading][PDF reading]]
     - [[#dashboard][dashboard]]
     - [[#themes-and-ui][themes and ui]]
     - [[#documentation-viewers][Documentation viewers]]
@@ -411,6 +412,18 @@ Having searches for system packages and installations directly in Emacs is prett
   (use-package helm-system-packages)
 #+END_SRC
 
+
+*** PDF reading
+For years I held off on pdf-tools, and I have to say I regret it! I imagined PDF reading in Emacs to always be as slow as the built in viwer. How wrong I was! It is not perfect, but has neat features that makes reading PDFs more enjoyable. One is navigating links without a mouse. A mouse is a horrible device for most computing tasks, except gaming....
+
+#+BEGIN_SRC emacs-lisp
+  ;; Experiencing some issues with links if scaling is on
+  (use-package pdf-tools
+    :custom
+    (pdf-view-use-scaling nil))
+#+END_SRC
+
+*NOTE: Run pdf-tools-install before using. Needed to make it work. I should probably look into a way of running this automatically on first run.. Probably some unless-statement with a path existing? Or executable on PATH?* 
 
 *** dashboard
 Emacs is always open at my machine, so I really enjoy a friendly startup screen :) dashboard provides what I want with projects (from projectiles list), recently edited files and latest news from Hackernews. To make the experience even better I also install all-the-icons to get pretty icons.
