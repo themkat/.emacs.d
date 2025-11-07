@@ -419,6 +419,8 @@ For years I held off on pdf-tools, and I have to say I regret it! I imagined PDF
 #+BEGIN_SRC emacs-lisp
   ;; Experiencing some issues with links if scaling is on
   (use-package pdf-tools
+    :init
+    (pdf-tools-install)
     :custom
     (pdf-view-use-scaling nil))
 #+END_SRC
