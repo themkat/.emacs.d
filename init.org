@@ -609,7 +609,9 @@ Yeah, I know. I'm probably the last person you expected to have something like t
                           :models '(deepseek-r1:latest llama3.1:latest)))
     (gptel-model 'llama3.1:latest)
     (gptel-default-mode 'org-mode)
-    (gptel-track-media t))
+    (gptel-track-media t)
+    ;; remove annoying system messages until I find some of my own
+    (gptel-directives '()))
 #+END_SRC
 
 ** Editing  settings
