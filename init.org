@@ -32,6 +32,7 @@ The configuration will change with time, based upon preferences, what I work on,
     - [[#casual-suite][casual suite]]
     - [[#try][try]]
     - [[#goto-line-with-preview][goto-line with preview]]
+  - [[#generative-ai-and-llms][Generative AI and LLMs]]
   - [[#editing--settings][Editing  settings]]
     - [[#general-editing][General editing]]
     - [[#spell-checking][Spell checking]]
@@ -595,6 +596,21 @@ goto-line waits until we hit enter to show us which line we went to. Sometimes I
     :defer t)
 #+END_SRC
 
+
+** Generative AI and LLMs
+Yeah, I know. I'm probably the last person you expected to have something like this in her config. I don't really vibe-code or anything like that. I use the models as a last resort when not finding stuff on search engines, rephrasing text, and sometimes as a therapist (don't judge). The reason for including them here is to be able to do it from Emacs instead of a command line, or even worse, a website (ugh). I also want to see what all the fuzz is about, and see if I'm missing out on something when not having it more integrated into my editor.
+
+#+BEGIN_SRC emacs-lisp :tangle "no"
+  (use-package gptel
+    :custom
+    (gptel-backend (gptel-make-ollama "Ollama"
+                          :host "localhost:11434"
+                          :stream t
+                          :models '(deepseek-r1:latest llama3.1:latest)))
+    (gptel-model 'llama3.1:latest)
+    (gptel-default-mode 'org-mode)
+    (gptel-track-media t))
+#+END_SRC
 
 ** Editing  settings
 
