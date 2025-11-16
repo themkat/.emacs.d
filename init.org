@@ -1465,7 +1465,7 @@ In org-mode (and LaTeX in general) I often need math formulas. Traditionally I h
 
 #+BEGIN_SRC emacs-lisp
   (use-package company-math
-    :after org
+    :after (org company)
     :hook
     (org-mode . (lambda ()
                   (setq-local company-backends (append '((company-math-symbols-latex))
