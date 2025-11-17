@@ -760,6 +760,8 @@ company (COMPLete ANY) provides base functionality for completions (ui elements,
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :config
+    ;; Disable dabbrev. It works fine for small files, but for long Emacs sessions and long files it just causes shit ton of noise in the suggestions.
+    (setq company-backends (delete 'company-dabbrev company-backends))
     (global-company-mode)
 
     :custom
@@ -767,8 +769,6 @@ company (COMPLete ANY) provides base functionality for completions (ui elements,
     (company-idle-delay 0)
     (company-echo-delay 0)
     (company-minimum-prefix-length 1)
-    ;; Disable dabbrev. It works fine for small files, but for long Emacs sessions and long files it just causes shit ton of noise in the suggestions.
-    (company-backends (delete 'company-dabbrev company-backends))
 
     :bind
     ;; trigger company to see a list of choices even when nothing is typed. maybe it quit because we clicked something. or maybe we dont know what to type yet :P
