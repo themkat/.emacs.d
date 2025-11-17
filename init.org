@@ -1479,28 +1479,26 @@ I've tried many LaTeX math preview solutions over the years, but they all have d
   (use-package math-preview)
 #+END_SRC
 
-# TODO: animated gifs. Cool for presentations. https://github.com/shg/org-inline-anim.el
 
+I recently started experimenting with =org-present= again. I've tried several presentation packages for Emacs, so let's see if this will actually  replace the otehr methods (e.g, Reaveal.js with org-mode, just editing slides for other frameworks in Emacs etc.)
 
-# TODO: replace with org-present?
 #+BEGIN_SRC emacs-lisp
-  ;; hiding the mode line can be useful for presentations
-  (use-package hide-mode-line)
+  ;; animated gif support to spruce things up
+  (use-package org-inline-anim
+    :custom
+    (org-inline-anim-loop t))
 
-  (defun org-tree-slide--start-handler ()
-    (hide-mode-line-mode 1)
-    (set-face-attribute 'org-meta-line nil
-                        :foreground (face-attribute 'default :background)
-                        :background (face-attribute 'default :background)))
-
-  (defun org-tree-slide--stop-handler ()
-    (hide-mode-line-mode nil)
-    (set-face-attribute 'org-meta-line nil
-                        :foreground nil
-                        :background nil))
-
-  (use-package org-tree-slide
-    :config
-    (add-hook 'org-tree-slide-play-hook  #'org-tree-slide--start-handler)
-    (add-hook 'org-tree-slide-stop-hook  #'org-tree-slide--stop-handler))
+  (use-package org-present
+    :after org-inline-anim
+    :hook
+    ((org-present-mode . (lambda ()
+                           (org-present-big)
+                           (org-display-inline-images)
+                           (org-present-read-only)
+                           (org-inline-anim-mode)
+                           (org-inline-anim-animate-all)))
+     (org-present-mode-quit . (lambda ()
+                                (org-present-small)
+                                (org-present-read-write)
+                                (org-present-show-cursor)))))
 #+END_SRC
