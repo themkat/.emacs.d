@@ -1495,9 +1495,12 @@ I recently started experimenting with =org-present= again. I've tried several pr
                            (org-present-big)
                            (org-display-inline-images)
                            (org-present-read-only)
+                           (centaur-tabs-local-mode)
                            (org-inline-anim-mode)
                            (org-inline-anim-animate-all)))
      (org-present-mode-quit . (lambda ()
+                                ;; TODO: actually turn on centaur tabs again.
+                                ;;       Nothing works that I've tried so far
                                 (org-present-small)
                                 (org-present-read-write)
                                 (org-present-show-cursor)))))
