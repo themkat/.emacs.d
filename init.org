@@ -660,6 +660,7 @@ Yasnippet makes boiler plate and other code snippets much faster to write with s
 Sometimes we want to edit multiple places in the file at the same time. Most of the time this is just adding the same characters multiple places in the file in places with the same pattern, other times it is inserting a sequence of numbers.
   #+BEGIN_SRC emacs-lisp
     (use-package multiple-cursors
+      :defer t
       :bind
       ("C->" . mc/mark-next-like-this)
       ("C-<" . mc/mark-previous-like-this))
