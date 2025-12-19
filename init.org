@@ -1394,7 +1394,6 @@ While term.el and shell are good enough for some use cases, they do not work wel
   ;; Does not work on Windows, but we can just avoid compiling dependencies and using it
   ;; (if I'm ever forced to use Windows again for work or similar)
   (use-package vterm
-    :commands vterm
     :custom
     (vterm-always-compile-module t)
     :hook
@@ -1402,9 +1401,16 @@ While term.el and shell are good enough for some use cases, they do not work wel
                     ;; Settings to mimic dracula I use for zsh.
                     (setq-local buffer-face-mode-face '(:background "#000000" :foreground "#FFFFFF"))
                     (buffer-face-mode 1)
-                    (text-scale-adjust 2)))
+                    (text-scale-adjust 2))))
+
+  (use-package multi-vterm
+    :after vterm
     :bind
-    ("<f7>" . vterm))
+    ("<f7>" . (lambda ()
+                (interactive)
+                (if (projectile-project-p)
+                     (multi-vterm-project)
+                  (multi-vterm)))))
 #+END_SRC
 
 
