@@ -885,7 +885,6 @@ C does not really need much auto completion, but it can be great to have it for 
   ;; configure built in here with ensure nil
   (use-package cc-mode
     :ensure nil
-    :after (lsp-mode)
     :custom
     (c-basic-offset 4)
     :hook
