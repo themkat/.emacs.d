@@ -50,6 +50,7 @@ The configuration will change with time, based upon preferences, what I work on,
       - [[#python][Python]]
       - [[#scheme][Scheme]]
       - [[#dockerfiles][Dockerfiles]]
+      - [[#flutter-and-dart][Flutter and Dart]]
       - [[#swift-ios-xcode-projects-specifically][Swift (iOS XCode projects specifically)]]
       - [[#markdown][Markdown]]
       - [[#yaml][YAML]]
@@ -1096,6 +1097,19 @@ Use geiser to make Scheme great to work with. Not really used much anymore, but 
 #+END_SRC
 
 
+
+**** Flutter and Dart
+Lately I've been dipping my toes into making apps with Flutter with a friend of mine. That calls for some Flutter related setup, which I've been getting using Try for a while now.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dart-mode
+    :hook
+    ((dart-mode . lsp)
+     (dart-mode . yas-minor-mode)))
+
+  (use-package lsp-dart
+    :after (lsp-mode dart-mode))
+#+END_SRC
 
 **** Swift (iOS XCode projects specifically)
 # TODO: if it grows any bigger, consider making it a separate package
