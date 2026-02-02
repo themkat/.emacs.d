@@ -1452,7 +1452,11 @@ org mode (maybe move the intro from above?)
 
     :config
     (require 'ox-latex)
-    (add-to-list 'org-latex-classes '("letter" "\\documentclass{letter}")))
+    (add-to-list 'org-latex-classes '("letter" "\\documentclass{letter}"))
+
+    ;; org-tempo for templates found in org-structure-template-alist
+    ;; Example: <s for src blocks
+    (require 'org-tempo))
 
   ;; More modern styles in org mode
   ;; (prettier tables, less eyesores with visible hashes #, built in bullets etc.)
