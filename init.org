@@ -296,6 +296,9 @@ I use some general settings to make Emacs feel better.
   ;; use y or n instead of yes or no
   (defalias 'yes-or-no-p 'y-or-n-p)
 
+  ;; Avoid GUI dialog boxes
+  (setq use-dialog-box nil)
+
 
   ;; Instead of making annoying beeps, blink the modeline on various errors.
   ;; Taxed/Stolen from:
