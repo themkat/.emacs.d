@@ -412,14 +412,6 @@ For years I navigated windows in Emacs with =C-x o= because of habit. Not anymor
 #+END_SRC
 
 
-*** Installing system packages (apt, homebrew etc.)
-Having searches for system packages and installations directly in Emacs is pretty neat! 
-
-#+BEGIN_SRC emacs-lisp
-  (use-package helm-system-packages)
-#+END_SRC
-
-
 *** PDF reading
 For years I held off on pdf-tools, and I have to say I regret it! I imagined PDF reading in Emacs to always be as slow as the built in viwer. How wrong I was! It is not perfect, but has neat features that makes reading PDFs more enjoyable. One is navigating links without a mouse. A mouse is a horrible device for most computing tasks, except gaming....
 
@@ -458,7 +450,6 @@ Emacs is always open at my machine, so I really enjoy a friendly startup screen 
     (dashboard-startup-banner 'logo)
     (dashboard-center-content t)
     (dashboard-set-navigator t)
-    (dashboard-navigator-buttons '((("⤓" " Install system package" " Install system package" (lambda (&rest _) (helm-system-packages))))))
     (dashboard-icon-type 'all-the-icons)
     ;; TODO: enable again when they work
     ;;       https://github.com/emacs-dashboard/emacs-dashboard/issues/459
