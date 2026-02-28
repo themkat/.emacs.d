@@ -240,6 +240,8 @@ I use some general settings to make Emacs feel better.
   ;; Don't autosave. 
   (setq auto-save-default nil)
 
+  ;; Recentf file list need to contain WAAAAY more history. Useful for Helm-mini
+  (setq recentf-max-saved-items 100)
 
   ;; GUI related settings
   (if (display-graphic-p)
