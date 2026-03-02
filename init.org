@@ -24,7 +24,6 @@ The configuration will change with time, based upon preferences, what I work on,
     - [[#key-help][Key help]]
     - [[#helm][helm]]
     - [[#navigating-windows-better][Navigating windows better]]
-    - [[#installing-system-packages-apt-homebrew-etc][Installing system packages (apt, homebrew etc.)]]
     - [[#pdf-reading][PDF reading]]
     - [[#dashboard][dashboard]]
     - [[#themes-and-ui][themes and ui]]
@@ -435,7 +434,7 @@ Emacs is always open at my machine, so I really enjoy a friendly startup screen 
   (use-package all-the-icons)
 
   (use-package dashboard
-    :after (all-the-icons dashboard-hackernews helm-system-packages)
+    :after (all-the-icons dashboard-hackernews)
     :init
     (dashboard-setup-startup-hook)
 
