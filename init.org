@@ -421,9 +421,16 @@ For years I held off on pdf-tools, and I have to say I regret it! I imagined PDF
     (pdf-tools-install)
     :custom
     (pdf-view-use-scaling nil))
-#+END_SRC
 
-*NOTE: Run pdf-tools-install before using. Needed to make it work. I should probably look into a way of running this automatically on first run.. Probably some unless-statement with a path existing? Or executable on PATH?* 
+
+  ;; Remember last position in opened files
+  (use-package pdf-view-restore
+    :after pdf-tools
+    :custom
+    (pdf-view-restore-filename (concat user-emacs-directory ".pdf-view-restore"))
+    :config
+    (add-hook 'pdf-view-mode-hook 'pdf-view-restore-mode))
+#+END_SRC
 
 *** dashboard
 Emacs is always open at my machine, so I really enjoy a friendly startup screen :) dashboard provides what I want with projects (from projectiles list), recently edited files and latest news from Hackernews. To make the experience even better I also install all-the-icons to get pretty icons.
