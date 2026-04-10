@@ -47,6 +47,7 @@ The configuration will change with time, based upon preferences, what I work on,
       - [[#typescript][TypeScript]]
       - [[#web-development-html-css-basic-js-etc][Web development (HTML, CSS, basic JS etc.)]]
       - [[#python][Python]]
+      - [[#julia][Julia]]
       - [[#scheme][Scheme]]
       - [[#dockerfiles][Dockerfiles]]
       - [[#flutter-and-dart][Flutter and Dart]]
@@ -1083,6 +1084,27 @@ I sometimes write Python code for various things, sometimes as a calculator :P (
     :init
     (require 'lsp-pyright))
 #+END_SRC
+
+
+**** Julia
+I've recently tried learning Julia to replace Python. While Python is great with NumPy, it sometimes feels a bit unintuitive. Matlab/Octave is slightly more intuitive on some math syntax (e.g, matrices, column vectors vs row vectors etc.), but comes with its own flaws. Julia seems really exciting! It also have one of the features I really miss in scripting languages like Python: the ability to specify types WHEN I WANT TO! (yeah, I know, Python has type hints, but those are not enforced at runtime). Intuitive vectors, types when needed, and macros! What's not to love? :heart_eyes_cat:
+
+#+begin_src emacs-lisp
+  (use-package julia-mode)
+
+  (use-package lsp-julia
+    :after lsp-mode)
+
+  (use-package julia-repl
+    :after (vterm)
+
+    :custom
+    (vterm-kill-buffer-on-exit nil)
+    
+    :config
+    (julia-repl-set-terminal-backend 'vterm))
+
+#+end_src
 
 
 **** Scheme
