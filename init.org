@@ -39,6 +39,7 @@ The configuration will change with time, based upon preferences, what I work on,
     - [[#ide-functionality---general][IDE functionality - general]]
     - [[#programming--scripting--markup-languages-and-so-on][Programming-, scripting-, markup-languages and so on]]
       - [[#c][C]]
+      - [[#shading-languages][Shading languages]]
       - [[#assembly-various-flavors][Assembly (various flavors)]]
       - [[#rust][Rust]]
       - [[#lean4-mathematical-proofs][Lean4 (mathematical proofs)]]
