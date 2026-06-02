@@ -911,7 +911,8 @@ Some projects also use CMake as a build system in the C and C++ world. Handy to 
 **** Shading languages
 I have probably used glsl-mode through Try everytime I need it for like 10 years now... Time to actually have it permanently. (I'm lazy okay, don't judge)
 #+begin_src emacs-lisp
-  (use-package glsl-mode)
+  (use-package glsl-mode
+    :defer t)
 #+end_src
 
 **** Assembly (various flavors)
