@@ -31,7 +31,6 @@ The configuration will change with time, based upon preferences, what I work on,
     - [[#casual-suite][casual suite]]
     - [[#try][try]]
     - [[#goto-line-with-preview][goto-line with preview]]
-  - [[#generative-ai-and-llms][Generative AI and LLMs]]
   - [[#editing--settings][Editing  settings]]
     - [[#general-editing][General editing]]
     - [[#spell-checking][Spell checking]]
@@ -444,6 +443,7 @@ Emacs is always open at my machine, so I really enjoy a friendly startup screen 
   (use-package all-the-icons)
 
   (use-package dashboard
+    :disabled
     :after (all-the-icons dashboard-hackernews)
     :init
     (dashboard-setup-startup-hook)
@@ -470,7 +470,8 @@ Emacs is always open at my machine, so I really enjoy a friendly startup screen 
                        (hackernews . 5))))
 
 
-  (use-package dashboard-hackernews)
+  (use-package dashboard-hackernews
+    :disabled)
 #+END_SRC
 
 *** themes and ui
