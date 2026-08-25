@@ -1155,7 +1155,7 @@ Some prerequisites:
 
 NOTE: XCode version fiddling and upgrade of components may be necessary. Due to xcode-build-server and your local xcode working together, there may be inconsistencies if you swift xcode-versions with xcode-select. I could not get it consistent without also using the newest xcode version here. 
 
-#+BEGIN_SRC emacs-lisp :tangle (if (eq system-type 'darwin) "yes" "no")
+#+BEGIN_SRC emacs-lisp :tangle "no"
   ;; Assumes a lsp root. Works with my other tooling
   (defvar themkat/ios-devices-list-should-update nil)
 
