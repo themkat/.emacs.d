@@ -1326,7 +1326,8 @@ NOTE: XCode version fiddling and upgrade of components may be necessary. Due to 
 
 **** Markdown
 #+BEGIN_SRC emacs-lisp
-  (use-package markdown-mode)
+  (use-package markdown-mode
+    :disabled)
 #+END_SRC
 
 
