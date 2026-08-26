@@ -1324,13 +1324,6 @@ NOTE: XCode version fiddling and upgrade of components may be necessary. Due to 
     (setq lsp-sourcekit-executable (executable-find "sourcekit-lsp")))
 #+END_SRC
 
-**** Markdown
-#+BEGIN_SRC emacs-lisp
-  (use-package markdown-mode
-    :disabled)
-#+END_SRC
-
-
 **** YAML
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
