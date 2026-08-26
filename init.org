@@ -1355,7 +1355,6 @@ This is almost a reason to use Emacs by itself! Magit is the best way to experie
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :commands magit-status
     :bind
     ("C-x g" . magit-status))
 
