@@ -1,5 +1,11 @@
 [[https://github.com/themkat/.emacs.d/actions/workflows/build.yaml][file:https://github.com/themkat/.emacs.d/actions/workflows/build.yaml/badge.svg]]
 * .emacs configuration
+
+#+BEGIN_QUOTE
+[!NOTE]
+Screenshots are a bit out of date at the moment due to changes being done. This might take a few days to sort out due to outside things needing to be done as well. See [[https://github.com/themkat/.emacs.d/issues/27][issue 27]] for details. Peace and long life! <3
+#+END_QUOTE
+
 Very opinionated setup of Emacs, and obviously using literate config in org-mode :heart: That means that the Emacs Lisp source code snippets are tangled into their own file, and executed on startup. See init.el for how that is achieved.
 
 
