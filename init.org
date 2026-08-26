@@ -52,7 +52,6 @@ The configuration will change with time, based upon preferences, what I work on,
       - [[#dockerfiles][Dockerfiles]]
       - [[#flutter-and-dart][Flutter and Dart]]
       - [[#swift-ios-xcode-projects-specifically][Swift (iOS XCode projects specifically)]]
-      - [[#markdown][Markdown]]
       - [[#yaml][YAML]]
       - [[#xml][XML]]
       - [[#zig][Zig]]
@@ -509,7 +508,7 @@ Recently I also started using tabs with the centaur-tabs package:
   (global-unset-key (kbd "C-x <right>"))
 
   (use-package centaur-tabs
-    :after (dashboard org)
+    :after (org)
 
     :config
     (centaur-tabs-mode 1)
@@ -529,8 +528,7 @@ Recently I also started using tabs with the centaur-tabs package:
     ;; TODO: EXWM buffers
     ;; Disable tab bars in the below modes
     :hook
-    ((dashboard-mode . centaur-tabs-local-mode)
-     (org-src-mode . centaur-tabs-local-mode)
+    ((org-src-mode . centaur-tabs-local-mode)
      (calendar-mode . centaur-tabs-local-mode)
      (dap-ui-breakpoints-mode . centaur-tabs-local-mode)
      (dap-ui-sessions-mode . centaur-tabs-local-mode)
