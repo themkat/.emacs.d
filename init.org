@@ -1080,7 +1080,9 @@ I've recently tried learning Julia to replace Python. While Python is great with
   (use-package julia-mode)
 
   (use-package lsp-julia
-    :after lsp-mode)
+    :after lsp-mode
+    :custom
+    (lsp-enable-text-document-color nil))
 
   (use-package julia-repl
     :after (vterm)
