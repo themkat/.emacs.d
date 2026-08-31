@@ -945,9 +945,8 @@ Recently started experimenting more with Rust. rustic seems to be the best packa
 Lean is a nice little theorem proofer and programming language. Learning it these days, and starting to enjoy it :heart_eyes_cat: Hope to get real practical use for it the deeper I get into my math studies at uni. 
 #+BEGIN_SRC emacs-lisp
   (use-package lean4-mode
-    :commands lean4-mode
-    :vc (:url "https://github.com/leanprover-community/lean4-mode.git"
-         :rev :last-release))
+    :ensure (lean4-mode :host github :repo "leanprover-community/lean4-mode")
+    :commands lean4-mode)
 #+END_SRC
 
 **** Java
