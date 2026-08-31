@@ -467,14 +467,12 @@ Emacs is always open at my machine, so I really enjoy a friendly startup screen 
   (use-package dashboard
     :disabled
     :after (all-the-icons dashboard-hackernews)
-    :init
-    (dashboard-setup-startup-hook)
-
-    ;; seems like the latest versions do some fuckery with the project list or something.
-    ;; Need an extra refresh after initialization for my own settings to show up now.
-    ;; (did not need this before. Would rather keep the :custom block instead of setq spamming)
-    :hook
-    (dashboard-after-initialize . dashboard-refresh-buffer)
+    :config
+    ;; fix for elpaca, see https://github.com/emacs-dashboard/emacs-dashboard/issues/499
+    (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
+    (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
+    (add-hook 'window-size-change-functions #'dashboard-resize-on-hook 100)
+    (add-hook 'window-setup-hook #'dashboard-resize-on-hook)
 
     :custom
     (dashboard-banner-logo-title "Welcome my queen! Make some kewl stuff today!")
