@@ -508,10 +508,15 @@ To make Emacs better looking, I use the leuven-theme. This theme improves org-mo
   (use-package f)
 
   ;; use my local version of pink-bliss-uwu
-  (eval-after-load 's
-    (progn   (require 's)
-             (add-to-list 'custom-theme-load-path (s-concat user-emacs-directory "themes/pink-bliss-uwu"))
-             (load-theme 'pink-bliss-uwu 't)))
+  (use-package pink-bliss-uwu-theme
+    :after s
+    :ensure (pink-bliss-uwu-theme
+             :host github :repo "themkat/pink-bliss-uwu"
+             :remotes ("local" :type file :repo (s-concat user-emacs-directory "themes/pink-bliss-uwu")))
+    :config
+    (load-theme 'pink-bliss-uwu t)
+    :custom
+    (pink-bliss-uwu-use-custom-font t))
 
   (use-package doom-modeline
     :init
