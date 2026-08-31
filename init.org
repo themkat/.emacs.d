@@ -22,7 +22,10 @@ The configuration will change with time, based upon preferences, what I work on,
 ** Table of contents :TOC_4:
 - [[#emacs-configuration][.emacs configuration]]
   - [[#basic-setup][Basic setup]]
-  - [[#keep-packages-up-to-date][Keep packages up-to-date]]
+    - [[#preface][Preface]]
+    - [[#package-manager][Package Manager]]
+      - [[#elpaca-installation][Elpaca Installation]]
+      - [[#elpaca-use-package-integration][Elpaca use-package Integration]]
   - [[#exwm---emacs-window-manager][EXWM - Emacs Window manager]]
   - [[#behaviorial-settings][Behaviorial settings]]
     - [[#general][general]]
@@ -68,50 +71,65 @@ The configuration will change with time, based upon preferences, what I work on,
 ** Basic setup
 Before we begin, we have to do some basic setup. For the rest of the config, I will use =use-package= to install packages. I want newer packages, and packages not available in the gnu repos, so adding MELPA and the org repo (to get newest org mode). Then we install =use-package= and set te always ensure variable to make sure it always tries to download the packages we want. 
 
-
-#+BEGIN_SRC emacs-lisp
-  ;;; -*- lexical-binding: t; -*-
+*** Preface
+We have to turn off `Package.el` because it'll autoload all packages, which is pretty terrible.
+#+begin_src elisp
+  ;; -*- lexical-binding: t; -*-
   ;; sets lexical bindings so we get real closres with let etc. like in Scheme
 
-  (require 'package)
-  (add-to-list 'package-archives
-               '("melpa" . "https://melpa.org/packages/"))
+  (setq package-enable-at-startup nil)
+#+end_src
 
-  ;; For codemetrics and other jcs packages
-  (add-to-list 'package-archives '( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/") t)
+*** Package Manager
+**** Elpaca Installation
+#+begin_src elisp
+  (defvar elpaca-installer-version 0.12)
+  (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+  (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+  (defvar elpaca-sources-directory (expand-file-name "sources/" elpaca-directory))
+  (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                                :ref nil
+                                :depth 1 :inherit ignore
+                                :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                                :build (:not elpaca-activate)))
+  (let* ((repo  (expand-file-name "elpaca/" elpaca-sources-directory))
+         (build (expand-file-name "elpaca/" elpaca-builds-directory))
+         (order (cdr elpaca-order))
+         (default-directory repo))
+    (add-to-list 'load-path (if (file-exists-p build) build repo))
+    (unless (file-exists-p repo)
+      (make-directory repo t)
+      (when (<= emacs-major-version 28) (require 'subr-x))
+      (condition-case-unless-debug err
+          (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                    ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                    ,@(when-let* ((depth (plist-get order :depth)))
+                                                        (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                    ,(plist-get order :repo) ,repo))))
+                    ((zerop (call-process "git" nil buffer t "checkout"
+                                          (or (plist-get order :ref) "--"))))
+                    (emacs (concat invocation-directory invocation-name))
+                    ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                          "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                    ((require 'elpaca))
+                    ((elpaca-generate-autoloads "elpaca" repo)))
+              (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+            (error "%s" (with-current-buffer buffer (buffer-string))))
+        ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+    (unless (require 'elpaca-autoloads nil t)
+      (require 'elpaca)
+      (elpaca-generate-autoloads "elpaca" repo)
+      (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
+  (add-hook 'after-init-hook #'elpaca-process-queues)
+  (elpaca `(,@elpaca-order))
+#+end_src
 
-  ;; set some explicit priorities to avoid jcs taking precedence
-  (setq package-archive-priorities '(("melpa"    . 5)
-                                     ("jcs-elpa" . 0)))
-
-  (package-initialize)
-
-  ;; only refresh package contents if we havent downloaded it yet.
-  (unless package-archive-contents
-    (package-refresh-contents))
-
-  ;; always download packages when we don't have them locally
-  (require 'use-package)
-  (setq use-package-always-ensure 't)
-#+END_SRC
-
-** Keep packages up-to-date
-I'm a bit lazy when it comes to updating packages manually, so automating this is a welcome addition :)
-
-#+BEGIN_SRC emacs-lisp
-  (use-package auto-package-update
-    :disabled t
-    
-    :custom
-    (auto-package-update-interval 31)
-    (auto-package-update-delete-old-versions t)
-    (auto-package-update-prompt-before-update t)
-    (auto-package-update-show-preview t)
-  
-    :config
-    (auto-package-update-maybe))
-#+END_SRC
-
+**** Elpaca use-package Integration
+#+begin_src elisp
+  (elpaca elpaca-use-package
+    (elpaca-use-package-mode)
+    (setq use-package-always-ensure t))
+#+end_src
 
 ** EXWM - Emacs Window manager
 On my GNU/Linux machines I have used EXWM as a window manager for quite a while. It makes navigating windows easier, and makes it possible to do everything in Emacs <3 To set it up, I set up a custom X-session with a .xinitrc file for my user:
