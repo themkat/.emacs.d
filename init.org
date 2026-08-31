@@ -726,7 +726,7 @@ Emojis in comments, org mode text and other places are really fun and makes the 
 #+BEGIN_SRC emacs-lisp
   (use-package emojify
     :init
-    (add-hook 'after-init-hook #'global-emojify-mode))
+    (add-hook 'elpaca-after-init-hook #'global-emojify-mode))
 #+END_SRC
 
 
