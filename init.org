@@ -826,7 +826,9 @@ lsp-mode uses LSP servers to provides IDE functionality like code completion (in
     (lsp-ui-sideline-show-code-actions t)
     (lsp-ui-doc-position 'at-point)
     :bind
-    (:map lsp-mode-map ("M-s M-d" . lsp-ui-show-doc-helper)))
+    (:map lsp-mode-map
+          ("M-s M-d" . lsp-ui-show-doc-helper)
+          ("M-s M-f" . lsp-ui-doc-focus-frame)))
 
   ;; Additional helpers using treemacs
   ;; (symbols view, errors, dependencies for Java etc.)
