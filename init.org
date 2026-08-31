@@ -38,7 +38,6 @@ The configuration will change with time, based upon preferences, what I work on,
     - [[#themes-and-ui][themes and ui]]
     - [[#documentation-viewers][Documentation viewers]]
     - [[#casual-suite][casual suite]]
-    - [[#try][try]]
     - [[#goto-line-with-preview][goto-line with preview]]
   - [[#editing--settings][Editing  settings]]
     - [[#general-editing][General editing]]
@@ -610,13 +609,6 @@ Casual suite provides more intuitive keyboard driven operations to various modes
     :bind
     (:map dired-mode-map
           ("C-o" . casual-dired-tmenu)))
-#+END_SRC
-
-*** try
-Sometimes I like to try packages without having them as a permanent part of my Emacs setup. try does exactly that, where the packages are gone after Emacs is closed. 
-
-#+BEGIN_SRC emacs-lisp
-  (use-package try)
 #+END_SRC
 
 *** goto-line with preview
