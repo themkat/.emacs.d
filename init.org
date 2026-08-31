@@ -227,10 +227,10 @@ Then on launch it will run the following setup for using EXWM:
     (exwm-enable))
 
 
-  (if (getenv "USE_EXWM")
-      (use-package exwm
-        :init
-        (themkat/setup-exwm)))
+  (use-package exwm
+    :if (getenv "USE_EXWM")
+    :init
+    (themkat/setup-exwm)))
 #+END_SRC
 
 Desktop environment can also be very useful when Emacs blocks the function keys (volume etc.). I have this issue with EXWM, and desktop-environment fixes it.
