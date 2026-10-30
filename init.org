@@ -66,14 +66,14 @@ The configuration will change with time, based upon preferences, what I work on,
 ** Basic setup
 Before we begin, we have to do some basic setup. For the rest of the config, I will use Elpaca with =use-package= to install packages. First some tweaks to bindings to make Emacs Lisp behave a bit more like Scheme, as Arceus intended.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   ;; -*- lexical-binding: t; -*-
   ;; sets lexical bindings so we get real closres with let etc. like in Scheme
 #+end_src
 
 Then for setting up the package manager. Elpaca is a package manager that works in a more async modern way. It makes a modern config like this one more snappy, probably even on less powerful computers.
 
-#+begin_src elisp
+#+begin_src emacs-lisp
   (defvar elpaca-installer-version 0.12)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
   (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
