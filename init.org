@@ -117,8 +117,10 @@ Then for setting up the package manager. Elpaca is a package manager that works 
 
   ;; Activate use-package integration to get that sweet familiar use-package interface <3
   (elpaca elpaca-use-package
-      (elpaca-use-package-mode)
-      (setq use-package-always-ensure t))
+    (elpaca-use-package-mode))
+
+  ;; Always ensure in use-package. Everything else is fucking insane
+  (setq use-package-always-ensure t)
 #+end_src
 
 ** EXWM - Emacs Window manager
