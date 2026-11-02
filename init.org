@@ -22,7 +22,6 @@ The configuration will change with time, based upon preferences, what I work on,
 ** Table of contents :TOC_4:
 - [[#emacs-configuration][.emacs configuration]]
   - [[#basic-setup][Basic setup]]
-  - [[#keep-packages-up-to-date][Keep packages up-to-date]]
   - [[#exwm---emacs-window-manager][EXWM - Emacs Window manager]]
   - [[#behaviorial-settings][Behaviorial settings]]
     - [[#general][general]]
@@ -35,7 +34,6 @@ The configuration will change with time, based upon preferences, what I work on,
     - [[#themes-and-ui][themes and ui]]
     - [[#documentation-viewers][Documentation viewers]]
     - [[#casual-suite][casual suite]]
-    - [[#try][try]]
     - [[#goto-line-with-preview][goto-line with preview]]
   - [[#editing--settings][Editing  settings]]
     - [[#general-editing][General editing]]
@@ -66,52 +64,64 @@ The configuration will change with time, based upon preferences, what I work on,
     - [[#writing-booksorg-mode-etc][Writing (books/org-mode etc.)]]
 
 ** Basic setup
-Before we begin, we have to do some basic setup. For the rest of the config, I will use =use-package= to install packages. I want newer packages, and packages not available in the gnu repos, so adding MELPA and the org repo (to get newest org mode). Then we install =use-package= and set te always ensure variable to make sure it always tries to download the packages we want. 
+Before we begin, we have to do some basic setup. For the rest of the config, I will use Elpaca with =use-package= to install packages. First some tweaks to bindings to make Emacs Lisp behave a bit more like Scheme, as Arceus intended.
 
-
-#+BEGIN_SRC emacs-lisp
-  ;;; -*- lexical-binding: t; -*-
+#+begin_src emacs-lisp
+  ;; -*- lexical-binding: t; -*-
   ;; sets lexical bindings so we get real closres with let etc. like in Scheme
+#+end_src
 
-  (require 'package)
-  (add-to-list 'package-archives
-               '("melpa" . "https://melpa.org/packages/"))
+Then for setting up the package manager. Elpaca is a package manager that works in a more async modern way. It makes a modern config like this one more snappy, probably even on less powerful computers.
 
-  ;; For codemetrics and other jcs packages
-  (add-to-list 'package-archives '( "jcs-elpa" . "https://jcs-emacs.github.io/jcs-elpa/packages/") t)
+#+begin_src emacs-lisp
+  (defvar elpaca-installer-version 0.12)
+  (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+  (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+  (defvar elpaca-sources-directory (expand-file-name "sources/" elpaca-directory))
+  (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                                :ref nil
+                                :depth 1 :inherit ignore
+                                :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                                :build (:not elpaca-activate)))
+  (let* ((repo  (expand-file-name "elpaca/" elpaca-sources-directory))
+         (build (expand-file-name "elpaca/" elpaca-builds-directory))
+         (order (cdr elpaca-order))
+         (default-directory repo))
+    (add-to-list 'load-path (if (file-exists-p build) build repo))
+    (unless (file-exists-p repo)
+      (make-directory repo t)
+      (when (<= emacs-major-version 28) (require 'subr-x))
+      (condition-case-unless-debug err
+          (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                    ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                    ,@(when-let* ((depth (plist-get order :depth)))
+                                                        (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                    ,(plist-get order :repo) ,repo))))
+                    ((zerop (call-process "git" nil buffer t "checkout"
+                                          (or (plist-get order :ref) "--"))))
+                    (emacs (concat invocation-directory invocation-name))
+                    ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                          "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                    ((require 'elpaca))
+                    ((elpaca-generate-autoloads "elpaca" repo)))
+              (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+            (error "%s" (with-current-buffer buffer (buffer-string))))
+        ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+    (unless (require 'elpaca-autoloads nil t)
+      (require 'elpaca)
+      (elpaca-generate-autoloads "elpaca" repo)
+      (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
+  (add-hook 'after-init-hook #'elpaca-process-queues)
+  (elpaca `(,@elpaca-order))
 
-  ;; set some explicit priorities to avoid jcs taking precedence
-  (setq package-archive-priorities '(("melpa"    . 5)
-                                     ("jcs-elpa" . 0)))
 
-  (package-initialize)
+  ;; Activate use-package integration to get that sweet familiar use-package interface <3
+  (elpaca elpaca-use-package
+    (elpaca-use-package-mode))
 
-  ;; only refresh package contents if we havent downloaded it yet.
-  (unless package-archive-contents
-    (package-refresh-contents))
-
-  ;; always download packages when we don't have them locally
-  (require 'use-package)
-  (setq use-package-always-ensure 't)
-#+END_SRC
-
-** Keep packages up-to-date
-I'm a bit lazy when it comes to updating packages manually, so automating this is a welcome addition :)
-
-#+BEGIN_SRC emacs-lisp
-  (use-package auto-package-update
-    :disabled t
-    
-    :custom
-    (auto-package-update-interval 31)
-    (auto-package-update-delete-old-versions t)
-    (auto-package-update-prompt-before-update t)
-    (auto-package-update-show-preview t)
-  
-    :config
-    (auto-package-update-maybe))
-#+END_SRC
-
+  ;; Always ensure in use-package. Everything else is fucking insane
+  (setq use-package-always-ensure t)
+#+end_src
 
 ** EXWM - Emacs Window manager
 On my GNU/Linux machines I have used EXWM as a window manager for quite a while. It makes navigating windows easier, and makes it possible to do everything in Emacs <3 To set it up, I set up a custom X-session with a .xinitrc file for my user:
@@ -209,10 +219,10 @@ Then on launch it will run the following setup for using EXWM:
     (exwm-enable))
 
 
-  (if (getenv "USE_EXWM")
-      (use-package exwm
-        :init
-        (themkat/setup-exwm)))
+  (use-package exwm
+    :if (getenv "USE_EXWM")
+    :init
+    (themkat/setup-exwm)))
 #+END_SRC
 
 Desktop environment can also be very useful when Emacs blocks the function keys (volume etc.). I have this issue with EXWM, and desktop-environment fixes it.
@@ -449,14 +459,12 @@ Emacs is always open at my machine, so I really enjoy a friendly startup screen 
   (use-package dashboard
     :disabled
     :after (all-the-icons dashboard-hackernews)
-    :init
-    (dashboard-setup-startup-hook)
-
-    ;; seems like the latest versions do some fuckery with the project list or something.
-    ;; Need an extra refresh after initialization for my own settings to show up now.
-    ;; (did not need this before. Would rather keep the :custom block instead of setq spamming)
-    :hook
-    (dashboard-after-initialize . dashboard-refresh-buffer)
+    :config
+    ;; fix for elpaca, see https://github.com/emacs-dashboard/emacs-dashboard/issues/499
+    (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
+    (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
+    (add-hook 'window-size-change-functions #'dashboard-resize-on-hook 100)
+    (add-hook 'window-setup-hook #'dashboard-resize-on-hook)
 
     :custom
     (dashboard-banner-logo-title "Welcome my queen! Make some kewl stuff today!")
@@ -490,10 +498,15 @@ To make Emacs better looking, I use the leuven-theme. This theme improves org-mo
   (use-package f)
 
   ;; use my local version of pink-bliss-uwu
-  (eval-after-load 's
-    (progn   (require 's)
-             (add-to-list 'custom-theme-load-path (s-concat user-emacs-directory "themes/pink-bliss-uwu"))
-             (load-theme 'pink-bliss-uwu 't)))
+  (use-package pink-bliss-uwu-theme
+    :after s
+    :ensure (pink-bliss-uwu-theme
+             :host github :repo "themkat/pink-bliss-uwu"
+             :remotes ("local" :repo ,(concat user-emacs-directory "themes/pink-bliss-uwu")))
+    :config
+    (load-theme 'pink-bliss-uwu t)
+    :custom
+    (pink-bliss-uwu-use-custom-font t))
 
   (use-package doom-modeline
     :init
@@ -589,13 +602,6 @@ Casual suite provides more intuitive keyboard driven operations to various modes
     :bind
     (:map dired-mode-map
           ("C-o" . casual-dired-tmenu)))
-#+END_SRC
-
-*** try
-Sometimes I like to try packages without having them as a permanent part of my Emacs setup. try does exactly that, where the packages are gone after Emacs is closed. 
-
-#+BEGIN_SRC emacs-lisp
-  (use-package try)
 #+END_SRC
 
 *** goto-line with preview
@@ -705,7 +711,7 @@ Emojis in comments, org mode text and other places are really fun and makes the 
 #+BEGIN_SRC emacs-lisp
   (use-package emojify
     :init
-    (add-hook 'after-init-hook #'global-emojify-mode))
+    (add-hook 'elpaca-after-init-hook #'global-emojify-mode))
 #+END_SRC
 
 
@@ -924,9 +930,8 @@ Recently started experimenting more with Rust. rustic seems to be the best packa
 Lean is a nice little theorem proofer and programming language. Learning it these days, and starting to enjoy it :heart_eyes_cat: Hope to get real practical use for it the deeper I get into my math studies at uni. 
 #+BEGIN_SRC emacs-lisp
   (use-package lean4-mode
-    :commands lean4-mode
-    :vc (:url "https://github.com/leanprover-community/lean4-mode.git"
-         :rev :last-release))
+    :ensure (lean4-mode :host github :repo "leanprover-community/lean4-mode")
+    :commands lean4-mode)
 #+END_SRC
 
 **** Java
