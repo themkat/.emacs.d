@@ -502,7 +502,7 @@ To make Emacs better looking, I use the leuven-theme. This theme improves org-mo
     :after s
     :ensure (pink-bliss-uwu-theme
              :host github :repo "themkat/pink-bliss-uwu"
-             :remotes ("local" :type file :repo (s-concat user-emacs-directory "themes/pink-bliss-uwu")))
+             :remotes ("local" :repo ,(concat user-emacs-directory "themes/pink-bliss-uwu")))
     :config
     (load-theme 'pink-bliss-uwu t)
     :custom
